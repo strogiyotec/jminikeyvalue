@@ -1,32 +1,8 @@
-<?xml version="1.0"?>
-<!DOCTYPE suppressions PUBLIC
-        "-//Checkstyle//DTD SuppressionFilter Configuration 1.0//EN"
-        "https://checkstyle.org/dtds/suppressions_1_0.dtd">
-<!--
- Copyright (c) 2016-2017, Mihai Emil Andronache
- All rights reserved.
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright notice, this
- list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice,
- this list of conditions and the following disclaimer in the documentation
- and/or other materials provided with the distribution.
- * Neither the name of camel nor the names of its
- contributors may be used to endorse or promote products derived from
- this software without specific prior written permission.
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- @link http://checkstyle.sourceforge.net/config.html
--->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
 <module name="Checker">
 
     <!--
@@ -56,7 +32,8 @@
     -->
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
-        <property name="fileExtensions" value="java,txt,xml,xsl,xsd,properties,groovy,vm,MF,sh,sql,tokens,g,spec,css,csv"/>
+        <property name="fileExtensions"
+                  value="java,txt,xml,xsl,xsd,properties,groovy,vm,MF,sh,sql,tokens,g,spec,css,csv"/>
     </module>
 
     <!--
@@ -83,11 +60,6 @@
         <property name="format" value="\* +@return +[^A-Z]"/>
         <property name="fileExtensions" value="java"/>
         <property name="message" value="@return tag description should start with capital letter"/>
-    </module>
-    <module name="RegexpSingleline">
-        <property name="format" value="\* +@param +\w+ +[^A-Z]"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="message" value="@param tag description should start with capital letter"/>
     </module>
     <module name="RegexpSingleline">
         <property name="format" value="/\*\* +[^A-Z\{]"/>
@@ -129,13 +101,13 @@
     Enable suppressions
     -->
     <module name="SuppressWithNearbyCommentFilter">
-        <property name="commentFormat" value="@checkstyle (\w+) \((\d+) lines?\)"/>
+        <property name="commentFormat" value="CHECKSTYLE IGNORE (\w+) FOR NEXT (\d+) LINES"/>
         <property name="checkFormat" value="$1"/>
         <property name="influenceFormat" value="$2"/>
     </module>
 
     <module name="TreeWalker">
-        <property name="cacheFile" value="target/qulice_cachefile" />
+        <property name="cacheFile" value="target/qulice_cachefile"/>
 
         <!-- to enable suppressions -->
         <module name="FileContentsHolder"/>
@@ -148,13 +120,16 @@
         <module name="AvoidNestedBlocks"/>
 
         <!-- Checks for class design. -->
-        <module name="VisibilityModifier"/>
+        <module name="VisibilityModifier">
+            <property name="ignoreAnnotationCanonicalNames" value=
+                    "SuppressWarnings"/>
+        </module>
         <module name="FinalClass"/>
         <module name="InterfaceIsType"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="DesignForExtension"/>
         <module name="MutableException"/>
-        <module name="ThrowsCount" />
+        <module name="ThrowsCount"/>
         <module name="InnerTypeLast"/>
 
         <!-- Checks for common coding problems -->
@@ -168,7 +143,7 @@
             <property name="ignoreConstructorParameter" value="true"/>
         </module>
         <module name="IllegalInstantiation"/>
-        <module name="IllegalTokenText" />
+        <module name="IllegalTokenText"/>
         <module name="InnerAssignment"/>
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
@@ -188,7 +163,7 @@
         <module name="IllegalThrows"/>
         <module name="PackageDeclaration"/>
         <module name="ReturnCount">
-            <property name="max" value="1"/>
+            <property name="max" value="3"/>
         </module>
         <module name="IllegalType"/>
         <module name="ParameterAssignment"/>
@@ -287,10 +262,10 @@
             <property name="max" value="80"/>
             <property name="ignorePattern" value="^import .*$|^\s+\*\s.*https?:\/\/.+"/>
         </module>
-        <module name="AnonInnerLength" />
+        <module name="AnonInnerLength"/>
         <module name="MethodLength"/>
         <module name="ParameterNumber">
-            <property name="max" value="3"/>
+            <property name="max" value="5"/>
         </module>
         <module name="OuterTypeNumber"/>
         <module name="MethodCount"/>
