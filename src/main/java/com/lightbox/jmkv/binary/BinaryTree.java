@@ -146,7 +146,18 @@ public final class BinaryTree implements Map<Integer, String> {
         }
     }
 
-    private static boolean contains(final TreeNode currentNode, final Integer key) {
+    /**
+     * Check that Tree contains given key.
+     *
+     * @param currentNode Current node, root by default
+     * @param key         Key
+     * @return True if key is present in tree
+     */
+    @SuppressWarnings("ReturnCount")
+    private static boolean contains(
+            final TreeNode currentNode,
+            final Integer key
+    ) {
         if (currentNode == null) {
             return false;
         }
@@ -156,6 +167,7 @@ public final class BinaryTree implements Map<Integer, String> {
         if (currentNode.key > key) {
             return BinaryTree.contains(currentNode.left, key);
         }
-        return currentNode.key < key && BinaryTree.contains(currentNode.right, key);
+        return currentNode.key < key
+                && BinaryTree.contains(currentNode.right, key);
     }
 }

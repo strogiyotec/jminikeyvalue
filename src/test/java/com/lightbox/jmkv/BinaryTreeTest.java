@@ -20,7 +20,7 @@ public final class BinaryTreeTest {
     }
 
     /**
-     * Test contains method of Binary Tree
+     * Test contains method of Binary Tree.
      */
     @Test
     public void testContains() {

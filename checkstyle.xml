@@ -100,13 +100,9 @@
     <!--
     Enable suppressions
     -->
-    <module name="SuppressWithNearbyCommentFilter">
-        <property name="commentFormat" value="CHECKSTYLE IGNORE (\w+) FOR NEXT (\d+) LINES"/>
-        <property name="checkFormat" value="$1"/>
-        <property name="influenceFormat" value="$2"/>
-    </module>
-
+    <module name="SuppressWarningsFilter"/>
     <module name="TreeWalker">
+        <module name="SuppressWarningsHolder" />
         <property name="cacheFile" value="target/qulice_cachefile"/>
 
         <!-- to enable suppressions -->
