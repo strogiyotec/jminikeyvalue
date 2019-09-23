@@ -49,6 +49,32 @@ public final class BinaryTreeTest {
     }
 
     /**
+     * Test remove method of Binary Tree.
+     */
+    @Test
+    public void testRemoveKey() {
+        final BinaryTree tree = BinaryTreeTest.getTree();
+        tree.put(10, "ten");
+        tree.put(15, "fifteen");
+        tree.put(11, "eleven");
+        tree.put(14, "fourteen");
+        tree.put(9, "nine");
+        Assert.assertThat(tree.size(), CoreMatchers.is(10));
+        Assert.assertThat(tree.remove(2), CoreMatchers.is("dsd"));
+        Assert.assertThat(tree.remove(10), CoreMatchers.is("ten"));
+        Assert.assertThat(tree.size(), CoreMatchers.is(8));
+    }
+
+    /**
+     * Test fail during root deletion.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testRemoveRoot() {
+        final BinaryTree tree = BinaryTreeTest.getTree();
+        tree.remove(5);
+    }
+
+    /**
      * Create binary tree for test purposes.
      *
      * @return Binary tree
