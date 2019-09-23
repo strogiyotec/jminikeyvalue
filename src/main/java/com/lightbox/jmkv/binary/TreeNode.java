@@ -9,31 +9,31 @@ final class TreeNode {
      * Key of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    public final Integer key;
+    final Integer key;
 
     /**
      * Value of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    public final String value;
+    final String value;
 
     /**
      * Root of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    public final TreeNode root;
+    final TreeNode root;
 
     /**
      * Left child of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    public TreeNode left;
+    TreeNode left;
 
     /**
      * Right child of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    public TreeNode right;
+    TreeNode right;
 
     /**
      * Ctor.

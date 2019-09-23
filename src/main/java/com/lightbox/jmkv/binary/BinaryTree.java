@@ -22,7 +22,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param value Value
      */
     public BinaryTree(final Integer key, final String value) {
-        this.root = new TreeNode(key, value, null, null, null);
+        this.root = new TreeNode(key, value);
     }
 
     @Override
