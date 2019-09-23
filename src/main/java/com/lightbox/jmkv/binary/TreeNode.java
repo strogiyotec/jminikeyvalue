@@ -2,6 +2,7 @@ package com.lightbox.jmkv.binary;
 
 /**
  * Binary Tree representation.
+ * Hidden from the world because only Binary Tree is supposed to use it
  */
 final class TreeNode {
 
