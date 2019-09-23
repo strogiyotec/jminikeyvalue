@@ -34,6 +34,21 @@ public final class BinaryTreeTest {
     }
 
     /**
+     * Tests contains value method of Binary Tree.
+     */
+    @Test
+    public void testContainsValue() {
+        final BinaryTree tree = BinaryTreeTest.getTree();
+        Assert.assertTrue(tree.containsValue("almas"));
+        Assert.assertTrue(tree.containsValue("hello"));
+        Assert.assertTrue(tree.containsValue("wewe"));
+        Assert.assertTrue(tree.containsValue("dsd"));
+        Assert.assertTrue(tree.containsValue("alloha"));
+        Assert.assertFalse(tree.containsValue("hello my friend"));
+
+    }
+
+    /**
      * Create binary tree for test purposes.
      *
      * @return Binary tree
@@ -43,7 +58,7 @@ public final class BinaryTreeTest {
         binaryTree.put(6, "hello");
         binaryTree.put(4, "wewe");
         binaryTree.put(2, "dsd");
-        binaryTree.put(1, "dsd");
+        binaryTree.put(1, "alloha");
         return binaryTree;
     }
 }

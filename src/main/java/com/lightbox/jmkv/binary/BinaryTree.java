@@ -42,7 +42,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public boolean containsValue(final Object value) {
-        return false;
+        return BinaryTree.contains(this.root, (String) value);
     }
 
     @Override
@@ -169,5 +169,27 @@ public final class BinaryTree implements Map<Integer, String> {
         }
         return currentNode.key < key
                 && BinaryTree.contains(currentNode.right, key);
+    }
+
+    /**
+     * Check that Tree contains given key.
+     *
+     * @param currentNode Current node, root by default
+     * @param value       Value
+     * @return True if key is present in tree
+     */
+    @SuppressWarnings("ReturnCount")
+    private static boolean contains(
+            final TreeNode currentNode,
+            final String value
+    ) {
+        if (currentNode == null) {
+            return false;
+        }
+        if (currentNode.value.equals(value)) {
+            return true;
+        }
+        return BinaryTree.contains(currentNode.left, value)
+                || BinaryTree.contains(currentNode.right, value);
     }
 }
