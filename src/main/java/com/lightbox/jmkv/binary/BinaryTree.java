@@ -37,7 +37,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public boolean containsKey(final Object key) {
-        return false;
+        return BinaryTree.contains(this.root, (Integer) key);
     }
 
     @Override
@@ -115,6 +115,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     /**
      * Calculate total size of binary tree.
+     *
      * @param current Current node
      * @param size    Current size , 0 by default
      * @return Total size of Binary Tree
@@ -143,5 +144,18 @@ public final class BinaryTree implements Map<Integer, String> {
 
             return size.get();
         }
+    }
+
+    private static boolean contains(final TreeNode currentNode, final Integer key) {
+        if (currentNode == null) {
+            return false;
+        }
+        if (currentNode.key.equals(key)) {
+            return true;
+        }
+        if (currentNode.key > key) {
+            return BinaryTree.contains(currentNode.left, key);
+        }
+        return currentNode.key < key && BinaryTree.contains(currentNode.right, key);
     }
 }
