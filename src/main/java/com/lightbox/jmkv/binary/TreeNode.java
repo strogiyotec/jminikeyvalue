@@ -9,19 +9,19 @@ final class TreeNode {
      * Key of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    final Integer key;
+    Integer key;
 
     /**
      * Value of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    final String value;
+    String value;
 
     /**
      * Root of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    final TreeNode root;
+    TreeNode root;
 
     /**
      * Left child of node.
@@ -77,5 +77,34 @@ final class TreeNode {
      */
     boolean isRoot() {
         return root == null;
+    }
+
+    /**
+     * Check that node has at least one child.
+     *
+     * @return True if node has child
+     */
+    boolean hasChild() {
+        return this.left != null || this.right != null;
+    }
+
+    /**
+     * Check that node has exactly one child.
+     *
+     * @return True if node has only one child.
+     */
+    public boolean hasOneChild() {
+        return (this.left != null && this.right == null)
+                || (this.left == null && this.right != null);
+    }
+
+    /**
+     * Find lowest key in left node recursively.
+     *
+     * @param node Current node
+     * @return Min value of left node
+     */
+    static Integer minKey(final TreeNode node) {
+        return node.left == null ? node.key : TreeNode.minKey(node.left);
     }
 }
