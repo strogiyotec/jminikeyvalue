@@ -63,7 +63,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public void putAll(final Map<? extends Integer, ? extends String> map) {
-
+        map.forEach(this::put);
     }
 
     @Override

@@ -5,6 +5,9 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Test binary tree.
  */
@@ -87,6 +90,23 @@ public final class BinaryTreeTest {
         Assert.assertThat(tree.get(1), CoreMatchers.is("alloha"));
         Assert.assertNull(tree.get(322));
     }
+
+    /**
+     * Test pul all method of binary tree.
+     */
+    @Test
+    public void testPutAll() {
+        final BinaryTree tree = new BinaryTree(22, "almas");
+        final Map<Integer, String> map = new HashMap<>(2, 1.0F);
+        map.put(100, "almat");
+        map.put(200, "abzal");
+        tree.putAll(map);
+        Assert.assertThat(tree.size(), CoreMatchers.is(3));
+        Assert.assertThat(tree.get(22), CoreMatchers.is("almas"));
+        Assert.assertThat(tree.get(100), CoreMatchers.is("almat"));
+        Assert.assertThat(tree.get(200), CoreMatchers.is("abzal"));
+    }
+
 
     /**
      * Create binary tree for test purposes.
