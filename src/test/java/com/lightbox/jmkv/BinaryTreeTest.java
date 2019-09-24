@@ -6,7 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Test binary tree.
@@ -105,6 +107,22 @@ public final class BinaryTreeTest {
         Assert.assertThat(tree.get(22), CoreMatchers.is("almas"));
         Assert.assertThat(tree.get(100), CoreMatchers.is("almat"));
         Assert.assertThat(tree.get(200), CoreMatchers.is("abzal"));
+    }
+
+    /**
+     * Test key set method of binary tree.
+     */
+    @Test
+    public void testCollectKeys() {
+        final BinaryTree tree = BinaryTreeTest.getTree();
+        final Set<Integer> keySet = tree.keySet();
+        final Set<Integer> preCalculatedKeys = new HashSet<>(5);
+        preCalculatedKeys.add(5);
+        preCalculatedKeys.add(6);
+        preCalculatedKeys.add(4);
+        preCalculatedKeys.add(2);
+        preCalculatedKeys.add(1);
+        Assert.assertEquals(keySet, preCalculatedKeys);
     }
 
 
