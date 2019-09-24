@@ -75,6 +75,20 @@ public final class BinaryTreeTest {
     }
 
     /**
+     * Test get method of binary tree.
+     */
+    @Test
+    public void testGet() {
+        final BinaryTree tree = BinaryTreeTest.getTree();
+        Assert.assertThat(tree.get(5), CoreMatchers.is("almas"));
+        Assert.assertThat(tree.get(6), CoreMatchers.is("hello"));
+        Assert.assertThat(tree.get(4), CoreMatchers.is("wewe"));
+        Assert.assertThat(tree.get(2), CoreMatchers.is("dsd"));
+        Assert.assertThat(tree.get(1), CoreMatchers.is("alloha"));
+        Assert.assertNull(tree.get(322));
+    }
+
+    /**
      * Create binary tree for test purposes.
      *
      * @return Binary tree

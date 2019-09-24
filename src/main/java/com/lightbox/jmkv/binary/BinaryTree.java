@@ -32,22 +32,22 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.root == null;
     }
 
     @Override
     public boolean containsKey(final Object key) {
-        return BinaryTree.contains(this.root, (Integer) key);
+        return BinaryTree.getValueByKey(this.root, (Integer) key) != null;
     }
 
     @Override
     public boolean containsValue(final Object value) {
-        return BinaryTree.contains(this.root, (String) value);
+        return BinaryTree.containsValue(this.root, (String) value);
     }
 
     @Override
     public String get(final Object key) {
-        return null;
+        return BinaryTree.getValueByKey(this.root, (Integer) key);
     }
 
     @Override
@@ -68,7 +68,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public void clear() {
-
+        this.root = null;
     }
 
     @Override
@@ -223,39 +223,41 @@ public final class BinaryTree implements Map<Integer, String> {
     }
 
     /**
-     * Check that Tree contains given key.
+     * Return value of node with given key.
      *
      * @param currentNode Current node, root by default
      * @param key         Key
-     * @return True if key is present in tree
+     * @return Value by key or null if no node with given key
      */
     @SuppressWarnings("ReturnCount")
-    private static boolean contains(
+    private static String getValueByKey(
             final TreeNode currentNode,
             final Integer key
     ) {
         if (currentNode == null) {
-            return false;
+            return null;
         }
         if (currentNode.key.equals(key)) {
-            return true;
+            return currentNode.value;
         }
         if (currentNode.key > key) {
-            return BinaryTree.contains(currentNode.left, key);
+            return BinaryTree.getValueByKey(currentNode.left, key);
         }
-        return currentNode.key <= key
-                && BinaryTree.contains(currentNode.right, key);
+        if (currentNode.key <= key) {
+            return BinaryTree.getValueByKey(currentNode.right, key);
+        }
+        return null;
     }
 
     /**
-     * Check that Tree contains given key.
+     * Check that Tree getValueByKey given key.
      *
      * @param currentNode Current node, root by default
      * @param value       Value
      * @return True if key is present in tree
      */
     @SuppressWarnings("ReturnCount")
-    private static boolean contains(
+    private static boolean containsValue(
             final TreeNode currentNode,
             final String value
     ) {
@@ -265,7 +267,7 @@ public final class BinaryTree implements Map<Integer, String> {
         if (currentNode.value.equals(value)) {
             return true;
         }
-        return BinaryTree.contains(currentNode.left, value)
-                || BinaryTree.contains(currentNode.right, value);
+        return BinaryTree.containsValue(currentNode.left, value)
+                || BinaryTree.containsValue(currentNode.right, value);
     }
 }
