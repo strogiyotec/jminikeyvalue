@@ -134,6 +134,24 @@ public final class BinaryTreeTest {
         );
     }
 
+    /**
+     * Test entry set method of binary tree.
+     */
+    @Test
+    public void testEntries() {
+        final BinaryTree tree = BinaryTreeTest.getTree();
+        final Set<Map.Entry<Integer, String>> entries = tree.entrySet();
+        Assert.assertTrue(entries.contains(new ImmutableEntry<>(5, "almas")));
+        Assert.assertTrue(entries.contains(new ImmutableEntry<>(6, "hello")));
+        Assert.assertTrue(entries.contains(new ImmutableEntry<>(4, "wewe")));
+        Assert.assertTrue(entries.contains(new ImmutableEntry<>(2, "dsd")));
+        Assert.assertTrue(entries.contains(new ImmutableEntry<>(1, "alloha")));
+        Assert.assertFalse(
+                entries.contains(
+                        new ImmutableEntry<>(10, "I'M NOT PRESENT")
+                )
+        );
+    }
 
     /**
      * Create binary tree for test purposes.

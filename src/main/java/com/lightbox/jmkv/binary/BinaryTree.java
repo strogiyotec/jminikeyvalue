@@ -1,5 +1,7 @@
 package com.lightbox.jmkv.binary;
 
+import com.lightbox.jmkv.ImmutableEntry;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -85,7 +87,31 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public Set<Entry<Integer, String>> entrySet() {
-        return null;
+        final Set<Entry<Integer, String>> entries = new HashSet<>(16);
+        BinaryTree.collectEntries(this.root, entries);
+        return entries;
+    }
+
+    /**
+     * Collect entries of nodes starting from current.
+     *
+     * @param current Current node, root by default
+     * @param entries Set where entries are stored
+     */
+    private static void collectEntries(
+            final TreeNode current,
+            final Set<Entry<Integer, String>> entries
+    ) {
+        if (current == null) {
+            return;
+        }
+        entries.add(new ImmutableEntry<>(current.key, current.value));
+        if (current.left != null) {
+            BinaryTree.collectEntries(current.left, entries);
+        }
+        if (current.right != null) {
+            BinaryTree.collectEntries(current.right, entries);
+        }
     }
 
     /**
