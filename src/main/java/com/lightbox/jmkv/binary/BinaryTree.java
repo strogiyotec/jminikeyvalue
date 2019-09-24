@@ -1,9 +1,6 @@
 package com.lightbox.jmkv.binary;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -81,12 +78,37 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public Collection<String> values() {
-        return null;
+        final List<String> values = new ArrayList<>(16);
+        BinaryTree.collectValues(this.root, values);
+        return values;
     }
 
     @Override
     public Set<Entry<Integer, String>> entrySet() {
         return null;
+    }
+
+    /**
+     * Collect values from nodes starting from current.
+     * Store these values in given array
+     *
+     * @param current Current node, root be default
+     * @param values  List to store values
+     */
+    private static void collectValues(
+            final TreeNode current,
+            final List<String> values
+    ) {
+        if (current == null) {
+            return;
+        }
+        values.add(current.value);
+        if (current.left != null) {
+            BinaryTree.collectValues(current.left, values);
+        }
+        if (current.right != null) {
+            BinaryTree.collectValues(current.right, values);
+        }
     }
 
     /**

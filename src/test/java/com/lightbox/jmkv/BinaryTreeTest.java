@@ -5,10 +5,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Test binary tree.
@@ -123,6 +120,18 @@ public final class BinaryTreeTest {
         preCalculatedKeys.add(2);
         preCalculatedKeys.add(1);
         Assert.assertEquals(keySet, preCalculatedKeys);
+    }
+
+    /**
+     * Test values methof of binary tree.
+     */
+    @Test
+    public void testCollectValues() {
+        final BinaryTree tree = BinaryTreeTest.getTree();
+        Assert.assertEquals(
+                tree.values(),
+                Arrays.asList("almas", "wewe", "dsd", "alloha", "hello")
+        );
     }
 
 
