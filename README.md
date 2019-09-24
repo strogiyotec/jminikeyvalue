@@ -21,7 +21,7 @@ Finally I'm going to implement fast distributed key value storage because the sa
 
 Just fork the repo and send us a pull request.
 
-Make sure your branch builds without any warnings/issues and it passes all our checkstyles:
+Make sure your branch builds without any warnings/issues and it passes all our [checkstyles](https://github.com/strogiyotec/jminikeyvalue/blob/master/checkstyle.xml):
 
 ```
 mvn checkstyle:check && mvn clean install
