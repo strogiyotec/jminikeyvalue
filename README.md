@@ -5,10 +5,10 @@ Java implementation of [lsm-tree](https://en.wikipedia.org/wiki/Log-structured_m
 This repository will contain three implementations of Trees (Binary,AVL,Red black) using [OOP principles](https://www.elegantobjects.org/#principles)
 
 ## TODO
- 1) Implement Binary tree
- 2) Implement AVL Tree
- 3) Implement Red black Tree
- 4) Implement simple and fast distributed key value storage
+ - ~~Implement Binary tree~~ (done)
+ - Implement AVL Tree
+ - Implement Red black Tree
+ - Implement simple and fast distributed key value storage
  
 ## Motivation
 
