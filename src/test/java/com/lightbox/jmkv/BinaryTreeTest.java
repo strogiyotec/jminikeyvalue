@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.*;
 
 /**
- * Test binary tree.
+ * Test {@link BinaryTree} class.
  */
 public final class BinaryTreeTest {
 
