@@ -10,6 +10,7 @@ import java.util.*;
 /**
  * Test {@link BinaryTree} class.
  */
+@SuppressWarnings("MagicNumber")
 public final class BinaryTreeTest {
 
     /**

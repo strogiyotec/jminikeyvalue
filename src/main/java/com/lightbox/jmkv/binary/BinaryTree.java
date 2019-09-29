@@ -11,6 +11,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class BinaryTree implements Map<Integer, String> {
 
     /**
+     * Default Tree size for Set and List used in.
+     * keySet(),values(),entrySet
+     */
+    private static final int DEFAULT_TREE_SIZE = 16;
+
+    /**
      * Root element.
      */
     private TreeNode root;
@@ -27,6 +33,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public int size() {
+        //atomic integer in order to store size
         return BinaryTree.calculateSize(this.root, new AtomicInteger(0));
     }
 
@@ -73,21 +80,21 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public Set<Integer> keySet() {
-        final Set<Integer> keySet = new HashSet<>(16);
+        final Set<Integer> keySet = new HashSet<>(DEFAULT_TREE_SIZE);
         BinaryTree.collectKeys(this.root, keySet);
         return keySet;
     }
 
     @Override
     public Collection<String> values() {
-        final List<String> values = new ArrayList<>(16);
+        final List<String> values = new ArrayList<>(DEFAULT_TREE_SIZE);
         BinaryTree.collectValues(this.root, values);
         return values;
     }
 
     @Override
     public Set<Entry<Integer, String>> entrySet() {
-        final Set<Entry<Integer, String>> entries = new HashSet<>(16);
+        final Set<Entry<Integer, String>> entries = new HashSet<>(DEFAULT_TREE_SIZE);
         BinaryTree.collectEntries(this.root, entries);
         return entries;
     }

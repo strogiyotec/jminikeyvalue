@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * Test {@link ImmutableEntry} class.
  */
+@SuppressWarnings("MagicNumber")
 public final class ImmutableEntryTest {
 
     /**
