@@ -12,7 +12,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     /**
      * Default Tree size for Set and List used in.
-     * keySet(),values(),entrySet
+     * keySet(),values(),entrySet()
      */
     private static final int DEFAULT_TREE_SIZE = 16;
 
