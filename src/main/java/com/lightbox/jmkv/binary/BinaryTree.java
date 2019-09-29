@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Binary Tree.
+ * Root have to be present
+ * If clean method was called then this tree is not valid anymore
  */
 public final class BinaryTree implements Map<Integer, String> {
 
@@ -93,6 +95,7 @@ public final class BinaryTree implements Map<Integer, String> {
     }
 
     @Override
+    @SuppressWarnings("LineLength")
     public Set<Entry<Integer, String>> entrySet() {
         final Set<Entry<Integer, String>> entries = new HashSet<>(DEFAULT_TREE_SIZE);
         BinaryTree.collectEntries(this.root, entries);
