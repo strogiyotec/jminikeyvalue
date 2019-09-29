@@ -183,7 +183,7 @@ public final class BinaryTree implements Map<Integer, String> {
                 //node doesn't have children
                 if (!current.hasChild()) {
                     return BinaryTree.deleteNodeFromRoot(current);
-                    //node has both children
+                    //node has exactly one child
                 } else if (current.hasOneChild()) {
                     return BinaryTree.deleteRootFromNode(current);
                 } else {
