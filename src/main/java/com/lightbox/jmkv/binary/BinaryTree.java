@@ -187,6 +187,8 @@ public final class BinaryTree implements Map<Integer, String> {
                 } else if (current.hasOneChild()) {
                     return BinaryTree.deleteRootFromNode(current);
                 } else {
+                    //set lowest key to deleted node
+                    // and delete original node with this lowest key
                     current.key = TreeNode.minKey(current.right);
                     this.remove(current.right, current.key);
                     return current.value;
