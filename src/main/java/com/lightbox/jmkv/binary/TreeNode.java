@@ -37,7 +37,7 @@ final class TreeNode {
     TreeNode right;
 
     /**
-     * Ctor for node with root and without children
+     * Ctor for node with root and without children.
      *
      * @param root  Root
      * @param key   Key
