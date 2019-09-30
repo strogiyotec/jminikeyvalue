@@ -92,6 +92,20 @@ public final class BinaryTreeTest {
     }
 
     /**
+     * Test put method of binary tree.
+     */
+    @Test
+    public void testPut() {
+        final BinaryTree binaryTree = new BinaryTree(5, "almas");
+        binaryTree.put(6, "almat");
+        binaryTree.put(7, "abzal");
+        binaryTree.put(4, "zhanara");
+        binaryTree.put(3, "erik");
+        Assert.assertThat(binaryTree.size(), CoreMatchers.is(5));
+        Assert.assertThat(binaryTree.get(4), CoreMatchers.is("zhanara"));
+    }
+
+    /**
      * Test pul all method of binary tree.
      */
     @Test
