@@ -262,13 +262,13 @@ public final class BinaryTree implements Map<Integer, String> {
     ) {
         if (root.key < key) {
             if (root.right == null) {
-                root.right = new TreeNode(key, value, root, null, null);
+                root.right = new TreeNode(root, key, value);
             } else {
                 BinaryTree.add(root.right, key, value);
             }
         } else if (root.key >= key) {
             if (root.left == null) {
-                root.left = new TreeNode(key, value, root, null, null);
+                root.left = new TreeNode(root, key, value);
             } else {
                 BinaryTree.add(root.left, key, value);
             }

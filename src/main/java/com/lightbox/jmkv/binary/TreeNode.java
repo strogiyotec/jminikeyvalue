@@ -37,6 +37,25 @@ final class TreeNode {
     TreeNode right;
 
     /**
+     * Ctor for node with root and without children
+     *
+     * @param root  Root
+     * @param key   Key
+     * @param value Value
+     */
+    TreeNode(
+            final TreeNode root,
+            final Integer key,
+            final String value
+    ) {
+        this.root = root;
+        this.key = key;
+        this.value = value;
+        this.left = null;
+        this.right = null;
+    }
+
+    /**
      * Ctor.
      *
      * @param key   Key
