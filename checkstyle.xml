@@ -279,5 +279,6 @@
         <module name="WhitespaceAfter"/>
 
     </module>
+    <module name="JavadocPackage"/>
 
 </module>
