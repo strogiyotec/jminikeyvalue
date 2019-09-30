@@ -88,6 +88,8 @@ final class TreeNode {
         this.key = key;
         this.value = value;
         this.root = null;
+        this.left = null;
+        this.right = null;
     }
 
     /**
