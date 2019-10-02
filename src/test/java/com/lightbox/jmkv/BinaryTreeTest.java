@@ -2,10 +2,14 @@ package com.lightbox.jmkv;
 
 import com.lightbox.jmkv.binary.BinaryTree;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Test {@link BinaryTree} class.
@@ -143,9 +147,9 @@ public final class BinaryTreeTest {
     @Test
     public void testCollectValues() {
         final BinaryTree tree = BinaryTreeTest.getTree();
-        Assert.assertEquals(
+        Assert.assertThat(
                 tree.values(),
-                Arrays.asList("almas", "wewe", "dsd", "alloha", "hello")
+                Matchers.contains("almas", "wewe", "dsd", "alloha", "hello")
         );
     }
 
