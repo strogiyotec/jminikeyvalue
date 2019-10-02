@@ -5,6 +5,9 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Test {@link com.lightbox.jmkv.avl.AvlTree} class.
  */
@@ -32,6 +35,21 @@ public final class AvlTreeTest {
                 tree.values(),
                 Matchers.contains("almat", "abzal", "zhanara", "almas")
         );
+    }
+
+    /**
+     * Test put all method of Avl tree.
+     * Check that when put all was called then
+     * Avl tree was rebalanced.
+     */
+    @Test
+    public void testPutAll() {
+        final AvlTree tree = new AvlTree(10, "test");
+        final Map<Integer, String> map = new HashMap<>(2, 1.0F);
+        map.put(12, "Hello");
+        map.put(15, "Me friend");
+        tree.putAll(map);
+        Assert.assertThat(tree.keySet(), Matchers.contains(12, 10, 15));
     }
 
     /**
