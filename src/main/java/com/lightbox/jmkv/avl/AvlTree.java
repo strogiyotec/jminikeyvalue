@@ -1,9 +1,6 @@
 package com.lightbox.jmkv.avl;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Avl tree implementation.
@@ -85,12 +82,35 @@ public final class AvlTree implements Map<Integer, String> {
 
     @Override
     public Collection<String> values() {
-        return null;
+        final List<String> values = new ArrayList<>(DEFAULT_TREE_SIZE);
+        AvlTree.collectValues(this.root, values);
+        return values;
     }
 
     @Override
     public Set<Entry<Integer, String>> entrySet() {
         return null;
+    }
+
+    /**
+     * Collect all values starting from given node.
+     *
+     * @param node   Current node, root by default
+     * @param values List to store each value
+     */
+    private static void collectValues(
+            final TreeNode node,
+            final List<String> values
+    ) {
+        if (node != null) {
+            values.add(node.value);
+            if (node.hasLeft()) {
+                AvlTree.collectValues(node.left, values);
+            }
+            if (node.hasRight()) {
+                AvlTree.collectValues(node.right, values);
+            }
+        }
     }
 
     /**
@@ -183,7 +203,6 @@ public final class AvlTree implements Map<Integer, String> {
      */
     private static TreeNode rotateLeft(final TreeNode oldRoot) {
         final TreeNode newRoot = oldRoot.right;
-        //old root's right points to left of newRoot
         oldRoot.right = newRoot.left;
         if (newRoot.hasLeft()) {
             newRoot.left.root = oldRoot;
