@@ -3,6 +3,7 @@ package com.lightbox.jmkv.avl;
 import com.lightbox.jmkv.ImmutableEntry;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Avl tree implementation.
@@ -31,7 +32,7 @@ public final class AvlTree implements Map<Integer, String> {
 
     @Override
     public int size() {
-        return 0;
+        return AvlTree.size(this.root, new AtomicInteger(0));
     }
 
     @Override
@@ -95,6 +96,26 @@ public final class AvlTree implements Map<Integer, String> {
         final Set<Entry<Integer, String>> entrySet = new LinkedHashSet<>(DEFAULT_TREE_SIZE);
         AvlTree.collectEntries(this.root, entrySet);
         return entrySet;
+    }
+
+    /**
+     * Calculate size of node.
+     *
+     * @param node Current node
+     * @param size Atomic integer to store size
+     * @return Size of node
+     */
+    private static int size(final TreeNode node, final AtomicInteger size) {
+        if (node != null) {
+            size.incrementAndGet();
+            if (node.hasLeft()) {
+                AvlTree.size(node.left, size);
+            }
+            if (node.hasRight()) {
+                AvlTree.size(node.right, size);
+            }
+        }
+        return size.get();
     }
 
     /**

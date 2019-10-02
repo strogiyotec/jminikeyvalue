@@ -192,10 +192,10 @@ public final class BinaryTree implements Map<Integer, String> {
             } else {
                 //node doesn't have children
                 if (!current.hasChild()) {
-                    return BinaryTree.deleteNodeFromRoot(current);
+                    return BinaryTree.deleteNodeWithoutChildren(current);
                     //node has exactly one child
                 } else if (current.hasOneChild()) {
-                    return BinaryTree.deleteRootFromNode(current);
+                    return BinaryTree.deleteNodeWithOneChild(current);
                 } else {
                     //set lowest key to deleted node
                     // and delete original node with this lowest key
@@ -215,18 +215,18 @@ public final class BinaryTree implements Map<Integer, String> {
     /**
      * Delete reference to given root from the child.
      *
-     * @param currentRoot Current root node
+     * @param node Node to be deleted
      * @return Value of current root
      */
-    private static String deleteRootFromNode(final TreeNode currentRoot) {
-        final String value = currentRoot.value;
-        if (currentRoot.left != null) {
-            currentRoot.left.root = currentRoot.root;
-            currentRoot.root.left = currentRoot.left;
+    private static String deleteNodeWithOneChild(final TreeNode node) {
+        final String value = node.value;
+        if (node.left != null) {
+            node.left.root = node.root;
+            node.root.left = node.left;
         }
-        if (currentRoot.right != null) {
-            currentRoot.right.root = currentRoot.root;
-            currentRoot.root.left = currentRoot.right;
+        if (node.right != null) {
+            node.right.root = node.root;
+            node.root.left = node.right;
         }
         return value;
     }
@@ -234,16 +234,16 @@ public final class BinaryTree implements Map<Integer, String> {
     /**
      * Delete reference to given node from it's root.
      *
-     * @param current Current node
+     * @param current Node to be deleted
      * @return Value of deleted node
      */
-    private static String deleteNodeFromRoot(final TreeNode current) {
-        final TreeNode currentRoot = current.root;
+    private static String deleteNodeWithoutChildren(final TreeNode current) {
+        final TreeNode parent = current.root;
         final String value = current.value;
-        if (currentRoot.left == current) {
-            currentRoot.left = null;
-        } else if (currentRoot.right == current) {
-            currentRoot.right = null;
+        if (parent.left == current) {
+            parent.left = null;
+        } else if (parent.right == current) {
+            parent.right = null;
         }
         return value;
     }

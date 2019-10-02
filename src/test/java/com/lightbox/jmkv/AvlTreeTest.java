@@ -26,6 +26,17 @@ public final class AvlTreeTest {
     }
 
     /**
+     * Test size method of Avl tree.
+     */
+    @Test
+    public void testSize() {
+        final AvlTree tree = AvlTreeTest.getTree();
+        Assert.assertThat(tree.size(), CoreMatchers.is(4));
+        tree.put(17, "");
+        Assert.assertThat(tree.size(), CoreMatchers.is(5));
+    }
+
+    /**
      * Test values method of Avl tree.
      * Check that values are in the same position as their balanced keys
      */
