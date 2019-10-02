@@ -38,6 +38,19 @@ public final class AvlTreeTest {
     }
 
     /**
+     * Test contains method of Avl tree.
+     */
+    @Test
+    public void testContains() {
+        final AvlTree tree = AvlTreeTest.getTree();
+        Assert.assertTrue(tree.containsKey(15));
+        Assert.assertTrue(tree.containsKey(10));
+        Assert.assertTrue(tree.containsKey(12));
+        Assert.assertTrue(tree.containsKey(5));
+        Assert.assertFalse(tree.containsKey(322));
+    }
+
+    /**
      * Test put all method of Avl tree.
      * Check that when put all was called then
      * Avl tree was rebalanced.

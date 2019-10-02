@@ -39,7 +39,7 @@ public final class AvlTree implements Map<Integer, String> {
 
     @Override
     public boolean containsKey(final Object key) {
-        return false;
+        return AvlTree.valueByKey(this.root, (Integer) key) != null;
     }
 
     @Override
@@ -90,6 +90,31 @@ public final class AvlTree implements Map<Integer, String> {
     @Override
     public Set<Entry<Integer, String>> entrySet() {
         return null;
+    }
+
+    /**
+     * Check that node or children of node has given key.
+     *
+     * @param node Current node
+     * @param key  Key
+     * @return Value of node with given key
+     * Or null if not found
+     */
+    private static String valueByKey(final TreeNode node, final Integer key) {
+        final String value;
+        if (node != null) {
+            if (node.key.equals(key)) {
+                value = node.value;
+            } else if (node.key > key) {
+                value = AvlTree.valueByKey(node.left, key);
+            } else {
+                value = AvlTree.valueByKey(node.right, key);
+            }
+        } else {
+            //node is not found
+            value = null;
+        }
+        return value;
     }
 
     /**
