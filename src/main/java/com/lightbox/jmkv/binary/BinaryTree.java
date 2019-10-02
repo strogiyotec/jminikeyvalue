@@ -46,7 +46,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public boolean containsKey(final Object key) {
-        return BinaryTree.getValueByKey(this.root, (Integer) key) != null;
+        return BinaryTree.valueByKey(this.root, (Integer) key) != null;
     }
 
     @Override
@@ -56,7 +56,7 @@ public final class BinaryTree implements Map<Integer, String> {
 
     @Override
     public String get(final Object key) {
-        return BinaryTree.getValueByKey(this.root, (Integer) key);
+        return BinaryTree.valueByKey(this.root, (Integer) key);
     }
 
     @Override
@@ -316,7 +316,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @return Value by key or null if no node with given key
      */
     @SuppressWarnings("ReturnCount")
-    private static String getValueByKey(
+    private static String valueByKey(
             final TreeNode currentNode,
             final Integer key
     ) {
@@ -327,16 +327,16 @@ public final class BinaryTree implements Map<Integer, String> {
             return currentNode.value;
         }
         if (currentNode.key > key) {
-            return BinaryTree.getValueByKey(currentNode.left, key);
+            return BinaryTree.valueByKey(currentNode.left, key);
         }
         if (currentNode.key <= key) {
-            return BinaryTree.getValueByKey(currentNode.right, key);
+            return BinaryTree.valueByKey(currentNode.right, key);
         }
         return null;
     }
 
     /**
-     * Check that Tree getValueByKey given key.
+     * Check that Tree valueByKey given key.
      *
      * @param currentNode Current node, root by default
      * @param value       Value
