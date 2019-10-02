@@ -1,6 +1,7 @@
 package com.lightbox.jmkv;
 
 import com.lightbox.jmkv.avl.AvlTree;
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,6 +36,19 @@ public final class AvlTreeTest {
                 tree.values(),
                 Matchers.contains("almat", "abzal", "zhanara", "almas")
         );
+    }
+
+    /**
+     * Test get method of Avl tree.
+     */
+    @Test
+    public void testGet() {
+        final AvlTree tree = AvlTreeTest.getTree();
+        Assert.assertThat(tree.get(15), CoreMatchers.is("almas"));
+        Assert.assertThat(tree.get(12), CoreMatchers.is("almat"));
+        Assert.assertThat(tree.get(10), CoreMatchers.is("abzal"));
+        Assert.assertThat(tree.get(5), CoreMatchers.is("zhanara"));
+        Assert.assertNull(tree.get(322));
     }
 
     /**

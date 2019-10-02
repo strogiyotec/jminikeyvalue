@@ -49,7 +49,7 @@ public final class AvlTree implements Map<Integer, String> {
 
     @Override
     public String get(final Object key) {
-        return null;
+        return AvlTree.valueByKey(this.root, (Integer) key);
     }
 
     @Override
