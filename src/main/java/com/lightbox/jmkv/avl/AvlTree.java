@@ -1,5 +1,7 @@
 package com.lightbox.jmkv.avl;
 
+import com.lightbox.jmkv.ImmutableEntry;
+
 import java.util.*;
 
 /**
@@ -88,8 +90,32 @@ public final class AvlTree implements Map<Integer, String> {
     }
 
     @Override
+    @SuppressWarnings("LineLength")
     public Set<Entry<Integer, String>> entrySet() {
-        return null;
+        final Set<Entry<Integer, String>> entrySet = new LinkedHashSet<>(DEFAULT_TREE_SIZE);
+        AvlTree.collectEntries(this.root, entrySet);
+        return entrySet;
+    }
+
+    /**
+     * Collect entries of node and it's children.
+     *
+     * @param node     Current node
+     * @param entrySet Set to store entries
+     */
+    private static void collectEntries(
+            final TreeNode node,
+            final Set<Entry<Integer, String>> entrySet
+    ) {
+        if (node != null) {
+            entrySet.add(new ImmutableEntry<>(node.key, node.value));
+            if (node.hasLeft()) {
+                AvlTree.collectEntries(node.left, entrySet);
+            }
+            if (node.hasRight()) {
+                AvlTree.collectEntries(node.right, entrySet);
+            }
+        }
     }
 
     /**

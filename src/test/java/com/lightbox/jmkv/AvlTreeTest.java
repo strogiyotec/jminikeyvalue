@@ -39,6 +39,24 @@ public final class AvlTreeTest {
     }
 
     /**
+     * Test entry set method of Avl tree.
+     * Check that entry set has balanced order
+     */
+    @Test
+    public void testEntrySet() {
+        final AvlTree tree = AvlTreeTest.getTree();
+        Assert.assertThat(
+                tree.entrySet(),
+                Matchers.contains(
+                        new ImmutableEntry<>(12, "almat"),
+                        new ImmutableEntry<>(10, "abzal"),
+                        new ImmutableEntry<>(5, "zhanara"),
+                        new ImmutableEntry<>(15, "almas")
+                )
+        );
+    }
+
+    /**
      * Test get method of Avl tree.
      */
     @Test
