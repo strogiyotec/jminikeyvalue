@@ -8,7 +8,19 @@ final class TreeNode {
     /**
      * Height of newly created node.
      */
-    static final int EMPTY_HEIGHT = 0;
+    private static final int EMPTY_HEIGHT = -1;
+
+    /**
+     * Key.
+     */
+    @SuppressWarnings("check:VisibilityModifier")
+    Integer key;
+
+    /**
+     * Value.
+     */
+    @SuppressWarnings("check:VisibilityModifier")
+    String value;
 
     /**
      * Reference to root.
@@ -29,22 +41,10 @@ final class TreeNode {
     TreeNode right;
 
     /**
-     * Key.
-     */
-    @SuppressWarnings("check:VisibilityModifier")
-    Integer key;
-
-    /**
-     * Value.
-     */
-    @SuppressWarnings("check:VisibilityModifier")
-    String value;
-
-    /**
      * Height.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    int height;
+    private int height;
 
     /**
      * Ctor.
@@ -122,6 +122,15 @@ final class TreeNode {
     }
 
     /**
+     * Check that node is root.
+     *
+     * @return True if node doesn't have root
+     */
+    boolean isRoot() {
+        return this.root == null;
+    }
+
+    /**
      * Node has left child.
      *
      * @return True if node has left child
@@ -158,6 +167,38 @@ final class TreeNode {
     }
 
     /**
+     * Has at least one child.
+     *
+     * @return True if node has one child.
+     */
+    boolean hasChild() {
+        return this.hasRight() || this.hasLeft();
+    }
+
+    /**
+     * Has exactly one child.
+     *
+     * @return True of node has only 1 child
+     */
+    boolean hasOneChild() {
+        return (this.hasLeft() && !this.hasRight())
+                || (this.hasRight() && !this.hasLeft());
+    }
+
+    /**
+     * Find min left key starting from given node.
+     * @param node Current node
+     * @return Min key of the last left key of given node
+     */
+    static Integer minKey(final TreeNode node) {
+        if (node.left == null) {
+            return node.key;
+        } else {
+            return TreeNode.minKey(node.left);
+        }
+    }
+
+    /**
      * Calc height of this node.
      *
      * @param node Node
@@ -166,7 +207,7 @@ final class TreeNode {
      */
     private static int height(final TreeNode node) {
         if (node == null) {
-            return -1;
+            return TreeNode.EMPTY_HEIGHT;
         }
         return node.height;
     }

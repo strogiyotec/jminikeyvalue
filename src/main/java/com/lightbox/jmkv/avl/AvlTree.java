@@ -66,7 +66,7 @@ public final class AvlTree implements Map<Integer, String> {
 
     @Override
     public String remove(final Object key) {
-        return null;
+        return this.removeNode(this.root, (Integer) key);
     }
 
     @Override
@@ -99,6 +99,47 @@ public final class AvlTree implements Map<Integer, String> {
         final Set<Entry<Integer, String>> entrySet = new LinkedHashSet<>(DEFAULT_TREE_SIZE);
         AvlTree.collectEntries(this.root, entrySet);
         return entrySet;
+    }
+
+    /**
+     * Remove node with given key from given node.
+     *
+     * @param node Current node
+     * @param key  Key
+     * @return Value of deleted node
+     * or null if no node with given key
+     */
+    @SuppressWarnings("ReturnCount")
+    private String removeNode(final TreeNode node, final Integer key) {
+        if (node == null) {
+            return null;
+        }
+        if (node.key.equals(key)) {
+            final String value = node.value;
+            if (node.isRoot()) {
+                this.root = null;
+                throw new IllegalStateException(
+                        "Root was deleted. Tree is not valid anymore"
+                );
+            }
+            if (!node.hasChild()) {
+                AvlTree.deleteNodeWithoutChildren(node);
+                node.root.refreshHeight();
+                this.root = AvlTree.balance(node.root);
+            } else if (node.hasOneChild()) {
+                AvlTree.deleteNodeWithOneChild(node);
+                node.root.refreshHeight();
+                this.root = AvlTree.balance(node.root);
+            } else {
+                node.key = TreeNode.minKey(node.right);
+                this.removeNode(node.right, node.key);
+            }
+            return value;
+        }
+        if (node.key > key) {
+            return this.removeNode(node.left, key);
+        }
+        return this.removeNode(node.right, key);
     }
 
     /**
@@ -249,13 +290,65 @@ public final class AvlTree implements Map<Integer, String> {
         }
         if (currentNode.key > key) {
             currentNode.left = AvlTree.put(currentNode.left, key, value);
+            currentNode.left.root = currentNode;
         } else if (currentNode.key < key) {
             currentNode.right = AvlTree.put(currentNode.right, key, value);
+            currentNode.right.root = currentNode;
         } else if (currentNode.key.equals(key)) {
             currentNode.value = value;
         }
         currentNode.refreshHeight();
         return AvlTree.balance(currentNode);
+    }
+
+    /**
+     * Delete given node.
+     * This node has to have at least one child
+     * If this node is left node of it's root
+     * then assign either left or right child of given node
+     * as the left child of node's root
+     * If this node is right node of it's root
+     * then  assign either left or right child of given node
+     * as the right child of node's root
+     *
+     * @param node Node to delete
+     */
+    private static void deleteNodeWithOneChild(final TreeNode node) {
+        if (node.isLeft()) {
+            if (node.hasLeft()) {
+                node.root.left = node.left;
+                node.left.root = node.root;
+            }
+            if (node.hasRight()) {
+                node.root.left = node.right;
+                node.right.root = node.root;
+            }
+        }
+        if (node.isRight()) {
+            if (node.hasLeft()) {
+                node.root.right = node.left;
+                node.left.right = node.root;
+            }
+            if (node.hasRight()) {
+                node.root.right = node.right;
+                node.right.root = node.root;
+            }
+        }
+
+    }
+
+    /**
+     * Delete reference to given node from it's root.
+     *
+     * @param node Node to delete
+     */
+    private static void deleteNodeWithoutChildren(final TreeNode node) {
+        final TreeNode root = node.root;
+        if (root.left == node) {
+            root.left = null;
+        } else if (root.right == node) {
+            root.right = null;
+        }
     }
 
     /**

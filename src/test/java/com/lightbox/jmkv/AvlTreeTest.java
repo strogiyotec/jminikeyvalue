@@ -16,6 +16,19 @@ import java.util.Map;
 public final class AvlTreeTest {
 
     /**
+     * Test remove node without children.
+     */
+    @Test
+    public void testRemove() {
+        final AvlTree tree = new AvlTree(10, "");
+        tree.put(9, "");
+        tree.put(15, "To remove");
+        tree.put(8, "");
+        Assert.assertThat(tree.remove(15), CoreMatchers.is("To remove"));
+        Assert.assertThat(tree.size(), CoreMatchers.is(3));
+    }
+
+    /**
      * Test contains value method of avl tree.
      */
     @Test
