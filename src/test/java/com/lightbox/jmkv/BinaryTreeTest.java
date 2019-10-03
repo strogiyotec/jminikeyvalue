@@ -56,10 +56,10 @@ public final class BinaryTreeTest {
     }
 
     /**
-     * Test remove method of Binary Tree.
+     * Test remove of left node of Binary Tree.
      */
     @Test
-    public void testRemoveKey() {
+    public void testRemoveKeyFromLeftTree() {
         final BinaryTree tree = BinaryTreeTest.getTree();
         tree.put(10, "ten");
         tree.put(15, "fifteen");
@@ -70,6 +70,18 @@ public final class BinaryTreeTest {
         Assert.assertThat(tree.remove(2), CoreMatchers.is("dsd"));
         Assert.assertThat(tree.remove(10), CoreMatchers.is("ten"));
         Assert.assertThat(tree.size(), CoreMatchers.is(8));
+    }
+
+    /**
+     * Test remove of right node of Binary Tree.
+     */
+    @Test
+    public void testRemoveFromRightTree() {
+        final BinaryTree binaryTree = new BinaryTree(10, "");
+        binaryTree.put(15, "To delete");
+        binaryTree.put(20, "");
+        Assert.assertThat(binaryTree.remove(15), CoreMatchers.is("To delete"));
+        Assert.assertThat(binaryTree.size(), CoreMatchers.is(2));
     }
 
     /**

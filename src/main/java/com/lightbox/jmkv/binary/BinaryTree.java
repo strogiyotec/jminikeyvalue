@@ -220,13 +220,25 @@ public final class BinaryTree implements Map<Integer, String> {
      */
     private static String deleteNodeWithOneChild(final TreeNode node) {
         final String value = node.value;
-        if (node.left != null) {
-            node.left.root = node.root;
-            node.root.left = node.left;
+        if (node.isLeft()) {
+            if (node.left != null) {
+                node.left.root = node.root;
+                node.root.left = node.left;
+            }
+            if (node.right != null) {
+                node.right.root = node.root;
+                node.root.left = node.right;
+            }
         }
-        if (node.right != null) {
-            node.right.root = node.root;
-            node.root.left = node.right;
+        if (node.isRight()) {
+            if (node.left != null) {
+                node.left.root = node.root;
+                node.root.right = node.left;
+            }
+            if (node.right != null) {
+                node.right.root = node.root;
+                node.root.right = node.right;
+            }
         }
         return value;
     }

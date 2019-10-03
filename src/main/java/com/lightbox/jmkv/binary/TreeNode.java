@@ -115,9 +115,39 @@ final class TreeNode {
      *
      * @return True if node has only one child.
      */
-    public boolean hasOneChild() {
+    boolean hasOneChild() {
         return (this.left != null && this.right == null)
                 || (this.left == null && this.right != null);
+    }
+
+    /**
+     * Node is left child of it's root.
+     *
+     * @return True if this is the left child
+     */
+    boolean isLeft() {
+        final boolean isLeft;
+        if (this.root != null) {
+            isLeft = this.root.left == this;
+        } else {
+            isLeft = false;
+        }
+        return isLeft;
+    }
+
+    /**
+     * Node is right child of it's root.
+     *
+     * @return True if this is the right child
+     */
+    boolean isRight() {
+        final boolean isRight;
+        if (this.root != null) {
+            isRight = this.root.right == this;
+        } else {
+            isRight = false;
+        }
+        return isRight;
     }
 
     /**
