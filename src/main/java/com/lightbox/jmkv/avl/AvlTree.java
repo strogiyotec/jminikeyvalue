@@ -47,7 +47,7 @@ public final class AvlTree implements Map<Integer, String> {
 
     @Override
     public boolean containsValue(final Object value) {
-        return false;
+        return AvlTree.hasValue(this.root, (String) value);
     }
 
     @Override
@@ -57,6 +57,9 @@ public final class AvlTree implements Map<Integer, String> {
 
     @Override
     public String put(final Integer key, final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Null values are not allowed");
+        }
         this.root = AvlTree.put(this.root, key, value);
         return value;
     }
@@ -96,6 +99,26 @@ public final class AvlTree implements Map<Integer, String> {
         final Set<Entry<Integer, String>> entrySet = new LinkedHashSet<>(DEFAULT_TREE_SIZE);
         AvlTree.collectEntries(this.root, entrySet);
         return entrySet;
+    }
+
+    /**
+     * Check that node or one of child has given value.
+     *
+     * @param node  Current node
+     * @param value Value
+     * @return True if value is present in given node
+     */
+    private static boolean hasValue(final TreeNode node, final String value) {
+        final boolean contains;
+        if (node == null) {
+            contains = false;
+        } else if (node.value.equals(value)) {
+            contains = true;
+        } else {
+            contains = AvlTree.hasValue(node.left, value)
+                    || AvlTree.hasValue(node.right, value);
+        }
+        return contains;
     }
 
     /**

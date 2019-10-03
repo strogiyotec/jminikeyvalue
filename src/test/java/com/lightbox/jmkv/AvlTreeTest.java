@@ -16,6 +16,19 @@ import java.util.Map;
 public final class AvlTreeTest {
 
     /**
+     * Test contains value method of avl tree.
+     */
+    @Test
+    public void testContainsValue() {
+        final AvlTree tree = AvlTreeTest.getTree();
+        Assert.assertTrue(tree.containsValue("almas"));
+        Assert.assertTrue(tree.containsValue("abzal"));
+        Assert.assertTrue(tree.containsValue("almat"));
+        Assert.assertTrue(tree.containsValue("zhanara"));
+        Assert.assertFalse(tree.containsValue("No value"));
+    }
+
+    /**
      * Test put method.
      * Assert that Tree was rebalanced and now has given order
      */
