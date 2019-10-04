@@ -125,11 +125,11 @@ public final class AvlTree implements Map<Integer, String> {
             if (!node.hasChild()) {
                 AvlTree.deleteNodeWithoutChildren(node);
                 node.root.refreshHeight();
-                this.root = AvlTree.balance(node.root);
+                this.root = AvlTree.balanceToRoot(node.root);
             } else if (node.hasOneChild()) {
                 AvlTree.deleteNodeWithOneChild(node);
                 node.root.refreshHeight();
-                this.root = AvlTree.balance(node.root);
+                this.root = AvlTree.balanceToRoot(node.root);
             } else {
                 node.key = TreeNode.minKey(node.right);
                 this.removeNode(node.right, node.key);
@@ -140,6 +140,22 @@ public final class AvlTree implements Map<Integer, String> {
             return this.removeNode(node.left, key);
         }
         return this.removeNode(node.right, key);
+    }
+
+    /**
+     * Balance each node starting from given till the last root.
+     *
+     * @param node Current node
+     * @return Balanced node
+     */
+    @SuppressWarnings({"FinalParameters", "ParameterAssignment"})
+    private static TreeNode balanceToRoot(TreeNode node) {
+        TreeNode temp = node;
+        while (temp != null) {
+            node = AvlTree.balance(temp);
+            temp = temp.root;
+        }
+        return node;
     }
 
     /**

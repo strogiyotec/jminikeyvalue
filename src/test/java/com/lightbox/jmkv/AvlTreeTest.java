@@ -19,13 +19,78 @@ public final class AvlTreeTest {
      * Test remove node without children.
      */
     @Test
-    public void testRemove() {
+    public void testRemoveWithRightRotation() {
         final AvlTree tree = new AvlTree(10, "");
         tree.put(9, "");
         tree.put(15, "To remove");
         tree.put(8, "");
         Assert.assertThat(tree.remove(15), CoreMatchers.is("To remove"));
         Assert.assertThat(tree.size(), CoreMatchers.is(3));
+        //right balance after removing 15
+        Assert.assertThat(tree.keySet(), Matchers.contains(9, 8, 10));
+    }
+
+    /**
+     * Test remove node without children.
+     * Last example from https://www.javatpoint.com/deletion-in-avl-tree
+     */
+    @Test
+    public void testRemoveWithRightRotationDeep() {
+        final AvlTree tree = new AvlTree(50, "");
+        tree.put(40, "");
+        tree.put(60, "");
+        tree.put(30, "");
+        tree.put(45, "");
+        tree.put(55, "To remove");
+        tree.put(10, "");
+        Assert.assertThat(tree.remove(55), CoreMatchers.is("To remove"));
+        Assert.assertThat(tree.size(), CoreMatchers.is(6));
+        Assert.assertThat(
+                tree.keySet(),
+                Matchers.contains(40, 30, 10, 50, 45, 60)
+        );
+    }
+
+    /**
+     * Test remove node without children.
+     */
+    @Test
+    public void testRemoveWithLeftRightRotation() {
+        final AvlTree tree = new AvlTree(50, "");
+        tree.put(40, "");
+        tree.put(60, "To remove");
+        tree.put(45, "");
+        Assert.assertThat(tree.remove(60), CoreMatchers.is("To remove"));
+        Assert.assertThat(tree.size(), CoreMatchers.is(3));
+        Assert.assertThat(tree.keySet(), Matchers.contains(45, 40, 50));
+
+    }
+
+    /**
+     * Test remove node without children.
+     * http://www.cs.toronto.edu/~krueger/cscB63h/lectures/tut03.txt
+     */
+    @Test
+    public void testRemoveWithOneChildAndRightLeftRotation() {
+        final AvlTree tree = new AvlTree(9, "");
+        tree.put(6, "");
+        tree.put(15, "");
+        tree.put(13, "");
+        tree.put(20, "");
+        tree.put(2, "To remove");
+        tree.put(7, "");
+        tree.put(1, "");
+        tree.put(12, "");
+        tree.put(14, "");
+        tree.put(18, "");
+        tree.put(30, "");
+        tree.put(11, "");
+        Assert.assertThat(tree.remove(2), CoreMatchers.is("To remove"));
+        Assert.assertThat(tree.size(), CoreMatchers.is(12));
+        Assert.assertThat(
+                tree.keySet(),
+                Matchers.contains(13, 9, 6, 1, 7, 12, 11, 15, 14, 20, 18, 30)
+        );
     }
 
     /**
