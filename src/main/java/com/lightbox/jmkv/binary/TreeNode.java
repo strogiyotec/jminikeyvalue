@@ -111,6 +111,24 @@ final class TreeNode {
     }
 
     /**
+     * Check that node has left child.
+     *
+     * @return True if left is not null
+     */
+    boolean hasLeft() {
+        return this.left != null;
+    }
+
+    /**
+     * Check that node has right child.
+     *
+     * @return True if right is not null
+     */
+    boolean hasRight() {
+        return this.right != null;
+    }
+
+    /**
      * Check that node has exactly one child.
      *
      * @return True if node has only one child.

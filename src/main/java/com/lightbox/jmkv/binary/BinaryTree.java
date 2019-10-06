@@ -116,10 +116,10 @@ public final class BinaryTree implements Map<Integer, String> {
             return;
         }
         entries.add(new ImmutableEntry<>(current.key, current.value));
-        if (current.left != null) {
+        if (current.hasLeft()) {
             BinaryTree.collectEntries(current.left, entries);
         }
-        if (current.right != null) {
+        if (current.hasRight()) {
             BinaryTree.collectEntries(current.right, entries);
         }
     }
@@ -139,10 +139,10 @@ public final class BinaryTree implements Map<Integer, String> {
             return;
         }
         values.add(current.value);
-        if (current.left != null) {
+        if (current.hasLeft()) {
             BinaryTree.collectValues(current.left, values);
         }
-        if (current.right != null) {
+        if (current.hasRight()) {
             BinaryTree.collectValues(current.right, values);
         }
     }
@@ -162,10 +162,10 @@ public final class BinaryTree implements Map<Integer, String> {
             return;
         }
         keySet.add(current.key);
-        if (current.left != null) {
+        if (current.hasLeft()) {
             BinaryTree.collectKeys(current.left, keySet);
         }
-        if (current.right != null) {
+        if (current.hasRight()) {
             BinaryTree.collectKeys(current.right, keySet);
         }
     }
@@ -204,9 +204,9 @@ public final class BinaryTree implements Map<Integer, String> {
                     return current.value;
                 }
             }
-        } else if (current.left != null && current.key > key) {
+        } else if (current.hasLeft() && current.key > key) {
             return this.remove(current.left, key);
-        } else if (current.right != null && current.key < key) {
+        } else if (current.hasRight() && current.key < key) {
             return this.remove(current.right, key);
         }
         return null;
@@ -221,21 +221,21 @@ public final class BinaryTree implements Map<Integer, String> {
     private static String deleteNodeWithOneChild(final TreeNode node) {
         final String value = node.value;
         if (node.isLeft()) {
-            if (node.left != null) {
+            if (node.hasLeft()) {
                 node.left.root = node.root;
                 node.root.left = node.left;
             }
-            if (node.right != null) {
+            if (node.hasRight()) {
                 node.right.root = node.root;
                 node.root.left = node.right;
             }
         }
         if (node.isRight()) {
-            if (node.left != null) {
+            if (node.hasLeft()) {
                 node.left.root = node.root;
                 node.root.right = node.left;
             }
-            if (node.right != null) {
+            if (node.hasRight()) {
                 node.right.root = node.root;
                 node.root.right = node.right;
             }
@@ -273,13 +273,13 @@ public final class BinaryTree implements Map<Integer, String> {
             final String value
     ) {
         if (root.key < key) {
-            if (root.right == null) {
+            if (!root.hasRight()) {
                 root.right = new TreeNode(root, key, value);
             } else {
                 BinaryTree.add(root.right, key, value);
             }
         } else if (root.key >= key) {
-            if (root.left == null) {
+            if (!root.hasLeft()) {
                 root.left = new TreeNode(root, key, value);
             } else {
                 BinaryTree.add(root.left, key, value);
@@ -304,13 +304,13 @@ public final class BinaryTree implements Map<Integer, String> {
             if (current.isRoot()) {
                 size.incrementAndGet();
             }
-            if (current.left == null && current.right == null) {
+            if (!current.hasChild()) {
                 return 1;
             }
-            if (current.left != null) {
+            if (current.hasLeft()) {
                 size.incrementAndGet();
             }
-            if (current.right != null) {
+            if (current.hasRight()) {
                 size.incrementAndGet();
             }
             BinaryTree.calculateSize(current.left, size);
