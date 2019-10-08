@@ -63,7 +63,30 @@ public final class AvlTreeTest {
         Assert.assertThat(tree.remove(60), CoreMatchers.is("To remove"));
         Assert.assertThat(tree.size(), CoreMatchers.is(3));
         Assert.assertThat(tree.keySet(), Matchers.contains(45, 40, 50));
+    }
 
+    /**
+     * Test left rotation after insert.
+     * Was:
+     *      2
+     *  1        4
+     *        3     5
+     *                  6
+     * Become:
+     *       4
+     *   2     5
+     * 1   3     6
+     *             7
+     */
+    @Test
+    public void testPutWithLeftRotation() {
+        final AvlTree tree = new AvlTree(2, "");
+        tree.put(1, "");
+        tree.put(4, "");
+        tree.put(3, "");
+        tree.put(5, "");
+        tree.put(6, "");
+        Assert.assertThat(tree.keySet(), Matchers.contains(4, 2, 1, 3, 5, 6));
     }
 
     /**
