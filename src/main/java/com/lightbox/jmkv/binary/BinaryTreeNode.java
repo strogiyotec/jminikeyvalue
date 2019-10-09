@@ -4,7 +4,7 @@ package com.lightbox.jmkv.binary;
  * Binary Tree representation.
  * Hidden from the world because only Binary Tree is supposed to use it
  */
-final class TreeNode {
+final class BinaryTreeNode {
 
     /**
      * Key of node.
@@ -22,19 +22,19 @@ final class TreeNode {
      * Root of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    TreeNode root;
+    BinaryTreeNode root;
 
     /**
      * Left child of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    TreeNode left;
+    BinaryTreeNode left;
 
     /**
      * Right child of node.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    TreeNode right;
+    BinaryTreeNode right;
 
     /**
      * Ctor for node with root and without children.
@@ -43,8 +43,8 @@ final class TreeNode {
      * @param key   Key
      * @param value Value
      */
-    TreeNode(
-            final TreeNode root,
+    BinaryTreeNode(
+            final BinaryTreeNode root,
             final Integer key,
             final String value
     ) {
@@ -64,12 +64,12 @@ final class TreeNode {
      * @param left  Left
      * @param right Right
      */
-    TreeNode(
+    BinaryTreeNode(
             final Integer key,
             final String value,
-            final TreeNode root,
-            final TreeNode left,
-            final TreeNode right
+            final BinaryTreeNode root,
+            final BinaryTreeNode left,
+            final BinaryTreeNode right
     ) {
         this.key = key;
         this.value = value;
@@ -84,7 +84,7 @@ final class TreeNode {
      * @param key   Key
      * @param value Value
      */
-    TreeNode(final Integer key, final String value) {
+    BinaryTreeNode(final Integer key, final String value) {
         this.key = key;
         this.value = value;
         this.root = null;
@@ -174,7 +174,7 @@ final class TreeNode {
      * @param node Current node
      * @return Min value of left node
      */
-    static Integer minKey(final TreeNode node) {
-        return node.left == null ? node.key : TreeNode.minKey(node.left);
+    static Integer minKey(final BinaryTreeNode node) {
+        return node.left == null ? node.key : BinaryTreeNode.minKey(node.left);
     }
 }

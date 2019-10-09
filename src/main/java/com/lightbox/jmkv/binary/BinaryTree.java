@@ -21,7 +21,7 @@ public final class BinaryTree implements Map<Integer, String> {
     /**
      * Root element.
      */
-    private TreeNode root;
+    private BinaryTreeNode root;
 
     /**
      * Ctor.
@@ -30,7 +30,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param value Value
      */
     public BinaryTree(final Integer key, final String value) {
-        this.root = new TreeNode(key, value);
+        this.root = new BinaryTreeNode(key, value);
     }
 
     @Override
@@ -109,7 +109,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param entries Set where entries are stored
      */
     private static void collectEntries(
-            final TreeNode current,
+            final BinaryTreeNode current,
             final Set<Entry<Integer, String>> entries
     ) {
         if (current == null) {
@@ -132,7 +132,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param values  List to store values
      */
     private static void collectValues(
-            final TreeNode current,
+            final BinaryTreeNode current,
             final List<String> values
     ) {
         if (current == null) {
@@ -155,7 +155,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param keySet  Set to store keys
      */
     private static void collectKeys(
-            final TreeNode current,
+            final BinaryTreeNode current,
             final Set<Integer> keySet
     ) {
         if (current == null) {
@@ -180,7 +180,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @throws IllegalStateException if root was deleted
      */
     @SuppressWarnings("ReturnCount")
-    private String remove(final TreeNode current, final Integer key) {
+    private String remove(final BinaryTreeNode current, final Integer key) {
         if (current == null) {
             return null;
         } else if (current.key.equals(key)) {
@@ -199,7 +199,7 @@ public final class BinaryTree implements Map<Integer, String> {
                 } else {
                     //set lowest key to deleted node
                     // and delete original node with this lowest key
-                    current.key = TreeNode.minKey(current.right);
+                    current.key = BinaryTreeNode.minKey(current.right);
                     this.remove(current.right, current.key);
                     return current.value;
                 }
@@ -218,7 +218,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param node Node to be deleted
      * @return Value of current root
      */
-    private static String deleteNodeWithOneChild(final TreeNode node) {
+    private static String deleteNodeWithOneChild(final BinaryTreeNode node) {
         final String value = node.value;
         if (node.isLeft()) {
             if (node.hasLeft()) {
@@ -249,8 +249,10 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param current Node to be deleted
      * @return Value of deleted node
      */
-    private static String deleteNodeWithoutChildren(final TreeNode current) {
-        final TreeNode parent = current.root;
+    private static String deleteNodeWithoutChildren(
+            final BinaryTreeNode current
+    ) {
+        final BinaryTreeNode parent = current.root;
         final String value = current.value;
         if (parent.left == current) {
             parent.left = null;
@@ -268,19 +270,19 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param value Value
      */
     private static void add(
-            final TreeNode root,
+            final BinaryTreeNode root,
             final Integer key,
             final String value
     ) {
         if (root.key < key) {
             if (!root.hasRight()) {
-                root.right = new TreeNode(root, key, value);
+                root.right = new BinaryTreeNode(root, key, value);
             } else {
                 BinaryTree.add(root.right, key, value);
             }
         } else if (root.key >= key) {
             if (!root.hasLeft()) {
-                root.left = new TreeNode(root, key, value);
+                root.left = new BinaryTreeNode(root, key, value);
             } else {
                 BinaryTree.add(root.left, key, value);
             }
@@ -295,7 +297,7 @@ public final class BinaryTree implements Map<Integer, String> {
      * @return Total size of Binary Tree
      */
     private static int calculateSize(
-            final TreeNode current,
+            final BinaryTreeNode current,
             final AtomicInteger size
     ) {
         if (current == null) {
@@ -329,7 +331,7 @@ public final class BinaryTree implements Map<Integer, String> {
      */
     @SuppressWarnings("ReturnCount")
     private static String valueByKey(
-            final TreeNode currentNode,
+            final BinaryTreeNode currentNode,
             final Integer key
     ) {
         if (currentNode == null) {
@@ -356,7 +358,7 @@ public final class BinaryTree implements Map<Integer, String> {
      */
     @SuppressWarnings("ReturnCount")
     private static boolean containsValue(
-            final TreeNode currentNode,
+            final BinaryTreeNode currentNode,
             final String value
     ) {
         if (currentNode == null) {
