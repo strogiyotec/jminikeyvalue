@@ -1,10 +1,12 @@
 package com.lightbox.jmkv.binary;
 
+import com.lightbox.jmkv.TreeNode;
+
 /**
  * Binary Tree representation.
  * Hidden from the world because only Binary Tree is supposed to use it
  */
-final class BinaryTreeNode {
+final class BinaryTreeNode implements TreeNode {
 
     /**
      * Key of node.
@@ -92,58 +94,34 @@ final class BinaryTreeNode {
         this.right = null;
     }
 
-    /**
-     * Check that node is root.
-     *
-     * @return True of reference to root is not present
-     */
-    boolean isRoot() {
+    @Override
+    public boolean isRoot() {
         return root == null;
     }
 
-    /**
-     * Check that node has at least one child.
-     *
-     * @return True if node has child
-     */
-    boolean hasChild() {
+    @Override
+    public boolean hasChild() {
         return this.left != null || this.right != null;
     }
 
-    /**
-     * Check that node has left child.
-     *
-     * @return True if left is not null
-     */
-    boolean hasLeft() {
+    @Override
+    public boolean hasLeft() {
         return this.left != null;
     }
 
-    /**
-     * Check that node has right child.
-     *
-     * @return True if right is not null
-     */
-    boolean hasRight() {
+    @Override
+    public boolean hasRight() {
         return this.right != null;
     }
 
-    /**
-     * Check that node has exactly one child.
-     *
-     * @return True if node has only one child.
-     */
-    boolean hasOneChild() {
+    @Override
+    public boolean hasOneChild() {
         return (this.left != null && this.right == null)
                 || (this.left == null && this.right != null);
     }
 
-    /**
-     * Node is left child of it's root.
-     *
-     * @return True if this is the left child
-     */
-    boolean isLeft() {
+    @Override
+    public boolean isLeft() {
         final boolean isLeft;
         if (this.root != null) {
             isLeft = this.root.left == this;
@@ -153,12 +131,8 @@ final class BinaryTreeNode {
         return isLeft;
     }
 
-    /**
-     * Node is right child of it's root.
-     *
-     * @return True if this is the right child
-     */
-    boolean isRight() {
+    @Override
+    public boolean isRight() {
         final boolean isRight;
         if (this.root != null) {
             isRight = this.root.right == this;
