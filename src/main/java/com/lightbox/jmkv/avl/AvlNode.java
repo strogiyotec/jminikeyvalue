@@ -1,9 +1,11 @@
 package com.lightbox.jmkv.avl;
 
+import com.lightbox.jmkv.TreeNode;
+
 /**
  * Tree node fo AVL Tree.
  */
-final class AvlNode {
+final class AvlNode implements TreeNode {
 
     /**
      * Height of newly created node.
@@ -101,8 +103,45 @@ final class AvlNode {
         this.right = null;
     }
 
+    @Override
+    public boolean isRoot() {
+        return this.root == null;
+    }
+
+    @Override
+    public boolean hasLeft() {
+        return this.left != null;
+    }
+
+    @Override
+    public boolean hasRight() {
+        return this.right != null;
+    }
+
+    @Override
+    public boolean isLeft() {
+        return this.root != null && this.root.key > this.key;
+    }
+
+    @Override
+    public boolean isRight() {
+        return this.root != null && this.root.key < this.key;
+    }
+
+    @Override
+    public boolean hasChild() {
+        return this.hasRight() || this.hasLeft();
+    }
+
+    @Override
+    public boolean hasOneChild() {
+        return (this.hasLeft() && !this.hasRight())
+                || (this.hasRight() && !this.hasLeft());
+    }
+
     /**
      * Refresh height value of current node.
+     * For avl tree only
      */
     void refreshHeight() {
         this.height = 1 + Math.max(
@@ -114,6 +153,7 @@ final class AvlNode {
     /**
      * Calculate balance factor.
      * Difference between left height and right
+     * For avl tree only
      *
      * @return Balance factor
      */
@@ -122,75 +162,12 @@ final class AvlNode {
     }
 
     /**
-     * Check that node is root.
-     *
-     * @return True if node doesn't have root
-     */
-    boolean isRoot() {
-        return this.root == null;
-    }
-
-    /**
-     * Node has left child.
-     *
-     * @return True if node has left child
-     */
-    boolean hasLeft() {
-        return this.left != null;
-    }
-
-    /**
-     * Node has right child.
-     *
-     * @return True if node has right child
-     */
-    boolean hasRight() {
-        return this.right != null;
-    }
-
-    /**
-     * Node is left child of root.
-     *
-     * @return True if this node is left
-     */
-    boolean isLeft() {
-        return this.root != null && this.root.key > this.key;
-    }
-
-    /**
-     * Node is right child of root.
-     *
-     * @return True if this node is right
-     */
-    boolean isRight() {
-        return this.root != null && this.root.key < this.key;
-    }
-
-    /**
-     * Has at least one child.
-     *
-     * @return True if node has one child.
-     */
-    boolean hasChild() {
-        return this.hasRight() || this.hasLeft();
-    }
-
-    /**
-     * Has exactly one child.
-     *
-     * @return True of node has only 1 child
-     */
-    boolean hasOneChild() {
-        return (this.hasLeft() && !this.hasRight())
-                || (this.hasRight() && !this.hasLeft());
-    }
-
-    /**
      * Find min left key starting from given node.
+     *
      * @param node Current node
      * @return Min key of the last left key of given node
      */
-    static Integer minKey(final AvlNode node) {
+    public static Integer minKey(final AvlNode node) {
         if (node.left == null) {
             return node.key;
         } else {
