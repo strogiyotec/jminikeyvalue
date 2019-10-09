@@ -3,7 +3,7 @@ package com.lightbox.jmkv.avl;
 /**
  * Tree node fo AVL Tree.
  */
-final class TreeNode {
+final class AvlNode {
 
     /**
      * Height of newly created node.
@@ -26,19 +26,19 @@ final class TreeNode {
      * Reference to root.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    TreeNode root;
+    AvlNode root;
 
     /**
      * Reference to left.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    TreeNode left;
+    AvlNode left;
 
     /**
      * Reference to right.
      */
     @SuppressWarnings("check:VisibilityModifier")
-    TreeNode right;
+    AvlNode right;
 
     /**
      * Height.
@@ -50,10 +50,10 @@ final class TreeNode {
      * Ctor.
      */
     @SuppressWarnings({"JavadocMethod", "ParameterNumber"})
-    TreeNode(
-            final TreeNode root,
-            final TreeNode left,
-            final TreeNode right,
+    AvlNode(
+            final AvlNode root,
+            final AvlNode left,
+            final AvlNode right,
             final Integer key,
             final String value,
             final int height
@@ -70,7 +70,7 @@ final class TreeNode {
      * Root ctor.
      */
     @SuppressWarnings("JavadocMethod")
-    TreeNode(
+    AvlNode(
             final Integer key,
             final String value,
             final int height
@@ -87,11 +87,11 @@ final class TreeNode {
      * Ctor for node with root and without children.
      */
     @SuppressWarnings("JavadocMethod")
-    TreeNode(
+    AvlNode(
             final Integer key,
             final String value,
             final int height,
-            final TreeNode root
+            final AvlNode root
     ) {
         this.key = key;
         this.value = value;
@@ -106,8 +106,8 @@ final class TreeNode {
      */
     void refreshHeight() {
         this.height = 1 + Math.max(
-                TreeNode.height(this.left),
-                TreeNode.height(this.right)
+                AvlNode.height(this.left),
+                AvlNode.height(this.right)
         );
     }
 
@@ -118,7 +118,7 @@ final class TreeNode {
      * @return Balance factor
      */
     int balanceFactor() {
-        return TreeNode.height(this.left) - TreeNode.height(this.right);
+        return AvlNode.height(this.left) - AvlNode.height(this.right);
     }
 
     /**
@@ -190,11 +190,11 @@ final class TreeNode {
      * @param node Current node
      * @return Min key of the last left key of given node
      */
-    static Integer minKey(final TreeNode node) {
+    static Integer minKey(final AvlNode node) {
         if (node.left == null) {
             return node.key;
         } else {
-            return TreeNode.minKey(node.left);
+            return AvlNode.minKey(node.left);
         }
     }
 
@@ -205,9 +205,9 @@ final class TreeNode {
      * @return Height of given node
      * -1 of node is null
      */
-    private static int height(final TreeNode node) {
+    private static int height(final AvlNode node) {
         if (node == null) {
-            return TreeNode.EMPTY_HEIGHT;
+            return AvlNode.EMPTY_HEIGHT;
         }
         return node.height;
     }

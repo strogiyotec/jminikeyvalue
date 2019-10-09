@@ -20,14 +20,14 @@ public final class AvlTree implements Map<Integer, String> {
     /**
      * Reference to root element.
      */
-    private TreeNode root;
+    private AvlNode root;
 
     /**
      * Ctor.
      */
     @SuppressWarnings("JavadocMethod")
     public AvlTree(final Integer key, final String value) {
-        this.root = new TreeNode(key, value, 0);
+        this.root = new AvlNode(key, value, 0);
     }
 
     @Override
@@ -110,7 +110,7 @@ public final class AvlTree implements Map<Integer, String> {
      * or null if no node with given key
      */
     @SuppressWarnings("ReturnCount")
-    private String removeNode(final TreeNode node, final Integer key) {
+    private String removeNode(final AvlNode node, final Integer key) {
         if (node == null) {
             return null;
         }
@@ -131,7 +131,7 @@ public final class AvlTree implements Map<Integer, String> {
                 node.root.refreshHeight();
                 this.root = AvlTree.balanceToRoot(node.root);
             } else {
-                node.key = TreeNode.minKey(node.right);
+                node.key = AvlNode.minKey(node.right);
                 this.removeNode(node.right, node.key);
             }
             return value;
@@ -149,8 +149,8 @@ public final class AvlTree implements Map<Integer, String> {
      * @return Balanced node
      */
     @SuppressWarnings({"FinalParameters", "ParameterAssignment"})
-    private static TreeNode balanceToRoot(TreeNode node) {
-        TreeNode temp = node;
+    private static AvlNode balanceToRoot(AvlNode node) {
+        AvlNode temp = node;
         while (temp != null) {
             node = AvlTree.balance(temp);
             temp = temp.root;
@@ -165,7 +165,7 @@ public final class AvlTree implements Map<Integer, String> {
      * @param value Value
      * @return True if value is present in given node
      */
-    private static boolean hasValue(final TreeNode node, final String value) {
+    private static boolean hasValue(final AvlNode node, final String value) {
         final boolean contains;
         if (node == null) {
             contains = false;
@@ -185,7 +185,7 @@ public final class AvlTree implements Map<Integer, String> {
      * @param size Atomic integer to store size
      * @return Size of node
      */
-    private static int size(final TreeNode node, final AtomicInteger size) {
+    private static int size(final AvlNode node, final AtomicInteger size) {
         if (node != null) {
             size.incrementAndGet();
             if (node.hasLeft()) {
@@ -205,7 +205,7 @@ public final class AvlTree implements Map<Integer, String> {
      * @param entrySet Set to store entries
      */
     private static void collectEntries(
-            final TreeNode node,
+            final AvlNode node,
             final Set<Entry<Integer, String>> entrySet
     ) {
         if (node != null) {
@@ -227,7 +227,7 @@ public final class AvlTree implements Map<Integer, String> {
      * @return Value of node with given key
      * Or null if not found
      */
-    private static String valueByKey(final TreeNode node, final Integer key) {
+    private static String valueByKey(final AvlNode node, final Integer key) {
         final String value;
         if (node != null) {
             if (node.key.equals(key)) {
@@ -251,7 +251,7 @@ public final class AvlTree implements Map<Integer, String> {
      * @param values List to store each value
      */
     private static void collectValues(
-            final TreeNode node,
+            final AvlNode node,
             final List<String> values
     ) {
         if (node != null) {
@@ -272,7 +272,7 @@ public final class AvlTree implements Map<Integer, String> {
      * @param keySet Keys storage
      */
     private static void collectKeys(
-            final TreeNode node,
+            final AvlNode node,
             final Set<Integer> keySet
     ) {
         if (node != null) {
@@ -296,13 +296,13 @@ public final class AvlTree implements Map<Integer, String> {
      * @param value       Value
      * @return Current node to update root
      */
-    private static TreeNode put(
-            final TreeNode currentNode,
+    private static AvlNode put(
+            final AvlNode currentNode,
             final Integer key,
             final String value
     ) {
         if (currentNode == null) {
-            return new TreeNode(key, value, 0);
+            return new AvlNode(key, value, 0);
         }
         if (currentNode.key > key) {
             currentNode.left = AvlTree.put(currentNode.left, key, value);
@@ -329,7 +329,7 @@ public final class AvlTree implements Map<Integer, String> {
      *
      * @param node Node to delete
      */
-    private static void deleteNodeWithOneChild(final TreeNode node) {
+    private static void deleteNodeWithOneChild(final AvlNode node) {
         if (node.isLeft()) {
             if (node.hasLeft()) {
                 node.root.left = node.left;
@@ -358,8 +358,8 @@ public final class AvlTree implements Map<Integer, String> {
      *
      * @param node Node to delete
      */
-    private static void deleteNodeWithoutChildren(final TreeNode node) {
-        final TreeNode root = node.root;
+    private static void deleteNodeWithoutChildren(final AvlNode node) {
+        final AvlNode root = node.root;
         if (root.left == node) {
             root.left = null;
         } else if (root.right == node) {
@@ -374,7 +374,7 @@ public final class AvlTree implements Map<Integer, String> {
      * @return Current node to update root
      */
     @SuppressWarnings({"FinalParameters", "ParameterAssignment"})
-    private static TreeNode balance(TreeNode node) {
+    private static AvlNode balance(AvlNode node) {
         //left rotate
         if (node.balanceFactor() < -1) {
             //right-left rotate
@@ -405,8 +405,8 @@ public final class AvlTree implements Map<Integer, String> {
      * @param oldRoot Current root
      * @return New root
      */
-    private static TreeNode rotateLeft(final TreeNode oldRoot) {
-        final TreeNode newRoot = oldRoot.right;
+    private static AvlNode rotateLeft(final AvlNode oldRoot) {
+        final AvlNode newRoot = oldRoot.right;
         oldRoot.right = newRoot.left;
         if (newRoot.hasLeft()) {
             newRoot.left.root = oldRoot;
@@ -436,8 +436,8 @@ public final class AvlTree implements Map<Integer, String> {
      * @param oldRoot Current root
      * @return New Root
      */
-    private static TreeNode rotateRight(final TreeNode oldRoot) {
-        final TreeNode newRoot = oldRoot.left;
+    private static AvlNode rotateRight(final AvlNode oldRoot) {
+        final AvlNode newRoot = oldRoot.left;
         oldRoot.left = newRoot.right;
         if (newRoot.hasRight()) {
             newRoot.right.root = oldRoot;
