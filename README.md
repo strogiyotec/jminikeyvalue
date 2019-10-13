@@ -27,3 +27,10 @@ Make sure your branch builds without any warnings/issues and it passes all our [
 ```
 mvn checkstyle:check && mvn clean install
 ```
+
+
+Some notes:
+ - Root - Node without parent
+ - Internal node - Any node with at least one child
+ - Leaf node - Node without child
+ 
