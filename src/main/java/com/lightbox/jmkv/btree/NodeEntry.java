@@ -8,12 +8,12 @@ final class NodeEntry {
     /**
      * Key of node.
      */
-    private final Integer key;
+    final Integer key;
 
     /**
      * Value of node.
      */
-    private final String value;
+    final String value;
 
     /**
      * Pointer to next value of node.
