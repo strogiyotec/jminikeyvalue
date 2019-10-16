@@ -41,4 +41,22 @@ final class BtreeNode {
         this.keys = new NodeEntry[minDegree * 2 - 1];
     }
 
+    /**
+     * Ctor.
+     * Create first key for given node
+     *
+     * @param minDegree Min degree for node
+     * @param key       Key
+     * @param value     Value
+     */
+    BtreeNode(final int minDegree, final Integer key, final String value) {
+        if (minDegree <= 2) {
+            throw new IllegalStateException("Min value for degree is 2");
+        }
+        this.childrenAmount = 0;
+        this.children = new BtreeNode[minDegree * 2];
+        this.keys = new NodeEntry[minDegree * 2 - 1];
+        this.keys[0] = new NodeEntry(key, value);
+    }
+
 }
