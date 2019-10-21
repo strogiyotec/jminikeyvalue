@@ -6,6 +6,9 @@ import java.util.Set;
 
 /**
  * B-tree implementation.
+ * Notes
+ * 1) Number of children [B,2B) (false for root node)
+ * 2) Number of keys [B-1,2B-1)
  */
 public final class Btree implements Map<Integer, String> {
 
@@ -13,11 +16,6 @@ public final class Btree implements Map<Integer, String> {
      * Height of the tree.
      */
     private final int height;
-
-    /**
-     * Length of key-value pairs in single node.
-     */
-    private final int length;
 
     /**
      * Reference to root.
@@ -28,11 +26,9 @@ public final class Btree implements Map<Integer, String> {
      * Ctor.
      *
      * @param height Height
-     * @param length Length
      */
-    public Btree(final int height, final int length) {
+    public Btree(final int height) {
         this.height = height;
-        this.length = length;
     }
 
     @Override
@@ -62,7 +58,12 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public String put(final Integer key, final String value) {
-        return null;
+        if (this.root == null) {
+            this.root = new BtreeNode(this.height, key, value);
+        } else {
+            Btree.insert(this.root, key, value, this.height);
+        }
+        return value;
     }
 
     @Override
@@ -109,5 +110,10 @@ public final class Btree implements Map<Integer, String> {
             final String value,
             final int height
     ) {
+        if (node.childrenAmount == node.upperBoundIndex()) {
+            //The root is full , split it
+            final BtreeNode btreeNode = new BtreeNode(node.minDegree(), key, value);
+
+        }
     }
 }

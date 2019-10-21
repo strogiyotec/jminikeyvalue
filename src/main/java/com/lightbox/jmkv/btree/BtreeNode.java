@@ -59,4 +59,22 @@ final class BtreeNode {
         this.keys[0] = new NodeEntry(key, value);
     }
 
+    /**
+     * Shows upper bound index.
+     * The formula is : (2*minDegree - 1)
+     *
+     * @return Upper bound index for given tree
+     */
+    int upperBoundIndex() {
+        return this.keys.length;
+    }
+
+    /**
+     * Min degree for given node.
+     *
+     * @return Min degree
+     */
+    int minDegree() {
+        return (this.keys.length + 1) / 2;
+    }
 }
