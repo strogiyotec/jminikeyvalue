@@ -1,5 +1,8 @@
 package com.lightbox.jmkv.btree;
 
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Node of Btree.
  * Constraints:
@@ -12,69 +15,74 @@ package com.lightbox.jmkv.btree;
 final class BtreeNode {
 
     /**
-     * Amount of children.
-     * Usually marked as 'm' in tutorials
+     * Reference to parent.
      */
-    int childrenAmount;
-
-    /**
-     * Array of children of current node.
-     */
-    final BtreeNode[] children;
+    private final BtreeNode parent;
 
     /**
      * Array of keys.
      */
-    final NodeEntry[] keys;
+    private final NodeEntry[] keys;
+
+    /**
+     * Array of children.
+     */
+    private final BtreeNode[] children;
+
+    /**
+     * Size of keys.
+     */
+    private final AtomicInteger keysSize = new AtomicInteger(0);
+
+    /**
+     * Size of children.
+     */
+    private final AtomicInteger childrenSize = new AtomicInteger(0);
 
     /**
      * Ctor.
-     *
-     * @param minDegree Min degree for node
      */
-    BtreeNode(final int minDegree) {
-        if (minDegree <= 2) {
-            throw new IllegalStateException("Min value for degree is 2");
-        }
-        this.childrenAmount = 0;
-        this.children = new BtreeNode[minDegree * 2];
-        this.keys = new NodeEntry[minDegree * 2 - 1];
+    public BtreeNode(final BtreeNode parent, final int keys, final int children) {
+        this.parent = parent;
+        this.keys = new NodeEntry[keys];
+        this.children = new BtreeNode[children];
     }
 
     /**
-     * Ctor.
-     * Create first key for given node
-     *
-     * @param minDegree Min degree for node
-     * @param key       Key
-     * @param value     Value
+     * Root ctor.
      */
-    BtreeNode(final int minDegree, final Integer key, final String value) {
-        if (minDegree <= 2) {
-            throw new IllegalStateException("Min value for degree is 2");
-        }
-        this.childrenAmount = 0;
-        this.children = new BtreeNode[minDegree * 2];
-        this.keys = new NodeEntry[minDegree * 2 - 1];
-        this.keys[0] = new NodeEntry(key, value);
+    public BtreeNode(final int keys, final int children) {
+        this.parent = null;
+        this.keys = new NodeEntry[keys];
+        this.children = new BtreeNode[children];
     }
 
     /**
-     * Shows upper bound index.
-     * The formula is : (2*minDegree - 1)
+     * Add key and sort array of keys
      *
-     * @return Upper bound index for given tree
+     * @param key   Key
+     * @param value Value
      */
-    int upperBoundIndex() {
-        return this.keys.length;
+    public void addKey(final Integer key, final String value) {
+        this.keys[this.keysSize.getAndIncrement()] = new NodeEntry(key, value);
+        Arrays.sort(this.keys, 0, this.keysSize.get());
     }
 
     /**
-     * Min degree for given node.
+     * Amount of children.
      *
-     * @return Min degree
+     * @return Amount of children
      */
-    int minDegree() {
-        return (this.keys.length + 1) / 2;
+    public int children() {
+        return this.childrenSize.get();
+    }
+
+    /**
+     * Amount of keys.
+     *
+     * @return Amount of keys
+     */
+    public int keys() {
+        return this.keysSize.get();
     }
 }

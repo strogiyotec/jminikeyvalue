@@ -3,6 +3,7 @@ package com.lightbox.jmkv.btree;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * B-tree implementation.
@@ -12,10 +13,9 @@ import java.util.Set;
  */
 public final class Btree implements Map<Integer, String> {
 
-    /**
-     * Height of the tree.
-     */
-    private final int height;
+    private final int branchingNumber;
+
+    private final AtomicInteger size = new AtomicInteger(0);
 
     /**
      * Reference to root.
@@ -25,10 +25,10 @@ public final class Btree implements Map<Integer, String> {
     /**
      * Ctor.
      *
-     * @param height Height
+     * @param branchingFactor Order
      */
-    public Btree(final int height) {
-        this.height = height;
+    public Btree(final int branchingFactor) {
+        this.branchingNumber = branchingFactor;
     }
 
     @Override
@@ -59,11 +59,30 @@ public final class Btree implements Map<Integer, String> {
     @Override
     public String put(final Integer key, final String value) {
         if (this.root == null) {
-            this.root = new BtreeNode(this.height, key, value);
+            this.root = new BtreeNode(this.maxKeys(), this.maxChildren());
+            this.root.addKey(key, value);
+            return value;
         } else {
-            Btree.insert(this.root, key, value, this.height);
+            BtreeNode node = this.root;
+            while (node != null) {
+                if (node.children() == 0) {
+                    node.addKey(key, value);
+                    if (node.keys() <= this.maxKeys()) {
+                        //OK
+                        break;
+                    } else {
+                        this.split(node);
+                        break;
+                    }
+                }
+            }
         }
         return value;
+    }
+
+    private void split(final BtreeNode toSplit) {
+        final BtreeNode node = toSplit;
+
     }
 
     @Override
@@ -96,24 +115,21 @@ public final class Btree implements Map<Integer, String> {
         return null;
     }
 
-    /**
-     * Insert new node to Btree.
-     *
-     * @param node   Current node , root be default
-     * @param key    Key
-     * @param value  Value
-     * @param height Height
-     */
-    private static void insert(
-            final BtreeNode node,
-            final Integer key,
-            final String value,
-            final int height
-    ) {
-        if (node.childrenAmount == node.upperBoundIndex()) {
-            //The root is full , split it
-            final BtreeNode btreeNode = new BtreeNode(node.minDegree(), key, value);
-
-        }
+    private int minKeys() {
+        return this.branchingNumber - 1;
     }
+
+    private int maxKeys() {
+        return this.branchingNumber * 2 - 2;
+    }
+
+    private int minChildren() {
+        return this.branchingNumber;
+    }
+
+    private int maxChildren() {
+        return this.branchingNumber * 2 - 1;
+    }
+
+
 }

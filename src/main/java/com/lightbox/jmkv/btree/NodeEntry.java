@@ -3,7 +3,7 @@ package com.lightbox.jmkv.btree;
 /**
  * Entry of Btree node.
  */
-final class NodeEntry {
+final class NodeEntry implements Comparable<Integer> {
 
     /**
      * Key of node.
@@ -30,5 +30,10 @@ final class NodeEntry {
         this.key = key;
         this.value = value;
         this.next = null;
+    }
+
+    @Override
+    public int compareTo(final Integer other) {
+        return this.key.compareTo(other);
     }
 }
