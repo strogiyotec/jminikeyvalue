@@ -1,6 +1,7 @@
 package com.lightbox.jmkv.btree;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -14,10 +15,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 final class BtreeNode {
 
+    private static final Comparator<BtreeNode> COMPARATOR = Comparator.comparingInt(node -> node.key(0).key);
+
     /**
      * Reference to parent.
      */
-    private final BtreeNode parent;
+    private BtreeNode parent;
 
     /**
      * Array of keys.
@@ -69,6 +72,28 @@ final class BtreeNode {
     }
 
     /**
+     * Add key and sort array of keys
+     *
+     * @param entry Entry to add
+     */
+    public void addKey(final NodeEntry entry) {
+        this.keys[this.keysSize.getAndIncrement()] = entry;
+        Arrays.sort(this.keys, 0, this.keysSize.get());
+    }
+
+    /**
+     * Add key and sort array of keys
+     *
+     * @param child Child to add
+     */
+    public void addChild(final BtreeNode child) {
+        child.parent = this;
+        this.children[this.childrenSize.getAndIncrement()] = child;
+
+        Arrays.sort(this.children, 0, this.childrenSize.get(), COMPARATOR);
+    }
+
+    /**
      * Amount of children.
      *
      * @return Amount of children
@@ -84,5 +109,9 @@ final class BtreeNode {
      */
     public int keys() {
         return this.keysSize.get();
+    }
+
+    public NodeEntry key(final int index) {
+        return this.keys[index];
     }
 }

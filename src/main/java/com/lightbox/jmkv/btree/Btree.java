@@ -82,7 +82,18 @@ public final class Btree implements Map<Integer, String> {
 
     private void split(final BtreeNode toSplit) {
         final BtreeNode node = toSplit;
-
+        final int keys = node.keys();
+        final int middle = keys / 2;
+        final NodeEntry key = node.key(middle);
+        final BtreeNode left = new BtreeNode(this.maxKeys(), this.maxChildren());
+        for (int i = 0; i < middle; i++) {
+            left.addKey(node.key(i));
+        }
+        if (node.children() > 0) {
+            for (int i = 0; i < middle; i++) {
+                left.ad
+            }
+        }
     }
 
     @Override
