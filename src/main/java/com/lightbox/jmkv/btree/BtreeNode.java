@@ -15,7 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 final class BtreeNode {
 
-    private static final Comparator<BtreeNode> COMPARATOR = Comparator.comparingInt(node -> node.key(0).key);
+    /**
+     * Comparator to compare Nodes.
+     */
+    private static final Comparator<BtreeNode> COMPARATOR =
+            Comparator.comparingInt(node -> node.key(0).key);
 
     /**
      * Reference to parent.
@@ -44,8 +48,16 @@ final class BtreeNode {
 
     /**
      * Ctor.
+     *
+     * @param children Amount of children
+     * @param keys     Amount of keys
+     * @param parent   Ref to root
      */
-    public BtreeNode(final BtreeNode parent, final int keys, final int children) {
+    BtreeNode(
+            final BtreeNode parent,
+            final int keys,
+            final int children
+    ) {
         this.parent = parent;
         this.keys = new NodeEntry[keys];
         this.children = new BtreeNode[children];
@@ -53,15 +65,18 @@ final class BtreeNode {
 
     /**
      * Root ctor.
+     *
+     * @param children Amount of children
+     * @param keys     Amount of keys
      */
-    public BtreeNode(final int keys, final int children) {
+    BtreeNode(final int keys, final int children) {
         this.parent = null;
         this.keys = new NodeEntry[keys];
         this.children = new BtreeNode[children];
     }
 
     /**
-     * Add key and sort array of keys
+     * Add key and sort array of keys.
      *
      * @param key   Key
      * @param value Value
@@ -72,7 +87,7 @@ final class BtreeNode {
     }
 
     /**
-     * Add key and sort array of keys
+     * Add key and sort array of keys.
      *
      * @param entry Entry to add
      */
@@ -82,7 +97,7 @@ final class BtreeNode {
     }
 
     /**
-     * Add key and sort array of keys
+     * Add key and sort array of keys.
      *
      * @param child Child to add
      */
@@ -103,6 +118,16 @@ final class BtreeNode {
     }
 
     /**
+     * Get child by index.
+     *
+     * @param index Index of child
+     * @return Child by index
+     */
+    public BtreeNode child(final int index) {
+        return this.children[index];
+    }
+
+    /**
      * Amount of keys.
      *
      * @return Amount of keys
@@ -111,7 +136,72 @@ final class BtreeNode {
         return this.keysSize.get();
     }
 
+    /**
+     * Get key by index.
+     *
+     * @param index Index
+     * @return Key by index
+     */
     public NodeEntry key(final int index) {
         return this.keys[index];
+    }
+
+    /**
+     * Chec that node has parent.
+     *
+     * @return True of parent is not null
+     */
+    public boolean hasParent() {
+        return this.parent != null;
+    }
+
+    /**
+     * Update reference to parent.
+     *
+     * @param node New parent
+     */
+    public void withRoot(final BtreeNode node) {
+        this.parent = node;
+    }
+
+    /**
+     * Fetch current parent.
+     *
+     * @return Parent of current node
+     */
+    public BtreeNode parent() {
+        return this.parent;
+    }
+
+    /**
+     * Remove given node from tree.
+     *
+     * @param node Node to remove
+     * @return True if node was deleted
+     */
+    public boolean removeChild(final BtreeNode node) {
+        if (this.childrenSize.get() == 0) {
+            return false;
+        }
+        int idx = -1;
+        for (int i = 0; i < this.childrenSize.get(); i++) {
+            if (this.children[i] == node) {
+                idx = i;
+                break;
+            }
+        }
+        if (idx != -1) {
+            System.arraycopy(
+                    children,
+                    idx,
+                    this.children,
+                    idx - 1,
+                    this.childrenSize.get() - idx
+            );
+            this.childrenSize.decrementAndGet();
+            this.children[this.childrenSize.get()] = null;
+            return true;
+        }
+        return false;
     }
 }
