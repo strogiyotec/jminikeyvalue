@@ -204,7 +204,6 @@
         <module name="JavaNCSS"/>
 
         <!-- Miscellaneous other checks. -->
-        <module name="TodoComment"/>
         <module name="UpperEll"/>
         <module name="ArrayTypeStyle"/>
         <module name="FinalParameters">
