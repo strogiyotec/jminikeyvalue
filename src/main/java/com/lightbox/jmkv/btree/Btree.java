@@ -71,10 +71,7 @@ public final class Btree implements Map<Integer, String> {
             while (node != null) {
                 if (node.children() == 0) {
                     node.addKey(key, value);
-                    if (node.keys() <= this.maxKeys()) {
-                        //OK
-                        break;
-                    } else {
+                    if (node.keys() > this.maxKeys()) {
                         this.split(node);
                         break;
                     }
