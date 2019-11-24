@@ -7,14 +7,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * B-tree implementation.
- * Notes
- * 1) Number of children [B,2B) (false for root node)
- * 2) Number of keys [B-1,2B-1)
  */
 public final class Btree implements Map<Integer, String> {
 
     /**
      * Number to determine amount of max keys and max children.
+     * 1) Number of children [B,2B-1) (false for root node)
+     * 2) Number of keys [B-1,2B)
      */
     private final int branchingNumber;
 
@@ -66,9 +65,7 @@ public final class Btree implements Map<Integer, String> {
     @Override
     public String put(final Integer key, final String value) {
         if (this.root == null) {
-            this.root = new BtreeNode(this.maxKeys(), this.maxChildren());
-            this.root.addKey(key, value);
-            return value;
+            return this.initRoot(key, value);
         } else {
             BtreeNode node = this.root;
             while (node != null) {
@@ -95,8 +92,7 @@ public final class Btree implements Map<Integer, String> {
                 for (int i = 1; i < node.keys(); i++) {
                     final NodeEntry prev = node.key(i - 1);
                     final NodeEntry next = node.key(i);
-                    if (key.compareTo(prev.key) > 0
-                            && key.compareTo(next.key) <= 0) {
+                    if (key.compareTo(prev.key) > 0 && key.compareTo(next.key) <= 0) {
                         node = node.child(i);
                         break;
                     }
@@ -108,41 +104,36 @@ public final class Btree implements Map<Integer, String> {
     }
 
     /**
-     * Split tree recursively.
-     * // TODO: refactor to remove warning
+     * Init root with first entry value.
      *
-     * @param toSplit Node to split
+     * @param key   Key
+     * @param value Value
+     * @return Value
      */
-    @SuppressWarnings("ExecutableStatementCount")
-    private void split(final BtreeNode toSplit) {
-        BtreeNode node = toSplit;
+    private String initRoot(final Integer key, final String value) {
+        this.root = new BtreeNode(this.maxKeys(), this.maxChildren());
+        this.root.addKey(key, value);
+        return value;
+    }
+
+    /**
+     * Split tree recursively.
+     *
+     * @param node Node to split
+     */
+    private void split(final BtreeNode node) {
         final int keys = node.keys();
         final int middle = keys / 2;
+        final BtreeNode left = BtreeNode.splited(node, 0, middle);
+        final BtreeNode right = BtreeNode.splited(node, middle + 1, keys);
         final NodeEntry key = node.key(middle);
-        final BtreeNode left =
-                new BtreeNode(this.maxKeys(), this.maxChildren());
-        for (int i = 0; i < middle; i++) {
-            left.addKey(node.key(i));
-        }
-        if (node.children() > 0) {
-            for (int i = 0; i <= middle; i++) {
-                left.addChild(node.child(i));
-            }
-        }
-        final BtreeNode right =
-                new BtreeNode(this.maxKeys(), this.maxChildren());
-        for (int i = middle + 1; i < keys; i++) {
-            right.addChild(node.child(i));
-        }
         if (!node.hasParent()) {
             final BtreeNode newRoot =
                     new BtreeNode(this.maxKeys(), this.maxChildren());
             newRoot.addKey(key);
-            node.withRoot(newRoot);
             this.root = newRoot;
-            node = this.root;
-            node.addChild(left);
-            node.addChild(right);
+            this.root.addChild(left);
+            this.root.addChild(right);
         } else {
             final BtreeNode parent = node.parent();
             parent.addKey(key);
@@ -191,7 +182,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Min amount of keys
      */
     private int minKeys() {
-        return this.branchingNumber - 1;
+        return this.branchingNumber;
     }
 
     /**
@@ -200,7 +191,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Max amount of keys
      */
     private int maxKeys() {
-        return this.branchingNumber * 2 - 2;
+        return this.branchingNumber * 2;
     }
 
     /**
@@ -209,7 +200,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Min amount of children
      */
     private int minChildren() {
-        return this.branchingNumber;
+        return this.branchingNumber + 1;
     }
 
     /**
@@ -218,8 +209,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Max amount of children
      */
     private int maxChildren() {
-        return this.branchingNumber * 2 - 1;
+        return 2 * this.branchingNumber - 1;
     }
-
 
 }
