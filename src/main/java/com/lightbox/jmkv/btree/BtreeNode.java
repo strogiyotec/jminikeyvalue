@@ -10,7 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * t - minDegree
  * 1) Every non root node must have at least t-1 keys
  * 2) Every node must have at most 2t-1 keys
- * 3) Every internal node(without root) must have at least t children
+ * 3) Every internal node(at least one child) must have at least t children
+ * 4) External node - node without children
  * And at most 2t children
  */
 final class BtreeNode {
@@ -192,7 +193,7 @@ final class BtreeNode {
         }
         if (idx != -1) {
             System.arraycopy(
-                    children,
+                    this.children,
                     idx,
                     this.children,
                     idx - 1,
