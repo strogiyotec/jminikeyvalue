@@ -196,12 +196,21 @@ final class BtreeNode {
     }
 
     /**
-     * Update reference to parent.
+     * Get first key from keys array;
      *
-     * @param node New parent
+     * @return First key
      */
-    public void withRoot(final BtreeNode node) {
-        this.parent = node;
+    public NodeEntry firstKey() {
+        return this.keys[0];
+    }
+
+    /**
+     * Get last key from keys array.
+     *
+     * @return Last key
+     */
+    public NodeEntry lastKey() {
+        return this.keys[this.keys.length - 1];
     }
 
     /**
