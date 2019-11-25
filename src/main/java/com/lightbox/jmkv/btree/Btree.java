@@ -61,7 +61,6 @@ public final class Btree implements Map<Integer, String> {
         return null;
     }
 
-    @SuppressWarnings("ExecutableStatementCount")
     @Override
     public String put(final Integer key, final String value) {
         if (this.root == null) {
@@ -69,27 +68,26 @@ public final class Btree implements Map<Integer, String> {
         } else {
             BtreeNode node = this.root;
             while (node != null) {
-                if (node.children() == 0) {
+                if (!node.hasChildren()) {
                     node.addKey(key, value);
                     if (node.keys() > this.maxKeys()) {
                         this.split(node);
                         break;
                     }
                 }
-                final NodeEntry less = node.key(0);
-                if (key.compareTo(less.key) <= 0) {
+                if (key.compareTo(node.firstEntry().key) <= 0) {
                     node = node.child(0);
                     continue;
                 }
-                final NodeEntry great = node.key(node.keys() - 1);
-                if (key.compareTo(great.key) > 0) {
-                    node = node.child(node.children());
+                if (key.compareTo(node.lastEntry().key) > 0) {
+                    node = node.child(node.keys());
                     continue;
                 }
                 for (int i = 1; i < node.keys(); i++) {
                     final NodeEntry prev = node.key(i - 1);
-                    final NodeEntry next = node.key(i);
-                    if (key.compareTo(prev.key) > 0 && key.compareTo(next.key) <= 0) {
+                    final NodeEntry current = node.key(i);
+
+                    if (Btree.peekCurrentChild(key, prev, current)) {
                         node = node.child(i);
                         break;
                     }
@@ -98,49 +96,6 @@ public final class Btree implements Map<Integer, String> {
         }
         this.size.incrementAndGet();
         return value;
-    }
-
-    /**
-     * Init root with first entry value.
-     *
-     * @param key   Key
-     * @param value Value
-     * @return Value
-     */
-    private String initRoot(final Integer key, final String value) {
-        this.root = new BtreeNode(this.maxKeys(), this.maxChildren());
-        this.root.addKey(key, value);
-        return value;
-    }
-
-    /**
-     * Split tree recursively.
-     *
-     * @param node Node to split
-     */
-    private void split(final BtreeNode node) {
-        final int keys = node.keys();
-        final int middle = keys / 2;
-        final BtreeNode left = BtreeNode.splited(node, 0, middle);
-        final BtreeNode right = BtreeNode.splited(node, middle + 1, keys);
-        final NodeEntry key = node.key(middle);
-        if (!node.hasParent()) {
-            final BtreeNode newRoot =
-                    new BtreeNode(this.maxKeys(), this.maxChildren());
-            newRoot.addKey(key);
-            this.root = newRoot;
-            this.root.addChild(left);
-            this.root.addChild(right);
-        } else {
-            final BtreeNode parent = node.parent();
-            parent.addKey(key);
-            parent.removeChild(node);
-            parent.addChild(left);
-            parent.addChild(right);
-            if (parent.keys() > this.maxKeys()) {
-                this.split(parent);
-            }
-        }
     }
 
     @Override
@@ -209,4 +164,63 @@ public final class Btree implements Map<Integer, String> {
         return 2 * this.branchingNumber - 1;
     }
 
+    /**
+     * Init root with first entry value.
+     *
+     * @param key   Key
+     * @param value Value
+     * @return Value
+     */
+    private String initRoot(final Integer key, final String value) {
+        this.root = new BtreeNode(this.maxKeys(), this.maxChildren());
+        this.root.addKey(key, value);
+        return value;
+    }
+
+    /**
+     * Split tree recursively.
+     *
+     * @param node Node to split
+     */
+    private void split(final BtreeNode node) {
+        final int keys = node.keys();
+        final int middle = keys / 2;
+        final BtreeNode left = BtreeNode.splited(node, 0, middle);
+        final BtreeNode right = BtreeNode.splited(node, middle + 1, keys);
+        final NodeEntry key = node.key(middle);
+        if (!node.hasParent()) {
+            final BtreeNode newRoot =
+                    new BtreeNode(this.maxKeys(), this.maxChildren());
+            newRoot.addKey(key);
+            this.root = newRoot;
+            this.root.addChild(left);
+            this.root.addChild(right);
+        } else {
+            final BtreeNode parent = node.parent();
+            parent.addKey(key);
+            parent.removeChild(node);
+            parent.addChild(left);
+            parent.addChild(right);
+            if (parent.keys() > this.maxKeys()) {
+                this.split(parent);
+            }
+        }
+    }
+
+    /**
+     * Check if key between prev and next.
+     *
+     * @param key     Current key
+     * @param prev    Previous node
+     * @param current Current node
+     * @return True of key is bigger that prev and less or eq to current
+     */
+    private static boolean peekCurrentChild(
+            final Integer key,
+            final NodeEntry prev,
+            final NodeEntry current
+    ) {
+        return key.compareTo(prev.key) > 0
+                && key.compareTo(current.key) <= 0;
+    }
 }
