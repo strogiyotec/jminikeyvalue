@@ -200,11 +200,11 @@ final class BtreeNode {
     }
 
     /**
-     * Get first key from keys array;
+     * Get first key from keys array.
      *
      * @return First key
      */
-    public NodeEntry firstKey() {
+    public NodeEntry firstEntry() {
         return this.keys[0];
     }
 
@@ -213,7 +213,7 @@ final class BtreeNode {
      *
      * @return Last key
      */
-    public NodeEntry lastKey() {
+    public NodeEntry lastEntry() {
         return this.keys[this.keysSize.get() - 1];
     }
 
