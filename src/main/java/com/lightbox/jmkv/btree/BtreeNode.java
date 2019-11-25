@@ -155,6 +155,10 @@ final class BtreeNode {
      * @return Child by index
      */
     public BtreeNode child(final int index) {
+        //we need it in order to exit while loop in Btree(put) method
+        if (index >= this.childrenSize.get()) {
+            return null;
+        }
         return this.children[index];
     }
 
