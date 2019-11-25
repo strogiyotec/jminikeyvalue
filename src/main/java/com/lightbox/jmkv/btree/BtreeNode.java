@@ -210,7 +210,7 @@ final class BtreeNode {
      * @return Last key
      */
     public NodeEntry lastKey() {
-        return this.keys[this.keys.length - 1];
+        return this.keys[this.keysSize.get() - 1];
     }
 
     /**
