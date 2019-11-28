@@ -179,6 +179,12 @@ public final class Btree implements Map<Integer, String> {
 
     /**
      * Split tree recursively.
+     * Create two new nodes : left and right
+     * Add first half of keys from original node to left
+     * Add first half of children from original node to left
+     * Add second half of keys from original node to right
+     * Add second half of children from original node to right
+     * Create new root if current one is root without parent
      *
      * @param node Node to split
      */
@@ -189,12 +195,7 @@ public final class Btree implements Map<Integer, String> {
         final BtreeNode right = BtreeNode.splited(node, middle + 1, keys);
         final NodeEntry key = node.key(middle);
         if (!node.hasParent()) {
-            final BtreeNode newRoot =
-                    new BtreeNode(this.maxKeys(), this.maxChildren());
-            newRoot.addKey(key);
-            this.root = newRoot;
-            this.root.addChild(left);
-            this.root.addChild(right);
+            this.refreshRoot(left, right, key);
         } else {
             final BtreeNode parent = node.parent();
             parent.addKey(key);
@@ -205,6 +206,30 @@ public final class Btree implements Map<Integer, String> {
                 this.split(parent);
             }
         }
+    }
+
+    /**
+     * Create new root.
+     * This method is called only if current node is root
+     *
+     * @param left      Left node
+     * @param right     Right node
+     * @param middleKey Middle key entry
+     */
+    private void refreshRoot(
+            final BtreeNode left,
+            final BtreeNode right,
+            final NodeEntry middleKey
+    ) {
+        final BtreeNode newRoot =
+                new BtreeNode(
+                        this.maxKeys(),
+                        this.maxChildren()
+                );
+        newRoot.addKey(middleKey);
+        this.root = newRoot;
+        this.root.addChild(left);
+        this.root.addChild(right);
     }
 
     /**

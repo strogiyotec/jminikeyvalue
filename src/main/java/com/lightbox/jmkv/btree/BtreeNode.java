@@ -1,5 +1,7 @@
 package com.lightbox.jmkv.btree;
 
+import com.sun.istack.internal.Nullable;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -82,6 +84,8 @@ final class BtreeNode {
      * Create new BtreeNode.
      * Move all keys from fromIndex to toIndex to new node
      * Move all children from fromIndex to toIndex inclusive to new node
+     * Can't use ctor. because {@link BtreeNode}
+     * already has ctor with given params
      *
      * @param parent    Reference to parent
      * @param fromIndex Index from
@@ -94,7 +98,10 @@ final class BtreeNode {
             final int toIndex
     ) {
         final BtreeNode node =
-                new BtreeNode(parent.keysSize.get(), parent.childrenSize.get());
+                new BtreeNode(
+                        parent.keysSize.get(),
+                        parent.childrenSize.get()
+                );
         for (int i = fromIndex; i < toIndex; i++) {
             node.addKey(parent.key(i));
         }
@@ -154,6 +161,7 @@ final class BtreeNode {
      * @param index Index of child
      * @return Child by index
      */
+    @Nullable
     public BtreeNode child(final int index) {
         //we need it in order to exit while loop in Btree(put) method
         if (index >= this.childrenSize.get()) {
