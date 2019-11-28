@@ -87,7 +87,7 @@ public final class Btree implements Map<Integer, String> {
                     final NodeEntry prev = node.key(i - 1);
                     final NodeEntry current = node.key(i);
 
-                    if (Btree.peekCurrentChild(key, prev, current)) {
+                    if (Btree.keyBetweenEntries(key, prev, current)) {
                         node = node.child(i);
                         break;
                     }
@@ -215,7 +215,7 @@ public final class Btree implements Map<Integer, String> {
      * @param current Current node
      * @return True of key is bigger that prev and less or eq to current
      */
-    private static boolean peekCurrentChild(
+    private static boolean keyBetweenEntries(
             final Integer key,
             final NodeEntry prev,
             final NodeEntry current
