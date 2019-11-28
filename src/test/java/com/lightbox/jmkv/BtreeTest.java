@@ -8,6 +8,9 @@ import org.junit.Test;
  */
 public final class BtreeTest {
 
+    /**
+     * Test put method of {@link Btree}.
+     */
     @Test
     @SuppressWarnings("MagicNumber")
     public void testPut() {
