@@ -58,6 +58,21 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public String get(final Object key) {
+        final Integer intKey = (Integer) key;
+        BtreeNode node = this.root;
+        while (node != null) {
+            final NodeEntry least = node.key(0);
+            if (intKey < least.key) {
+                if (node.children() > 0) {
+                    node = node.child(0);
+                } else {
+                    node = null;
+                }
+                continue;
+            } else {
+
+            }
+        }
         return null;
     }
 
