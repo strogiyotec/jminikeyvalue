@@ -70,6 +70,16 @@ public final class Btree implements Map<Integer, String> {
                 }
                 continue;
             } else {
+                final int keys = node.keys();
+                final NodeEntry lastEntry = node.lastEntry();
+                if (intKey > lastEntry.key) {
+                    if (node.children() > node.keys()) {
+                        node = node.child(node.keys());
+                    } else {
+                        node = null;
+                    }
+                    continue;
+                }
 
             }
         }
