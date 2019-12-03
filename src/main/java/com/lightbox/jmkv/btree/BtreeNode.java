@@ -265,4 +265,24 @@ final class BtreeNode {
         }
         return false;
     }
+
+    /**
+     * Get first children from given node.
+     *
+     * @return First child
+     * @throws ArrayIndexOutOfBoundsException of node doesn't have children
+     */
+    public BtreeNode firstChild() {
+        return this.children[0];
+    }
+
+    /**
+     * Get last children from given node.
+     *
+     * @return Last child
+     * @throws ArrayIndexOutOfBoundsException of node doesn't have children
+     */
+    public BtreeNode lastChild() {
+        return this.children[this.childrenSize.get() - 1];
+    }
 }
