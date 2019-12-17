@@ -105,21 +105,6 @@ public final class Btree implements Map<Integer, String> {
         return null;
     }
 
-    private static String search(final BtreeNode node, final Integer key) {
-        if (node == null) {
-            return null;
-        }
-        final NodeEntry first = node.firstEntry();
-        if (key < first.key) {
-            if (node.hasChildren()) {
-                return search(node.firstChild(), key);
-            } else {
-                return null;
-            }
-        }
-        return null;
-    }
-
     @Override
     public String put(final Integer key, final String value) {
         if (this.root == null) {
