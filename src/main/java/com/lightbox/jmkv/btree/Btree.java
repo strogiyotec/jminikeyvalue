@@ -86,6 +86,21 @@ public final class Btree implements Map<Integer, String> {
         return null;
     }
 
+    private static String search(final BtreeNode node, final Integer key) {
+        if (node == null) {
+            return null;
+        }
+        final NodeEntry first = node.firstEntry();
+        if (key < first.key) {
+            if (node.hasChildren()) {
+                return search(node.firstChild(), key);
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String put(final Integer key, final String value) {
         if (this.root == null) {
@@ -191,13 +206,16 @@ public final class Btree implements Map<Integer, String> {
 
     /**
      * Init root with first entry value.
+     * Length of keys and children bigger than maxKeys and maxChildren on 1
+     * It was done in this way because in {@link #put(Integer, String)}
+     * Btree firstly adds new key and then check if it exceeds maxKeys value
      *
      * @param key   Key
      * @param value Value
      * @return Value
      */
     private String initRoot(final Integer key, final String value) {
-        this.root = new BtreeNode(this.maxKeys(), this.maxChildren());
+        this.root = new BtreeNode(this.maxKeys() + 1, this.maxChildren() + 1);
         this.root.addKey(key, value);
         return value;
     }

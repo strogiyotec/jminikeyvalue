@@ -62,8 +62,8 @@ final class BtreeNode {
             final int children
     ) {
         this.parent = parent;
-        this.keys = new NodeEntry[keys + 1];
-        this.children = new BtreeNode[children + 1];
+        this.keys = new NodeEntry[keys];
+        this.children = new BtreeNode[children];
     }
 
     /**
