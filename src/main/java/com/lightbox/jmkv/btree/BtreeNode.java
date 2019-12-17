@@ -173,7 +173,8 @@ final class BtreeNode {
      */
     @Nullable
     public BtreeNode childOrNull(final int index) {
-        //need it in order to exit while loop in {@link com.lightbox.jmkv.btree.Btree#put(Integer, String)} method
+        //need it in order to exit while loop in
+        // {@link com.lightbox.jmkv.btree.Btree#put(Integer, String)} method
         if (index >= this.childrenSize.get()) {
             return null;
         }
@@ -254,23 +255,23 @@ final class BtreeNode {
         if (this.childrenSize.get() == 0) {
             return false;
         }
-        int idx = -1;
+        if (this.childrenSize.get() == 1 && this.children[0] == node) {
+            this.children[0] = null;
+            this.childrenSize.decrementAndGet();
+            return true;
+        }
+        boolean found = false;
         for (int i = 0; i < this.childrenSize.get(); i++) {
             if (this.children[i] == node) {
-                idx = i;
-                break;
+                found = true;
+            }
+            if (found && i + 1 < this.childrenSize.get()) {
+                this.children[i] = this.children[i + 1];
             }
         }
-        if (idx != -1) {
-            System.arraycopy(
-                    this.children,
-                    idx,
-                    this.children,
-                    idx - 1,
-                    this.childrenSize.get() - idx
-            );
-            this.childrenSize.decrementAndGet();
+        if(found){
             this.children[this.childrenSize.get()] = null;
+            this.childrenSize.decrementAndGet();
             return true;
         }
         return false;
