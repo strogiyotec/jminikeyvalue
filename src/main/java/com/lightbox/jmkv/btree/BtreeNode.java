@@ -92,7 +92,7 @@ final class BtreeNode {
      * @param toIndex   Index to
      * @return New node
      */
-    static BtreeNode splited(
+    static BtreeNode subNode(
             final BtreeNode parent,
             final int fromIndex,
             final int toIndex
