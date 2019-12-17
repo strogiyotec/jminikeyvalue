@@ -116,19 +116,24 @@ public final class Btree implements Map<Integer, String> {
                     }
                 }
                 if (key.compareTo(node.firstEntry().key) <= 0) {
-                    node = node.child(0);
+                    node = node.childOrNull(0);
                     continue;
                 }
                 if (key.compareTo(node.lastEntry().key) > 0) {
-                    node = node.child(node.keys());
+                    node = node.childOrNull(node.keys());
                     continue;
                 }
-                //switch to internal nodes or to null if node doesn't have children
+                //Let's say btree has root with (3,6) first children is (1,2)
+                // second children (4,5) third children is 7,8
+                // if you want to add 4.5 then second node
+                // should be chosen {@link #keyBetweenEntries} will return true for
+                // 4.5 because it's bigger than 3(first key of root) and smaller than 6
+                // Otherwise Node will be null and while lopp will be interrupted
                 for (int i = 1; i < node.keys(); i++) {
                     final NodeEntry prev = node.key(i - 1);
                     final NodeEntry current = node.key(i);
                     if (Btree.keyBetweenEntries(key, prev, current)) {
-                        node = node.child(i);
+                        node = node.childOrNull(i);
                         break;
                     }
                 }
