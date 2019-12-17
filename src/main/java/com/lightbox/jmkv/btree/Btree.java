@@ -61,27 +61,46 @@ public final class Btree implements Map<Integer, String> {
         final Integer intKey = (Integer) key;
         BtreeNode node = this.root;
         while (node != null) {
-            final NodeEntry least = node.key(0);
+            //if in left child
+            final NodeEntry least = node.firstEntry();
             if (intKey < least.key) {
-                if (node.children() > 0) {
+                if (node.hasChildren()) {
                     node = node.child(0);
                 } else {
                     node = null;
                 }
                 continue;
-            } else {
-                final int keys = node.keys();
-                final NodeEntry lastEntry = node.lastEntry();
-                if (intKey > lastEntry.key) {
-                    if (node.children() > node.keys()) {
-                        node = node.child(node.keys());
-                    } else {
-                        node = null;
-                    }
-                    continue;
-                }
-
             }
+            //if in right child
+            final NodeEntry lastEntry = node.lastEntry();
+            if (intKey > lastEntry.key) {
+                if (node.children() > node.keys()) {
+                    node = node.child(node.keys());
+                } else {
+                    node = null;
+                }
+                continue;
+            }
+            //if among keys of current node
+            final int last = node.keys() - 1;
+            for (int i = 0; i < node.keys(); i++) {
+                final NodeEntry currentKey = node.key(i);
+                if (currentKey.key.equals(intKey)) {
+                    return currentKey.value;
+                }
+                final int next = i + 1;
+                if (next <= last) {
+                    final NodeEntry nextKey = node.key(next);
+                    if (currentKey.key < intKey && nextKey.key > intKey) {
+                        if (next < node.children()) {
+                            node = node.child(next);
+                            break;
+                        }
+                        return null;
+                    }
+                }
+            }
+
         }
         return null;
     }
@@ -123,12 +142,15 @@ public final class Btree implements Map<Integer, String> {
                     node = node.childOrNull(node.keys());
                     continue;
                 }
-                //Let's say btree has root with (3,6) first children is (1,2)
+                //If btree has root with (3,6) first children is (1,2)
                 // second children (4,5) third children is 7,8
                 // if you want to add 4.5 then second node
-                // should be chosen {@link #keyBetweenEntries} will return true for
-                // 4.5 because it's bigger than 3(first key of root) and smaller than 6
-                // Otherwise Node will be null and while loop will be interrupted
+                // should be chosen and {@link #keyBetweenEntries}
+                // will return true for
+                // 4.5 because it's bigger than
+                // 3(first key of root) and smaller than 6
+                // Otherwise Node will be null and while
+                // loop will be interrupted
                 for (int i = 1; i < node.keys(); i++) {
                     final NodeEntry prev = node.key(i - 1);
                     final NodeEntry current = node.key(i);
