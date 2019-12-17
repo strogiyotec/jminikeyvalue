@@ -161,9 +161,19 @@ final class BtreeNode {
      * @param index Index of child
      * @return Child by index
      */
-    @Nullable
     public BtreeNode child(final int index) {
-        //we need it in order to exit while loop in Btree(put) method
+        return this.children[index];
+    }
+
+    /**
+     * Get child by index or null if index bigger than amount of children.
+     *
+     * @param index Index
+     * @return Child Or Null
+     */
+    @Nullable
+    public BtreeNode childOrNull(final int index) {
+        //need it in order to exit while loop in {@link com.lightbox.jmkv.btree.Btree#put(Integer, String)} method
         if (index >= this.childrenSize.get()) {
             return null;
         }
