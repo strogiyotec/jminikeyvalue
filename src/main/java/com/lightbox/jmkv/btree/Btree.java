@@ -128,7 +128,7 @@ public final class Btree implements Map<Integer, String> {
                 // if you want to add 4.5 then second node
                 // should be chosen {@link #keyBetweenEntries} will return true for
                 // 4.5 because it's bigger than 3(first key of root) and smaller than 6
-                // Otherwise Node will be null and while lopp will be interrupted
+                // Otherwise Node will be null and while loop will be interrupted
                 for (int i = 1; i < node.keys(); i++) {
                     final NodeEntry prev = node.key(i - 1);
                     final NodeEntry current = node.key(i);
