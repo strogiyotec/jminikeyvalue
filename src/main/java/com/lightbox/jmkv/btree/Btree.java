@@ -123,10 +123,10 @@ public final class Btree implements Map<Integer, String> {
                     node = node.child(node.keys());
                     continue;
                 }
+                //switch to internal nodes or to null if node doesn't have children
                 for (int i = 1; i < node.keys(); i++) {
                     final NodeEntry prev = node.key(i - 1);
                     final NodeEntry current = node.key(i);
-
                     if (Btree.keyBetweenEntries(key, prev, current)) {
                         node = node.child(i);
                         break;
@@ -234,14 +234,14 @@ public final class Btree implements Map<Integer, String> {
     private void split(final BtreeNode node) {
         final int keys = node.keys();
         final int middle = keys / 2;
-        final BtreeNode left = BtreeNode.splited(node, 0, middle);
-        final BtreeNode right = BtreeNode.splited(node, middle + 1, keys);
-        final NodeEntry key = node.key(middle);
+        final BtreeNode left = BtreeNode.subNode(node, 0, middle);
+        final BtreeNode right = BtreeNode.subNode(node, middle + 1, keys);
+        final NodeEntry middleKey = node.key(middle);
         if (!node.hasParent()) {
-            this.refreshRoot(left, right, key);
+            this.refreshRoot(left, right, middleKey);
         } else {
             final BtreeNode parent = node.parent();
-            parent.addKey(key);
+            parent.addKey(middleKey);
             parent.removeChild(node);
             parent.addChild(left);
             parent.addChild(right);
