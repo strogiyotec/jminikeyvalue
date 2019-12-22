@@ -129,7 +129,7 @@ public final class Btree implements Map<Integer, String> {
                 }
                 //If btree has root with (3,6) first children is (1,2)
                 // second children (4,5) third children is 7,8
-                // if you want to add 4.5 then second node
+                // if you want to add '4.5' then second node
                 // should be chosen and {@link #keyBetweenEntries}
                 // will return true for
                 // 4.5 because it's bigger than
