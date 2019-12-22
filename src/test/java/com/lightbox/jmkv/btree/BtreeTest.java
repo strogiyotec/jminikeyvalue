@@ -1,4 +1,4 @@
-package com.lightbox.jmkv;
+package com.lightbox.jmkv.btree;
 
 import com.lightbox.jmkv.btree.Btree;
 import org.hamcrest.CoreMatchers;
@@ -28,4 +28,6 @@ public final class BtreeTest {
         btree.put(9, "");
         Assert.assertThat(btree.get(5), CoreMatchers.is("answer"));
     }
+
+
 }
