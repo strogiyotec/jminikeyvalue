@@ -43,7 +43,7 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.root == null;
     }
 
     @Override
