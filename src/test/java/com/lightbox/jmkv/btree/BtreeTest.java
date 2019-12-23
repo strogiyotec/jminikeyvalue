@@ -1,6 +1,5 @@
 package com.lightbox.jmkv.btree;
 
-import com.lightbox.jmkv.btree.Btree;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;

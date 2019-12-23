@@ -1,5 +1,6 @@
 package com.lightbox.jmkv.btree;
 
+import com.lightbox.jmkv.ArraySort;
 import com.sun.istack.internal.Nullable;
 
 import java.util.Arrays;
@@ -126,12 +127,42 @@ final class BtreeNode {
 
     /**
      * Add key and sort array of keys.
+     * Move all elements of array to one position right
+     * Add new key to empty position
      *
      * @param entry Entry to add
      */
     public void addKey(final NodeEntry entry) {
+        if (this.keysSize.get() == 0) {
+            this.keys[this.keysSize.getAndIncrement()] = entry;
+        } else {
+            int index;
+            for (index = 0; index < this.keysSize.get(); index++) {
+                if (this.keys[index].compareTo(entry) >= 0) {
+                    break;
+                }
+            }
+            System.arraycopy(
+                    this.keys,
+                    index,
+                    this.keys,
+                    index + 1,
+                    this.keysSize.get() + 1 - index
+            );
+            this.keys[index] = entry;
+            this.keysSize.getAndIncrement();
+        }
+    }
+
+    /**
+     * Add key and sort array of keys with custom sorter.
+     *
+     * @param sort  Logic to sort array of keys
+     * @param entry Entry to add
+     */
+    public void addKey(final NodeEntry entry, final ArraySort sort) {
         this.keys[this.keysSize.getAndIncrement()] = entry;
-        Arrays.sort(this.keys, 0, this.keysSize.get());
+        sort.sort(this.keys, 0, this.keysSize.get());
     }
 
     /**
@@ -252,29 +283,34 @@ final class BtreeNode {
      * @return True if node was deleted
      */
     public boolean removeChild(final BtreeNode node) {
+        final boolean deleted;
         if (this.childrenSize.get() == 0) {
-            return false;
-        }
-        if (this.childrenSize.get() == 1 && this.children[0] == node) {
-            this.children[0] = null;
-            this.childrenSize.decrementAndGet();
-            return true;
-        }
-        boolean found = false;
-        for (int i = 0; i < this.childrenSize.get(); i++) {
-            if (this.children[i] == node) {
-                found = true;
+            deleted = false;
+        } else {
+            if (this.childrenSize.get() == 1 && this.children[0] == node) {
+                this.children[0] = null;
+                this.childrenSize.decrementAndGet();
+                deleted = true;
+            } else {
+                boolean found = false;
+                for (int i = 0; i < this.childrenSize.get(); i++) {
+                    if (this.children[i] == node) {
+                        found = true;
+                    }
+                    if (found && i + 1 < this.childrenSize.get()) {
+                        this.children[i] = this.children[i + 1];
+                    }
+                }
+                if (found) {
+                    this.children[this.childrenSize.get()] = null;
+                    this.childrenSize.decrementAndGet();
+                    deleted = true;
+                } else {
+                    deleted = false;
+                }
             }
-            if (found && i + 1 < this.childrenSize.get()) {
-                this.children[i] = this.children[i + 1];
-            }
         }
-        if(found){
-            this.children[this.childrenSize.get()] = null;
-            this.childrenSize.decrementAndGet();
-            return true;
-        }
-        return false;
+        return deleted;
     }
 
     /**

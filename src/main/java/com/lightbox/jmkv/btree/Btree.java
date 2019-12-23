@@ -56,7 +56,9 @@ public final class Btree implements Map<Integer, String> {
         return false;
     }
 
+    //TODO rewrite for checkstyle
     @Override
+    @SuppressWarnings({"CyclomaticComplexity", "ExecutableStatementCount"})
     public String get(final Object key) {
         final Integer intKey = (Integer) key;
         BtreeNode node = this.root;
