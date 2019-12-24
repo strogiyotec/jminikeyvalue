@@ -121,8 +121,7 @@ final class BtreeNode {
      * @param value Value
      */
     public void addKey(final Integer key, final String value) {
-        this.keys[this.keysSize.getAndIncrement()] = new NodeEntry(key, value);
-        Arrays.sort(this.keys, 0, this.keysSize.get());
+        this.addKey(new NodeEntry(key, value));
     }
 
     /**
