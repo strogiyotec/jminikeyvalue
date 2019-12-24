@@ -121,11 +121,13 @@ public final class Btree implements Map<Integer, String> {
                         break;
                     }
                 }
-                if (key.compareTo(node.firstEntry().key) <= 0) {
+                if (key <= node.firstEntry().key) {
+                    //go to left child
                     node = node.childOrNull(0);
                     continue;
                 }
-                if (key.compareTo(node.lastEntry().key) > 0) {
+                if (key > node.lastEntry().key) {
+                    //go to right child
                     node = node.childOrNull(node.keys());
                     continue;
                 }
