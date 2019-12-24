@@ -141,15 +141,20 @@ final class BtreeNode {
                     break;
                 }
             }
-            System.arraycopy(
-                    this.keys,
-                    index,
-                    this.keys,
-                    index + 1,
-                    this.keysSize.get() + 1 - index
-            );
-            this.keys[index] = entry;
-            this.keysSize.getAndIncrement();
+            //last element
+            if (index == this.keysSize.get()) {
+                this.keys[this.keysSize.getAndIncrement()] = entry;
+            } else {
+                //move all elements to one position right
+                System.arraycopy(
+                        this.keys,
+                        index,
+                        this.keys,
+                        index + 1,
+                        this.keysSize.get() + 1 - index
+                );
+                this.keys[this.keysSize.getAndIncrement()] = entry;
+            }
         }
     }
 
