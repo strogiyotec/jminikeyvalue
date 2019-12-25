@@ -64,8 +64,8 @@ public final class Btree implements Map<Integer, String> {
         BtreeNode node = this.root;
         while (node != null) {
             //if in left child
-            final NodeEntry least = node.firstEntry();
-            if (intKey < least.key) {
+            final NodeKey firstChild = node.firstEntry();
+            if (intKey < firstChild.key) {
                 if (node.hasChildren()) {
                     node = node.firstChild();
                 } else {
@@ -74,7 +74,7 @@ public final class Btree implements Map<Integer, String> {
                 continue;
             }
             //if in right child
-            final NodeEntry lastEntry = node.lastEntry();
+            final NodeKey lastEntry = node.lastEntry();
             if (intKey > lastEntry.key) {
                 if (node.children() > node.keys()) {
                     node = node.child(node.keys());
@@ -86,13 +86,13 @@ public final class Btree implements Map<Integer, String> {
             //if among keys of current node
             final int last = node.keys() - 1;
             for (int i = 0; i < node.keys(); i++) {
-                final NodeEntry currentKey = node.key(i);
+                final NodeKey currentKey = node.key(i);
                 if (currentKey.key.equals(intKey)) {
                     return currentKey.value;
                 }
                 final int next = i + 1;
                 if (next <= last) {
-                    final NodeEntry nextKey = node.key(next);
+                    final NodeKey nextKey = node.key(next);
                     if (currentKey.key < intKey && nextKey.key > intKey) {
                         if (next < node.children()) {
                             node = node.child(next);
@@ -143,8 +143,8 @@ public final class Btree implements Map<Integer, String> {
                 // Otherwise Node will be null and while
                 // loop will be interrupted
                 for (int i = 1; i < node.keys(); i++) {
-                    final NodeEntry prev = node.key(i - 1);
-                    final NodeEntry current = node.key(i);
+                    final NodeKey prev = node.key(i - 1);
+                    final NodeKey current = node.key(i);
                     if (Btree.keyBetweenEntries(key, prev, current)) {
                         node = node.childOrNull(i);
                         break;
@@ -254,7 +254,7 @@ public final class Btree implements Map<Integer, String> {
         final int middle = keys / 2;
         final BtreeNode left = BtreeNode.subNode(node, 0, middle);
         final BtreeNode right = BtreeNode.subNode(node, middle + 1, keys);
-        final NodeEntry middleKey = node.key(middle);
+        final NodeKey middleKey = node.key(middle);
         if (!node.hasParent()) {
             this.splitRoot(left, right, middleKey);
         } else {
@@ -280,7 +280,7 @@ public final class Btree implements Map<Integer, String> {
     private void splitRoot(
             final BtreeNode left,
             final BtreeNode right,
-            final NodeEntry middleKey
+            final NodeKey middleKey
     ) {
         final BtreeNode newRoot =
                 new BtreeNode(
@@ -303,8 +303,8 @@ public final class Btree implements Map<Integer, String> {
      */
     private static boolean keyBetweenEntries(
             final Integer key,
-            final NodeEntry prev,
-            final NodeEntry current
+            final NodeKey prev,
+            final NodeKey current
     ) {
         return key.compareTo(prev.key) > 0
                 && key.compareTo(current.key) <= 0;

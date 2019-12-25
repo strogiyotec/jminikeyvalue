@@ -3,7 +3,7 @@ package com.lightbox.jmkv.btree;
 /**
  * Entry of Btree node.
  */
-final class NodeEntry implements Comparable<NodeEntry> {
+final class NodeKey implements Comparable<NodeKey> {
 
     /**
      * Key of node.
@@ -16,24 +16,18 @@ final class NodeEntry implements Comparable<NodeEntry> {
     final String value;
 
     /**
-     * Pointer to next value of node.
-     */
-    private NodeEntry next;
-
-    /**
      * Ctor.
      *
      * @param key   Key
      * @param value Value
      */
-    NodeEntry(final Integer key, final String value) {
+    NodeKey(final Integer key, final String value) {
         this.key = key;
         this.value = value;
-        this.next = null;
     }
 
     @Override
-    public int compareTo(final NodeEntry other) {
+    public int compareTo(final NodeKey other) {
         return this.key.compareTo(other.key);
     }
 }

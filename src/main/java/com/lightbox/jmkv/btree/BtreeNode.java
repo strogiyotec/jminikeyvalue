@@ -33,7 +33,7 @@ final class BtreeNode {
     /**
      * Array of keys.
      */
-    private final NodeEntry[] keys;
+    private final NodeKey[] keys;
 
     /**
      * Array of children.
@@ -63,7 +63,7 @@ final class BtreeNode {
             final int children
     ) {
         this.parent = parent;
-        this.keys = new NodeEntry[keys];
+        this.keys = new NodeKey[keys];
         this.children = new BtreeNode[children];
     }
 
@@ -121,7 +121,7 @@ final class BtreeNode {
      * @param value Value
      */
     public void addKey(final Integer key, final String value) {
-        this.addKey(new NodeEntry(key, value));
+        this.addKey(new NodeKey(key, value));
     }
 
     /**
@@ -131,7 +131,7 @@ final class BtreeNode {
      *
      * @param entry Entry to add
      */
-    public void addKey(final NodeEntry entry) {
+    public void addKey(final NodeKey entry) {
         if (this.keysSize.get() == 0) {
             this.keys[this.keysSize.getAndIncrement()] = entry;
         } else {
@@ -164,7 +164,7 @@ final class BtreeNode {
      * @param sort  Logic to sort array of keys
      * @param entry Entry to add
      */
-    public void addKey(final NodeEntry entry, final ArraySort sort) {
+    public void addKey(final NodeKey entry, final ArraySort sort) {
         this.keys[this.keysSize.getAndIncrement()] = entry;
         sort.sort(this.keys, 0, this.keysSize.get());
     }
@@ -231,7 +231,7 @@ final class BtreeNode {
      * @param index Index
      * @return Key by index
      */
-    public NodeEntry key(final int index) {
+    public NodeKey key(final int index) {
         return this.keys[index];
     }
 
@@ -258,7 +258,7 @@ final class BtreeNode {
      *
      * @return First key
      */
-    public NodeEntry firstEntry() {
+    public NodeKey firstEntry() {
         return this.keys[0];
     }
 
@@ -267,7 +267,7 @@ final class BtreeNode {
      *
      * @return Last key
      */
-    public NodeEntry lastEntry() {
+    public NodeKey lastEntry() {
         return this.keys[this.keysSize.get() - 1];
     }
 
