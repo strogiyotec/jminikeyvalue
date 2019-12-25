@@ -53,7 +53,7 @@ public class BtreeNodeJmhTest {
     @Benchmark
     public void testDefaultSort(final TestData data) {
         final BtreeNode node = new BtreeNode(100, 1);
-        data.array.forEach(value -> node.addKey(new NodeEntry(value, "")));
+        data.array.forEach(value -> node.addKey(new NodeKey(value, "")));
     }
 
     /**
@@ -67,7 +67,7 @@ public class BtreeNodeJmhTest {
         data.array
                 .forEach(value -> {
                             node.addKey(
-                                    new NodeEntry(value, ""),
+                                    new NodeKey(value, ""),
                                     TestData.SORT
                             );
                         }

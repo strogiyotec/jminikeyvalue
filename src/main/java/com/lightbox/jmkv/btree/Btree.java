@@ -104,50 +104,66 @@ public final class Btree implements Map<Integer, String> {
     @Override
     public String put(final Integer key, final String value) {
         if (this.root == null) {
-            return this.initRoot(key, value);
+            this.root = new BtnWithKey(
+                    this.maxKeys(),
+                    this.maxChildren(),
+                    key,
+                    value
+            );
+            return value;
         } else {
-            BtreeNode node = this.root;
-            while (node != null) {
-                if (!node.hasChildren()) {
-                    node.addKey(key, value);
-                    if (node.keys() > this.maxKeys()) {
-                        this.split(node);
-                        break;
-                    }
-                }
-                //have to check on equality because if inserted key is the first one
-                //in this case this condition will allow to exit loop
-                if (key <= node.firstEntry().key) {
-                    //go to left child
-                    node = node.childOrNull(0);
-                    continue;
-                }
-                if (key > node.lastEntry().key) {
-                    //go to right child
-                    node = node.childOrNull(node.keys());
-                    continue;
-                }
-                //If btree has root with (3,6) first children is (1,2)
-                // second children (4,5) third children is 7,8
-                // if you want to add '4.5' then second node
-                // should be chosen and {@link #keyBetweenEntries}
-                // will return true for
-                // 4.5 because it's bigger than
-                // 3(first key of root) and smaller than 6
-                // Otherwise Node will be null and while
-                // loop will be interrupted
-                for (int i = 1; i < node.keys(); i++) {
-                    final NodeKey prev = node.key(i - 1);
-                    final NodeKey current = node.key(i);
-                    if (Btree.keyBetweenEntries(key, prev, current)) {
-                        node = node.childOrNull(i);
-                        break;
-                    }
-                }
-            }
+            this.put(new NodeKey(key, value));
         }
         this.size.incrementAndGet();
         return value;
+    }
+
+    /**
+     * Insert new key to Btree.
+     *
+     * @param key Key to insert
+     */
+    private void put(final NodeKey key) {
+        BtreeNode node = this.root;
+        while (node != null) {
+            if (!node.hasChildren()) {
+                node.addKey(key);
+                if (node.keys() > this.maxKeys()) {
+                    this.split(node);
+                    break;
+                }
+            }
+            //have to check on equality because if inserted
+            // key is the first one
+            //in this case this condition will allow to exit loop
+            if (key.key <= node.firstEntry().key) {
+                //go to left child
+                node = node.childOrNull(0);
+                continue;
+            }
+            if (key.key > node.lastEntry().key) {
+                //go to right child
+                node = node.childOrNull(node.keys());
+                continue;
+            }
+            //If btree has root with (3,6) first children is (1,2)
+            // second children (4,5) third children is 7,8
+            // if you want to add '4.5' then second node
+            // should be chosen and {@link #keyBetweenEntries}
+            // will return true for
+            // 4.5 because it's bigger than
+            // 3(first key of root) and smaller than 6
+            // Otherwise Node will be null and while
+            // loop will be interrupted
+            for (int i = 1; i < node.keys(); i++) {
+                final NodeKey prev = node.key(i - 1);
+                final NodeKey current = node.key(i);
+                if (Btree.keyBetweenEntries(key.key, prev, current)) {
+                    node = node.childOrNull(i);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -213,23 +229,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Max amount of children
      */
     private int maxChildren() {
-        return 2 * this.branchingNumber - 1;
-    }
-
-    /**
-     * Init root with first entry value.
-     * Length of keys and children bigger than maxKeys and maxChildren on 1
-     * It was done in this way because in {@link #put(Integer, String)}
-     * Btree firstly adds new key and then check if it exceeds maxKeys value
-     *
-     * @param key   Key
-     * @param value Value
-     * @return Value
-     */
-    private String initRoot(final Integer key, final String value) {
-        this.root = new BtreeNode(this.maxKeys() + 1, this.maxChildren() + 1);
-        this.root.addKey(key, value);
-        return value;
+        return 2 * this.branchingNumber + 1;
     }
 
     /**
@@ -276,13 +276,11 @@ public final class Btree implements Map<Integer, String> {
             final BtreeNode right,
             final NodeKey middleKey
     ) {
-        final BtreeNode newRoot =
-                new BtreeNode(
-                        this.maxKeys(),
-                        this.maxChildren()
-                );
-        newRoot.addKey(middleKey);
-        this.root = newRoot;
+        this.root = new BtnWithKey(
+                this.maxKeys(),
+                this.maxChildren(),
+                middleKey
+        );
         this.root.addChild(left);
         this.root.addChild(right);
     }
