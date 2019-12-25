@@ -64,22 +64,16 @@ public final class Btree implements Map<Integer, String> {
         BtreeNode node = this.root;
         while (node != null) {
             //if in left child
-            final NodeKey firstChild = node.firstEntry();
-            if (intKey < firstChild.key) {
+            if (intKey < node.firstEntry().key) {
                 if (node.hasChildren()) {
-                    node = node.firstChild();
-                } else {
-                    node = null;
+                    node = node.childOrNull(0);
                 }
                 continue;
             }
             //if in right child
-            final NodeKey lastEntry = node.lastEntry();
-            if (intKey > lastEntry.key) {
+            if (intKey > node.lastEntry().key) {
                 if (node.children() > node.keys()) {
-                    node = node.child(node.keys());
-                } else {
-                    node = null;
+                    node = node.childOrNull(node.keys());
                 }
                 continue;
             }
