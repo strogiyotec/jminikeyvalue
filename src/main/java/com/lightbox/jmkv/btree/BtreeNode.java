@@ -141,7 +141,7 @@ final class BtreeNode {
                     break;
                 }
             }
-            //last element
+
             if (index == this.keysSize.get()) {
                 this.keys[this.keysSize.getAndIncrement()] = entry;
             } else {
@@ -291,27 +291,20 @@ final class BtreeNode {
         if (this.childrenSize.get() == 0) {
             deleted = false;
         } else {
-            if (this.childrenSize.get() == 1 && this.children[0] == node) {
-                this.children[0] = null;
-                this.childrenSize.decrementAndGet();
+            boolean found = false;
+            for (int i = 0; i < this.childrenSize.get(); i++) {
+                if (this.children[i] == node) {
+                    found = true;
+                } else if (found) {
+                    //move to left by one
+                    this.children[i - 1] = this.children[i];
+                }
+            }
+            if (found) {
+                this.children[this.childrenSize.decrementAndGet()] = null;
                 deleted = true;
             } else {
-                boolean found = false;
-                for (int i = 0; i < this.childrenSize.get(); i++) {
-                    if (this.children[i] == node) {
-                        found = true;
-                    }
-                    if (found && i + 1 < this.childrenSize.get()) {
-                        this.children[i] = this.children[i + 1];
-                    }
-                }
-                if (found) {
-                    this.children[this.childrenSize.get()] = null;
-                    this.childrenSize.decrementAndGet();
-                    deleted = true;
-                } else {
-                    deleted = false;
-                }
+                deleted = false;
             }
         }
         return deleted;
