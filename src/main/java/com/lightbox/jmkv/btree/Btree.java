@@ -67,7 +67,7 @@ public final class Btree implements Map<Integer, String> {
             final NodeEntry least = node.firstEntry();
             if (intKey < least.key) {
                 if (node.hasChildren()) {
-                    node = node.child(0);
+                    node = node.firstChild();
                 } else {
                     node = null;
                 }
