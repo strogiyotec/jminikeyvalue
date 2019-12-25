@@ -121,6 +121,8 @@ public final class Btree implements Map<Integer, String> {
                         break;
                     }
                 }
+                //have to check on equality because if inserted key is the first one
+                //in this case this condition will allow to exit loop
                 if (key <= node.firstEntry().key) {
                     //go to left child
                     node = node.childOrNull(0);
@@ -254,7 +256,7 @@ public final class Btree implements Map<Integer, String> {
         final BtreeNode right = BtreeNode.subNode(node, middle + 1, keys);
         final NodeEntry middleKey = node.key(middle);
         if (!node.hasParent()) {
-            this.refreshRoot(left, right, middleKey);
+            this.splitRoot(left, right, middleKey);
         } else {
             final BtreeNode parent = node.parent();
             parent.addKey(middleKey);
@@ -275,7 +277,7 @@ public final class Btree implements Map<Integer, String> {
      * @param right     Right node
      * @param middleKey Middle key entry
      */
-    private void refreshRoot(
+    private void splitRoot(
             final BtreeNode left,
             final BtreeNode right,
             final NodeEntry middleKey
