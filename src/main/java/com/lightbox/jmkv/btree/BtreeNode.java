@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 4) External node - node without children
  * And at most 2t children
  */
-final class BtreeNode {
+class BtreeNode {
 
     /**
      * Comparator to compare Children.
@@ -120,7 +120,7 @@ final class BtreeNode {
      * @param key   Key
      * @param value Value
      */
-    public void addKey(final Integer key, final String value) {
+    public final void addKey(final Integer key, final String value) {
         this.addKey(new NodeKey(key, value));
     }
 
@@ -131,7 +131,7 @@ final class BtreeNode {
      *
      * @param entry Entry to add
      */
-    public void addKey(final NodeKey entry) {
+    public final void addKey(final NodeKey entry) {
         if (this.keysSize.get() == 0) {
             this.keys[this.keysSize.getAndIncrement()] = entry;
         } else {
@@ -164,7 +164,7 @@ final class BtreeNode {
      * @param sort  Logic to sort array of keys
      * @param entry Entry to add
      */
-    public void addKey(final NodeKey entry, final ArraySort sort) {
+    public final void addKey(final NodeKey entry, final ArraySort sort) {
         this.keys[this.keysSize.getAndIncrement()] = entry;
         sort.sort(this.keys, 0, this.keysSize.get());
     }
@@ -174,7 +174,7 @@ final class BtreeNode {
      *
      * @param child Child to add
      */
-    public void addChild(final BtreeNode child) {
+    public final void addChild(final BtreeNode child) {
         child.parent = this;
         this.children[this.childrenSize.getAndIncrement()] = child;
 
@@ -186,7 +186,7 @@ final class BtreeNode {
      *
      * @return Amount of children
      */
-    public int children() {
+    public final int children() {
         return this.childrenSize.get();
     }
 
@@ -196,7 +196,7 @@ final class BtreeNode {
      * @param index Index of child
      * @return Child by index
      */
-    public BtreeNode child(final int index) {
+    public final BtreeNode child(final int index) {
         return this.children[index];
     }
 
@@ -207,7 +207,7 @@ final class BtreeNode {
      * @return Child Or Null
      */
     @Nullable
-    public BtreeNode childOrNull(final int index) {
+    public final BtreeNode childOrNull(final int index) {
         //need it in order to exit while loop in
         // {@link com.lightbox.jmkv.btree.Btree#put(Integer, String)} method
         if (index >= this.childrenSize.get()) {
@@ -221,7 +221,7 @@ final class BtreeNode {
      *
      * @return Amount of keys
      */
-    public int keys() {
+    public final int keys() {
         return this.keysSize.get();
     }
 
@@ -231,7 +231,7 @@ final class BtreeNode {
      * @param index Index
      * @return Key by index
      */
-    public NodeKey key(final int index) {
+    public final NodeKey key(final int index) {
         return this.keys[index];
     }
 
@@ -240,7 +240,7 @@ final class BtreeNode {
      *
      * @return True of parent is not null
      */
-    public boolean hasParent() {
+    public final boolean hasParent() {
         return this.parent != null;
     }
 
@@ -249,7 +249,7 @@ final class BtreeNode {
      *
      * @return True if amount of children bigger than 0
      */
-    public boolean hasChildren() {
+    public final boolean hasChildren() {
         return this.childrenSize.get() > 0;
     }
 
@@ -258,7 +258,7 @@ final class BtreeNode {
      *
      * @return First key
      */
-    public NodeKey firstEntry() {
+    public final NodeKey firstEntry() {
         return this.keys[0];
     }
 
@@ -267,7 +267,7 @@ final class BtreeNode {
      *
      * @return Last key
      */
-    public NodeKey lastEntry() {
+    public final NodeKey lastEntry() {
         return this.keys[this.keysSize.get() - 1];
     }
 
@@ -276,7 +276,7 @@ final class BtreeNode {
      *
      * @return Parent of current node
      */
-    public BtreeNode parent() {
+    public final BtreeNode parent() {
         return this.parent;
     }
 
@@ -286,7 +286,7 @@ final class BtreeNode {
      * @param node Node to remove
      * @return True if node was deleted
      */
-    public boolean removeChild(final BtreeNode node) {
+    public final boolean removeChild(final BtreeNode node) {
         final boolean deleted;
         if (this.childrenSize.get() == 0) {
             deleted = false;
@@ -308,25 +308,5 @@ final class BtreeNode {
             }
         }
         return deleted;
-    }
-
-    /**
-     * Get first children from given node.
-     *
-     * @return First child
-     * @throws ArrayIndexOutOfBoundsException of node doesn't have children
-     */
-    public BtreeNode firstChild() {
-        return this.children[0];
-    }
-
-    /**
-     * Get last children from given node.
-     *
-     * @return Last child
-     * @throws ArrayIndexOutOfBoundsException of node doesn't have children
-     */
-    public BtreeNode lastChild() {
-        return this.children[this.childrenSize.get() - 1];
     }
 }
