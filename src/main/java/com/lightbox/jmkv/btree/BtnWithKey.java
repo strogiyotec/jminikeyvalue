@@ -4,7 +4,7 @@ package com.lightbox.jmkv.btree;
  * Btree Node with one key.
  * Btree uses this class because it needs
  * bigger value for maxKeys and maxChildren
- * If maxKeys is 4 then length if keys will be 5
+ * If maxKeys is 4 then length io keys will be 5
  * It requires because Btree firstly adds key
  * and then checks that amount of keys is bigger
  * then given maxKeys value
