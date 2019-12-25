@@ -118,6 +118,36 @@ public final class Btree implements Map<Integer, String> {
         return value;
     }
 
+    @Override
+    public String remove(final Object key) {
+        return null;
+    }
+
+    @Override
+    public void putAll(final Map<? extends Integer, ? extends String> map) {
+
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public Set<Integer> keySet() {
+        return null;
+    }
+
+    @Override
+    public Collection<String> values() {
+        return null;
+    }
+
+    @Override
+    public Set<Entry<Integer, String>> entrySet() {
+        return null;
+    }
+
     /**
      * Insert new key to Btree.
      *
@@ -166,36 +196,6 @@ public final class Btree implements Map<Integer, String> {
         }
     }
 
-    @Override
-    public String remove(final Object key) {
-        return null;
-    }
-
-    @Override
-    public void putAll(final Map<? extends Integer, ? extends String> map) {
-
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public Set<Integer> keySet() {
-        return null;
-    }
-
-    @Override
-    public Collection<String> values() {
-        return null;
-    }
-
-    @Override
-    public Set<Entry<Integer, String>> entrySet() {
-        return null;
-    }
-
     /**
      * Min amount of keys.
      *
@@ -229,7 +229,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Max amount of children
      */
     private int maxChildren() {
-        return 2 * this.branchingNumber + 1;
+        return this.maxKeys() + 1;
     }
 
     /**
