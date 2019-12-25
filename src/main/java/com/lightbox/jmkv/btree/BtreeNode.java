@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 final class BtreeNode {
 
     /**
-     * Comparator to compare Nodes.
+     * Comparator to compare Children.
      */
     private static final Comparator<BtreeNode> COMPARATOR =
             Comparator.comparingInt(node -> node.key(0).key);
