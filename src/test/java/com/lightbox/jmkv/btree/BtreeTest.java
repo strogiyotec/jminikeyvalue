@@ -16,15 +16,13 @@ public final class BtreeTest {
     @SuppressWarnings("MagicNumber")
     public void testPut() {
         final Btree btree = new Btree(2);
-        btree.put(1, "");
-        btree.put(2, "");
-        btree.put(3, "");
-        btree.put(4, "");
-        btree.put(5, "answer");
-        btree.put(6, "");
-        btree.put(7, "");
-        btree.put(8, "");
-        btree.put(9, "");
+        for (int i = 1; i <= 17; i++) {
+            if (i == 5) {
+                btree.put(5, "answer");
+            } else {
+                btree.put(i, "");
+            }
+        }
         Assert.assertThat(btree.get(5), CoreMatchers.is("answer"));
     }
 
