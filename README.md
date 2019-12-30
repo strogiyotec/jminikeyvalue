@@ -7,7 +7,7 @@ This repository will contain three implementations of Trees (Binary,AVL,Red blac
 ## TODO
  - ~~Implement Binary tree~~ (done)
  - ~~Implement AVL Tree~~(done)
- ~ Imlement B-Tree
+ ~ Implement B-Tree
  - Implement Red black Tree
  - Implement simple and fast distributed key value storage
  
