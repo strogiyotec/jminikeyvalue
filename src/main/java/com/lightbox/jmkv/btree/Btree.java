@@ -64,14 +64,14 @@ public final class Btree implements Map<Integer, String> {
         BtreeNode node = this.root;
         while (node != null) {
             //if in left child
-            if (intKey < node.firstEntry().key) {
+            if (intKey < node.firstKey().key) {
                 if (node.hasChildren()) {
                     node = node.childOrNull(0);
                 }
                 continue;
             }
             //if in right child
-            if (intKey > node.lastEntry().key) {
+            if (intKey > node.lastKey().key) {
                 if (node.children() > node.keys()) {
                     node = node.childOrNull(node.keys());
                 }
@@ -164,12 +164,12 @@ public final class Btree implements Map<Integer, String> {
                 }
             }
             //if child is not present then exist loop
-            if (key.key <= node.firstEntry().key) {
+            if (key.key <= node.firstKey().key) {
                 //go to left child
                 node = node.childOrNull(0);
                 continue;
             }
-            if (key.key > node.lastEntry().key) {
+            if (key.key > node.lastKey().key) {
                 //go to right child
                 node = node.childOrNull(node.keys());
                 continue;
