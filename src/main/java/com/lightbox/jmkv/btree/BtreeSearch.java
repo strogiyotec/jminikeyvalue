@@ -11,7 +11,7 @@ public final class BtreeSearch {
     private final boolean found;
 
     /**
-     * Shows position of founded key.
+     * Shows position of found key.
      * If key is not present then shows
      * the point at which the key would be inserted
      * into array
