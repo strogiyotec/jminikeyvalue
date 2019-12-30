@@ -163,9 +163,7 @@ public final class Btree implements Map<Integer, String> {
                     break;
                 }
             }
-            //have to check on equality because if inserted
-            // key is the first one
-            //in this case this condition will allow to exit loop
+            //if child is not present then exist loop
             if (key.key <= node.firstEntry().key) {
                 //go to left child
                 node = node.childOrNull(0);
@@ -179,7 +177,7 @@ public final class Btree implements Map<Integer, String> {
             //If btree has root with (3,6) first children is (1,2)
             // second children (4,5) third children is 7,8
             // if you want to add '4.5' then second node
-            // should be chosen and {@link #keyBetweenEntries}
+            // should be chosen and keyBetweenEntries
             // will return true for
             // 4.5 because it's bigger than
             // 3(first key of root) and smaller than 6
