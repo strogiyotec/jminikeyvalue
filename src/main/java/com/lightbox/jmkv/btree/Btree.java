@@ -56,47 +56,38 @@ public final class Btree implements Map<Integer, String> {
         return false;
     }
 
-    //TODO rewrite for checkstyle
     @Override
-    @SuppressWarnings({"CyclomaticComplexity", "ExecutableStatementCount"})
-    public String get(final Object key) {
-        final Integer intKey = (Integer) key;
+    public String get(final Object kKey) {
+        final Integer key = (Integer) kKey;
         BtreeNode node = this.root;
         while (node != null) {
             //if in left child
-            if (intKey < node.firstKey().key) {
-                if (node.hasChildren()) {
-                    node = node.childOrNull(0);
-                }
+            if (key < node.firstKey().key) {
+                node = node.childOrNull(0);
                 continue;
             }
             //if in right child
-            if (intKey > node.lastKey().key) {
+            if (key > node.lastKey().key) {
+                //why ?
                 if (node.children() > node.keys()) {
-                    node = node.childOrNull(node.keys());
+                    node = node.child(node.keys());
+                } else {
+                    node = null;
                 }
                 continue;
             }
             //if among keys of current node
             final int last = node.keys() - 1;
-            for (int i = 0; i < node.keys(); i++) {
-                final NodeKey currentKey = node.key(i);
-                if (currentKey.key.equals(intKey)) {
-                    return currentKey.value;
+            final BtreeSearch search = new BtreeSearch(node, key);
+            if (search.found()) {
+                return node.key(search.position()).value;
+            } else {
+                if (this.searchInNextChild(node, search.position())) {
+                    node = node.child(search.position());
+                    continue;
                 }
-                final int next = i + 1;
-                if (next <= last) {
-                    final NodeKey nextKey = node.key(next);
-                    if (currentKey.key < intKey && nextKey.key > intKey) {
-                        if (next < node.children()) {
-                            node = node.child(next);
-                            break;
-                        }
-                        return null;
-                    }
-                }
+                return null;
             }
-
         }
         return null;
     }
@@ -259,6 +250,21 @@ public final class Btree implements Map<Integer, String> {
                 this.split(parent);
             }
         }
+    }
+
+    /**
+     * Check if key in the next child.
+     *
+     * @param node           Node with keys
+     * @param searchPosition Search result
+     * @return True if need to search key in next child
+     */
+    private boolean searchInNextChild(
+            final BtreeNode node,
+            final int searchPosition
+    ) {
+        final int last = node.keys() - 1;
+        return searchPosition <= last && searchPosition < node.children();
     }
 
     /**

@@ -34,7 +34,12 @@ class BtnWithKey extends BtreeNode {
      * @param key         Key for first key
      * @param value       Value for first key
      */
-    BtnWithKey(final int maxKeys, final int maxChildren, final Integer key, final String value) {
+    BtnWithKey(
+            final int maxKeys,
+            final int maxChildren,
+            final Integer key,
+            final String value
+    ) {
         this(
                 maxKeys,
                 maxChildren,
