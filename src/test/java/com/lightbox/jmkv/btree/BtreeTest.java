@@ -14,7 +14,7 @@ public final class BtreeTest {
      */
     @Test
     @SuppressWarnings("MagicNumber")
-    public void testPut() {
+    public void testPutAndGet() {
         final Btree btree = new Btree(2);
         for (int i = 1; i <= 17; i++) {
             if (i == 5) {
@@ -24,6 +24,9 @@ public final class BtreeTest {
             }
         }
         Assert.assertThat(btree.get(5), CoreMatchers.is("answer"));
+        Assert.assertThat(btree.get(13), CoreMatchers.is(""));
+        Assert.assertNull(btree.get(18));
+        Assert.assertNull(btree.get(0));
     }
 
 
