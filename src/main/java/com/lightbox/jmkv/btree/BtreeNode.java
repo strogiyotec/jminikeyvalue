@@ -136,6 +136,7 @@ class BtreeNode {
             this.keys[this.keysSize.getAndIncrement()] = entry;
         } else {
             int index;
+            //rewrite to binary search
             for (index = 0; index < this.keysSize.get(); index++) {
                 if (this.keys[index].compareTo(entry) >= 0) {
                     break;
@@ -151,9 +152,9 @@ class BtreeNode {
                         index,
                         this.keys,
                         index + 1,
-                        this.keysSize.get() + 1 - index
+                        this.keysSize.get() - index
                 );
-                this.keys[this.keysSize.getAndIncrement()] = entry;
+                this.keys[index] = entry;
             }
         }
     }
@@ -208,9 +209,7 @@ class BtreeNode {
      */
     @Nullable
     public final BtreeNode childOrNull(final int index) {
-        //need it in order to exit while loop in
-        // {@link com.lightbox.jmkv.btree.Btree#put(Integer, String)} method
-        if (index >= this.childrenSize.get()) {
+        if (index >= this.childrenSize.get() || index < 0) {
             return null;
         }
         return this.children[index];

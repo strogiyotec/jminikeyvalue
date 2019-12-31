@@ -38,7 +38,7 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public int size() {
-        return 0;
+        return this.size.get();
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public boolean containsKey(final Object key) {
-        return false;
+        return this.get(key) != null;
     }
 
     @Override
@@ -68,16 +68,10 @@ public final class Btree implements Map<Integer, String> {
             }
             //if in right child
             if (key > node.lastKey().key) {
-                //why ?
-                if (node.children() > node.keys()) {
-                    node = node.child(node.keys());
-                } else {
-                    node = null;
-                }
+                node = node.childOrNull(node.children() - 1);
                 continue;
             }
             //if among keys of current node
-            final int last = node.keys() - 1;
             final BtreeSearch search = new BtreeSearch(node, key);
             if (search.found()) {
                 return node.key(search.position()).value;
@@ -121,7 +115,7 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public void clear() {
-
+        this.root = null;
     }
 
     @Override
@@ -209,7 +203,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Min amount of children
      */
     private int minChildren() {
-        return this.branchingNumber + 1;
+        return this.branchingNumber;
     }
 
     /**
