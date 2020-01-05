@@ -1,5 +1,7 @@
 package com.lightbox.jmkv.btree;
 
+import com.lightbox.jmkv.ImmutableEntry;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -24,8 +26,9 @@ public final class Btree implements Map<Integer, String> {
 
     /**
      * Reference to root.
+     * Protected for testing
      */
-    private BtreeNode root;
+    protected BtreeNode root;
 
     /**
      * Ctor.
@@ -57,8 +60,24 @@ public final class Btree implements Map<Integer, String> {
     }
 
     @Override
-    public String get(final Object kKey) {
-        final Integer key = (Integer) kKey;
+    public String get(final Object key) {
+        @SuppressWarnings("LineLength") final ImmutableEntry<BtreeNode, Integer> entry = this.search((Integer) key);
+        if (entry != null) {
+            return entry.getKey().key(entry.getValue()).value;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Search given key in the Btree.
+     *
+     * @param key Key to search
+     * @return Entry where Key is node with given key
+     * and Value is position of given key
+     * Null if key doesn't exist
+     */
+    private ImmutableEntry<BtreeNode, Integer> search(final Integer key) {
         BtreeNode node = this.root;
         while (node != null) {
             //if in left child
@@ -74,9 +93,10 @@ public final class Btree implements Map<Integer, String> {
             //if among keys of current node
             final BtreeSearch search = new BtreeSearch(node, key);
             if (search.found()) {
-                return node.key(search.position()).value;
+                return new ImmutableEntry<>(node, search.position());
             } else {
-                if (this.searchInNextChild(node, search.position())) {
+                //if key between first and last child
+                if (this.betweenFirstAndLast(node, search.position())) {
                     node = node.child(search.position());
                     continue;
                 }
@@ -95,7 +115,6 @@ public final class Btree implements Map<Integer, String> {
                     key,
                     value
             );
-            return value;
         } else {
             this.put(new NodeKey(key, value));
         }
@@ -105,7 +124,12 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public String remove(final Object key) {
-        return null;
+        @SuppressWarnings("LineLength") final ImmutableEntry<BtreeNode, Integer> entry = this.search((Integer) key);
+        if (entry != null) {
+            return null;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -186,7 +210,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Max amount of keys
      */
     private int maxKeys() {
-        return this.branchingNumber * 2;
+        return (this.branchingNumber * 2) - 1;
     }
 
     /**
@@ -195,7 +219,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Min amount of children
      */
     private int minChildren() {
-        return this.branchingNumber;
+        return this.branchingNumber + 1;
     }
 
     /**
@@ -220,7 +244,7 @@ public final class Btree implements Map<Integer, String> {
      */
     private void split(final BtreeNode node) {
         final int keys = node.keys();
-        final int middle = keys / 2;
+        final int middle = keys / 2 - 1;
         final BtreeNode left = BtreeNode.subNode(node, 0, middle);
         final BtreeNode right = BtreeNode.subNode(node, middle + 1, keys);
         final NodeKey middleKey = node.key(middle);
@@ -239,17 +263,19 @@ public final class Btree implements Map<Integer, String> {
     }
 
     /**
-     * Check if key in the next child.
+     * Check if key is between the first and the lst child.
      *
      * @param node           Node with keys
      * @param searchPosition Search result
      * @return True if need to search key in next child
      */
-    private boolean searchInNextChild(
+    private boolean betweenFirstAndLast(
             final BtreeNode node,
             final int searchPosition
     ) {
         final int last = node.keys() - 1;
+        //search is equal to last if key was bigger
+        // than middle element if node
         return searchPosition <= last && searchPosition < node.children();
     }
 
