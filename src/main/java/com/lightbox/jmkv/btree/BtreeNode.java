@@ -152,7 +152,7 @@ class BtreeNode {
                         index,
                         this.keys,
                         index + 1,
-                        this.keysSize.get() - index
+                        this.keysSize.getAndIncrement() - index
                 );
                 this.keys[index] = entry;
             }
