@@ -244,7 +244,7 @@ public final class Btree implements Map<Integer, String> {
      */
     private void split(final BtreeNode node) {
         final int keys = node.keys();
-        final int middle = keys / 2 - 1;
+        final int middle = keys / 2;
         final BtreeNode left = BtreeNode.subNode(node, 0, middle);
         final BtreeNode right = BtreeNode.subNode(node, middle + 1, keys);
         final NodeKey middleKey = node.key(middle);
