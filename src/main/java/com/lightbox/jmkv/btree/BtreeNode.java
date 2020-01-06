@@ -142,7 +142,6 @@ class BtreeNode {
                     break;
                 }
             }
-
             if (index == this.keysSize.get()) {
                 this.keys[this.keysSize.getAndIncrement()] = entry;
             } else {
@@ -307,5 +306,25 @@ class BtreeNode {
             }
         }
         return deleted;
+    }
+
+    /**
+     * Delete key by position.
+     *
+     * @param keyPosition Position of key
+     */
+    public final void removeKey(final int keyPosition) {
+        if (keyPosition == this.keysSize.get() - 1) {
+            this.keys[this.keysSize.decrementAndGet()] = null;
+        } else {
+            System.arraycopy(
+                    this.keys,
+                    keyPosition + 1,
+                    this.keys,
+                    keyPosition,
+                    this.keysSize.get() - 1 - keyPosition
+            );
+            this.keys[this.keysSize.decrementAndGet()] = null;
+        }
     }
 }

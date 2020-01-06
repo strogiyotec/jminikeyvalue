@@ -9,13 +9,13 @@ import java.util.stream.IntStream;
 /**
  * Test {@link com.lightbox.jmkv.btree.Btree} class.
  */
+@SuppressWarnings("MagicNumber")
 public final class BtreeTest {
 
     /**
      * Test put method of {@link Btree}.
      */
     @Test
-    @SuppressWarnings("MagicNumber")
     public void testPutAndGet() {
         final Btree btree = new Btree(2);
         for (int i = 1; i <= 17; i++) {
@@ -31,6 +31,9 @@ public final class BtreeTest {
         Assert.assertNull(btree.get(0));
     }
 
+    /**
+     * Test that node was split after overflow.
+     */
     @Test
     public void testSplit() {
         final Btree btree = new Btree(2);
