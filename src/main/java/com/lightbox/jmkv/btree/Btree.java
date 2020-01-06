@@ -124,13 +124,9 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public String remove(final Object key) {
-        @SuppressWarnings("LineLength") final ImmutableEntry<BtreeNode, Integer> entry = this.search((Integer) key);
-        if (entry != null) {
-            return null;
-        } else {
-            return null;
-        }
+        return null;
     }
+
 
     @Override
     public void putAll(final Map<? extends Integer, ? extends String> map) {
