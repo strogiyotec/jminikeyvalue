@@ -327,4 +327,22 @@ class BtreeNode {
             this.keys[this.keysSize.decrementAndGet()] = null;
         }
     }
+
+    public final int indexOfNode(final BtreeNode node) {
+        for (int i = 0; i < this.childrenSize.get(); i++) {
+            if (this.children[i] == node) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public final int indexOfKey(final NodeKey key) {
+        final BtreeSearch btreeSearch = new BtreeSearch(this, key);
+        if (btreeSearch.found()) {
+            return btreeSearch.position();
+        } else {
+            return -1;
+        }
+    }
 }
