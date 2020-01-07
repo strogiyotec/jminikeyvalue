@@ -3,7 +3,7 @@ package com.lightbox.jmkv.btree;
 /**
  * Search key in BtreeNode.
  */
-public class BtreeSearch {
+class BtreeSearch {
 
     /**
      * True if key was found.
@@ -60,7 +60,7 @@ public class BtreeSearch {
      * @param node Node with keys
      * @param key  Key to search
      */
-    private BtreeSearch(final BtreeNode node, final NodeKey key) {
+    public BtreeSearch(final BtreeNode node, final NodeKey key) {
         this(
                 node,
                 key.key
