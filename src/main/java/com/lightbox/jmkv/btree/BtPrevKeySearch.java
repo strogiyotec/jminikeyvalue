@@ -1,14 +1,15 @@
 package com.lightbox.jmkv.btree;
 
 /**
- * Find index of previous key.
- * This key should be less or equal to given key
+ * Find index of prev key.
+ * Key in position should be bigger or
+ * equal to given key
  * For example:
  * Keys: 2,4,7,9,11,15,17,21
  * Search key:12
- * Previous position will be 4 - position of 11
+ * Previous position will be 4 - position of 15 minus 1
  */
-public final class BtreePrevKeySearch extends BtreeSearch {
+public final class BtPrevKeySearch extends BtreeSearch {
 
     /**
      * Ctor.
@@ -16,7 +17,7 @@ public final class BtreePrevKeySearch extends BtreeSearch {
      * @param node Node
      * @param key  Key to search
      */
-    public BtreePrevKeySearch(
+    public BtPrevKeySearch(
             final BtreeNode node,
             final Integer key
     ) {
@@ -25,7 +26,7 @@ public final class BtreePrevKeySearch extends BtreeSearch {
                 key,
                 1,
                 node.keys(),
-                BtreePrevKeySearch::search
+                BtPrevKeySearch::search
         );
     }
 
@@ -35,7 +36,7 @@ public final class BtreePrevKeySearch extends BtreeSearch {
      * @param node Node
      * @param key  Key to search
      */
-    public BtreePrevKeySearch(
+    public BtPrevKeySearch(
             final BtreeNode node,
             final NodeKey key
     ) {
@@ -44,7 +45,7 @@ public final class BtreePrevKeySearch extends BtreeSearch {
                 key.key,
                 1,
                 node.keys(),
-                BtreePrevKeySearch::search
+                BtPrevKeySearch::search
         );
     }
 
@@ -74,6 +75,6 @@ public final class BtreePrevKeySearch extends BtreeSearch {
                 return new BtreeSearch(true, mid - 1);
             }
         }
-        return new BtreeSearch(false, low);
+        return new BtreeSearch(true, node.keys() - 1);
     }
 }
