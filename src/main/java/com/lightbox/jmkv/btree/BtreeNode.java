@@ -81,6 +81,8 @@ class BtreeNode {
         );
     }
 
+    //TODO move to dif class
+
     /**
      * Create new BtreeNode.
      * Move all keys from fromIndex to toIndex to new node
@@ -136,7 +138,7 @@ class BtreeNode {
             this.keys[this.keysSize.getAndIncrement()] = entry;
         } else {
             int index;
-            //rewrite to binary search
+            //TODO rewrite to binary search
             for (index = 0; index < this.keysSize.get(); index++) {
                 if (this.keys[index].compareTo(entry) >= 0) {
                     break;
@@ -198,6 +200,14 @@ class BtreeNode {
      */
     public final BtreeNode child(final int index) {
         return this.children[index];
+    }
+
+    public final BtreeNode greatestChild() {
+        BtreeNode node = this;
+        while (node.hasChildren()) {
+            node = node.children[node.childrenSize.get() - 1];
+        }
+        return node;
     }
 
     /**
@@ -308,12 +318,31 @@ class BtreeNode {
         return deleted;
     }
 
+    public final BtreeNode removeChild(final int position) {
+        final BtreeNode removed = this.children[position];
+        if (position == this.childrenSize.get() - 1) {
+            this.children[this.childrenSize.decrementAndGet()] = null;
+        } else {
+            System.arraycopy(
+                    this.children,
+                    position + 1,
+                    this.children,
+                    position,
+                    this.childrenSize.get() - 1 - position
+            );
+            this.children[this.childrenSize.decrementAndGet()] = null;
+        }
+        return removed;
+    }
+
     /**
      * Delete key by position.
      *
      * @param keyPosition Position of key
+     * @return Removed key
      */
-    public final void removeKey(final int keyPosition) {
+    public final NodeKey removeKey(final int keyPosition) {
+        final NodeKey removed = this.keys[keyPosition];
         if (keyPosition == this.keysSize.get() - 1) {
             this.keys[this.keysSize.decrementAndGet()] = null;
         } else {
@@ -326,8 +355,15 @@ class BtreeNode {
             );
             this.keys[this.keysSize.decrementAndGet()] = null;
         }
+        return removed;
     }
 
+    /**
+     * Search node among children.
+     *
+     * @param node Node to search
+     * @return Index of node or -1 if not found
+     */
     public final int indexOfNode(final BtreeNode node) {
         for (int i = 0; i < this.childrenSize.get(); i++) {
             if (this.children[i] == node) {
@@ -337,6 +373,12 @@ class BtreeNode {
         return -1;
     }
 
+    /**
+     * Search key amount keys.
+     *
+     * @param key Key to search
+     * @return Index of key or -1 if not found
+     */
     public final int indexOfKey(final NodeKey key) {
         final BtreeSearch btreeSearch = new BtreeSearch(this, key);
         if (btreeSearch.found()) {
@@ -344,5 +386,43 @@ class BtreeNode {
         } else {
             return -1;
         }
+    }
+
+    /**
+     * Check that node has keys.
+     *
+     * @return True of node has keys
+     */
+    public final boolean hasKeys() {
+        return this.keysSize.get() > 0;
+    }
+
+    /**
+     * Copy all keys.
+     *
+     * @param other Node from which to copy
+     */
+    public final void addAllKeys(final BtreeNode other) {
+        for (int i = 0; i < other.keysSize.get(); i++) {
+            this.addKey(other.keys[i]);
+        }
+    }
+
+    /**
+     * Copy all children.
+     *
+     * @param other Node from which to copy
+     */
+    public final void addAllChildren(final BtreeNode other) {
+        for (int i = 0; i < other.childrenSize.get(); i++) {
+            this.addChild(other.children[i]);
+        }
+    }
+
+    /**
+     * Delete reference to parent.
+     */
+    public final void removeParent() {
+        this.parent = null;
     }
 }
