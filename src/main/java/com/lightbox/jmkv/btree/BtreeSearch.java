@@ -3,7 +3,7 @@ package com.lightbox.jmkv.btree;
 /**
  * Search key in BtreeNode.
  */
-public final class BtreeSearch {
+public class BtreeSearch {
 
     /**
      * True if key was found.
@@ -25,7 +25,31 @@ public final class BtreeSearch {
      * @param key  Key to search
      */
     public BtreeSearch(final BtreeNode node, final Integer key) {
-        final BtreeSearch btreeSearch = searchKey(node, 0, node.keys(), key);
+        this(
+                node,
+                key,
+                0,
+                node.keys(),
+                new SearchAlg.DefaultBinarySearch()
+        );
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param node         Node with keys
+     * @param key          Key to search
+     * @param positionFrom Starting position for search
+     * @param positionTo   Ending position for search
+     */
+    public BtreeSearch(
+            final BtreeNode node,
+            final Integer key,
+            final int positionFrom,
+            final int positionTo,
+            final SearchAlg searchAlg
+    ) {
+        final BtreeSearch btreeSearch = searchAlg.searchKey(node, positionFrom, positionTo, key);
         this.found = btreeSearch.found;
         this.position = btreeSearch.position;
     }
@@ -36,7 +60,7 @@ public final class BtreeSearch {
      * @param node Node with keys
      * @param key  Key to search
      */
-    public BtreeSearch(final BtreeNode node, final NodeKey key) {
+    private BtreeSearch(final BtreeNode node, final NodeKey key) {
         this(
                 node,
                 key.key
@@ -49,7 +73,7 @@ public final class BtreeSearch {
      * @param found    Found
      * @param position Position
      */
-    private BtreeSearch(final boolean found, final int position) {
+    public BtreeSearch(final boolean found, final int position) {
         this.found = found;
         this.position = position;
     }
@@ -59,7 +83,7 @@ public final class BtreeSearch {
      *
      * @return True if found
      */
-    public boolean found() {
+    public final boolean found() {
         return this.found;
     }
 
@@ -71,38 +95,8 @@ public final class BtreeSearch {
      *
      * @return Position
      */
-    public int position() {
+    public final int position() {
         return this.position;
     }
 
-    /**
-     * Search Key in array using binary search.
-     *
-     * @param node      Node with keys
-     * @param indexFrom Start position
-     * @param indexTo   End position
-     * @param key       Key to find
-     * @return BtreeSearch with search result
-     */
-    private static BtreeSearch searchKey(
-            final BtreeNode node,
-            final int indexFrom,
-            final int indexTo,
-            final Integer key
-    ) {
-        int low = indexFrom;
-        int high = indexTo - 1;
-        while (low <= high) {
-            final int mid = (low + high) >>> 1;
-            final Integer midVal = node.key(mid).key;
-            if (midVal < key) {
-                low = mid + 1;
-            } else if (midVal > key) {
-                high = mid - 1;
-            } else {
-                return new BtreeSearch(true, mid);
-            }
-        }
-        return new BtreeSearch(false, low);
-    }
 }
