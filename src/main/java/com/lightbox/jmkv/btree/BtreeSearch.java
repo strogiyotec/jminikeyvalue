@@ -33,6 +33,19 @@ public final class BtreeSearch {
     /**
      * Ctor.
      *
+     * @param node Node with keys
+     * @param key  Key to search
+     */
+    public BtreeSearch(final BtreeNode node, final NodeKey key) {
+        this(
+                node,
+                key.key
+        );
+    }
+
+    /**
+     * Ctor.
+     *
      * @param found    Found
      * @param position Position
      */
