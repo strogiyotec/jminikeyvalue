@@ -101,6 +101,22 @@ public final class BtreeNodeTest {
     }
 
     /**
+     * Test remove parent method.
+     */
+    @Test
+    public void testRemoveParent() {
+        final BtreeNode node =
+                new BtreeNode(
+                        new BtreeNode(5, 5),
+                        5,
+                        0
+                );
+        Assert.assertTrue(node.hasParent());
+        node.removeParent();
+        Assert.assertFalse(node.hasParent());
+    }
+
+    /**
      * Generate node for test.
      *
      * @return Node
