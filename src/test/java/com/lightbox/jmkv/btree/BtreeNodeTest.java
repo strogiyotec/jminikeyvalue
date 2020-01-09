@@ -36,7 +36,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testKeysSize() {
-        final BtreeNode node = this.createNode();
+        final BtreeNode node = this.createNode(1, 6);
         Assert.assertThat(node.keys(), CoreMatchers.is(6));
     }
 
@@ -45,7 +45,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testRemoveMiddleKey() {
-        final BtreeNode node = this.createNode();
+        final BtreeNode node = this.createNode(1, 6);
         node.removeKey(2);
         final AtomicInteger cnt = new AtomicInteger(0);
         Arrays.asList(1, 2, 4, 5, 6)
@@ -65,7 +65,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testRemoveFirstKey() {
-        final BtreeNode node = createNode();
+        final BtreeNode node = createNode(1, 6);
         node.removeKey(0);
         final AtomicInteger cnt = new AtomicInteger(0);
         Arrays.asList(2, 3, 4, 5, 6)
@@ -85,7 +85,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testRemoveLastKey() {
-        final BtreeNode node = createNode();
+        final BtreeNode node = createNode(1, 6);
         node.removeKey(5);
         final AtomicInteger cnt = new AtomicInteger(0);
         Arrays.asList(1, 2, 3, 4, 5)
@@ -97,6 +97,20 @@ public final class BtreeNodeTest {
                                 )
                         )
                 );
+
+    }
+
+    /**
+     * Test add all keys from one node to another.
+     */
+    @Test
+    public void testAddAllKeys() {
+        final BtreeNode fromNode = createNode(0, 5);
+        final BtreeNode toNode = new BtreeNode(6, 0);
+        toNode.addAllKeys(fromNode);
+        for (int i = 0; i < 6; i++) {
+            Assert.assertThat(toNode.key(i).key, CoreMatchers.is(i));
+        }
 
     }
 
@@ -121,9 +135,11 @@ public final class BtreeNodeTest {
      *
      * @return Node
      */
-    private BtreeNode createNode() {
+    private BtreeNode createNode(final int firstValue, final int lastValue) {
         final BtreeNode node = new BtreeNode(6, 0);
-        IntStream.rangeClosed(1, 6).forEach(value -> node.addKey(value, ""));
+        IntStream
+                .rangeClosed(firstValue, lastValue)
+                .forEach(value -> node.addKey(value, ""));
         return node;
     }
 }
