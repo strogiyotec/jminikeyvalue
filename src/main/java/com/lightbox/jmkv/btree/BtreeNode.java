@@ -202,6 +202,12 @@ class BtreeNode {
         return this.children[index];
     }
 
+    /**
+     * Get greatest from given node.
+     * Search the last right child
+     *
+     * @return Greatest child
+     */
     public final BtreeNode greatestChild() {
         BtreeNode node = this;
         while (node.hasChildren()) {
@@ -318,6 +324,12 @@ class BtreeNode {
         return deleted;
     }
 
+    /**
+     * Remove child in given position.
+     *
+     * @param position Position of child
+     * @return Removed child
+     */
     public final BtreeNode removeChild(final int position) {
         final BtreeNode removed = this.children[position];
         if (position == this.childrenSize.get() - 1) {

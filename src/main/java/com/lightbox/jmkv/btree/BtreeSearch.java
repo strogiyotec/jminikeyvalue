@@ -24,7 +24,7 @@ class BtreeSearch {
      * @param node Node with keys
      * @param key  Key to search
      */
-    public BtreeSearch(final BtreeNode node, final Integer key) {
+    BtreeSearch(final BtreeNode node, final Integer key) {
         this(
                 node,
                 key,
@@ -41,15 +41,22 @@ class BtreeSearch {
      * @param key          Key to search
      * @param positionFrom Starting position for search
      * @param positionTo   Ending position for search
+     * @param searchAlg    Search algorithm to use
      */
-    public BtreeSearch(
+    BtreeSearch(
             final BtreeNode node,
             final Integer key,
             final int positionFrom,
             final int positionTo,
             final SearchAlg searchAlg
     ) {
-        final BtreeSearch btreeSearch = searchAlg.searchKey(node, positionFrom, positionTo, key);
+        final BtreeSearch btreeSearch =
+                searchAlg.searchKey(
+                        node,
+                        positionFrom,
+                        positionTo,
+                        key
+                );
         this.found = btreeSearch.found;
         this.position = btreeSearch.position;
     }
@@ -60,7 +67,7 @@ class BtreeSearch {
      * @param node Node with keys
      * @param key  Key to search
      */
-    public BtreeSearch(final BtreeNode node, final NodeKey key) {
+    BtreeSearch(final BtreeNode node, final NodeKey key) {
         this(
                 node,
                 key.key
@@ -73,7 +80,7 @@ class BtreeSearch {
      * @param found    Found
      * @param position Position
      */
-    public BtreeSearch(final boolean found, final int position) {
+    BtreeSearch(final boolean found, final int position) {
         this.found = found;
         this.position = position;
     }

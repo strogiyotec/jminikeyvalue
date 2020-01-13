@@ -113,11 +113,18 @@ public final class BtreeNodeTest {
         }
     }
 
+    /**
+     * Test add all children from one node to another.
+     */
     @Test
     public void testAddAllChildren() {
         final int amountOfChildren = 2;
         final int amountOfKeys = 2;
-        final BtreeNode nodeFrom = this.nodeWithChildren(amountOfChildren, amountOfKeys);
+        final BtreeNode nodeFrom =
+                this.nodeWithChildren(
+                        amountOfChildren,
+                        amountOfKeys
+                );
         final BtreeNode nodeTo = new BtreeNode(0, amountOfChildren);
         nodeTo.addAllChildren(nodeFrom);
         for (int i = 0; i < amountOfChildren; i++) {
@@ -173,7 +180,10 @@ public final class BtreeNodeTest {
      * @param keysPreChild Amount of keys in each child
      * @return Node
      */
-    private BtreeNode nodeWithChildren(final int children, final int keysPreChild) {
+    private BtreeNode nodeWithChildren(
+            final int children,
+            final int keysPreChild
+    ) {
         final BtreeNode node = new BtreeNode(0, children);
         for (int i = 0; i < children; i++) {
             final BtreeNode child = new BtreeNode(keysPreChild, 0);
