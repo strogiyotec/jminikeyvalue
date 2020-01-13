@@ -36,7 +36,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testKeysSize() {
-        final BtreeNode node = this.createNode(1, 6);
+        final BtreeNode node = this.nodeWithKeys(1, 6);
         Assert.assertThat(node.keys(), CoreMatchers.is(6));
     }
 
@@ -45,7 +45,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testRemoveMiddleKey() {
-        final BtreeNode node = this.createNode(1, 6);
+        final BtreeNode node = this.nodeWithKeys(1, 6);
         node.removeKey(2);
         final AtomicInteger cnt = new AtomicInteger(0);
         Arrays.asList(1, 2, 4, 5, 6)
@@ -65,7 +65,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testRemoveFirstKey() {
-        final BtreeNode node = createNode(1, 6);
+        final BtreeNode node = nodeWithKeys(1, 6);
         node.removeKey(0);
         final AtomicInteger cnt = new AtomicInteger(0);
         Arrays.asList(2, 3, 4, 5, 6)
@@ -85,7 +85,7 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testRemoveLastKey() {
-        final BtreeNode node = createNode(1, 6);
+        final BtreeNode node = nodeWithKeys(1, 6);
         node.removeKey(5);
         final AtomicInteger cnt = new AtomicInteger(0);
         Arrays.asList(1, 2, 3, 4, 5)
@@ -105,13 +105,32 @@ public final class BtreeNodeTest {
      */
     @Test
     public void testAddAllKeys() {
-        final BtreeNode fromNode = createNode(0, 5);
+        final BtreeNode fromNode = nodeWithKeys(0, 5);
         final BtreeNode toNode = new BtreeNode(6, 0);
         toNode.addAllKeys(fromNode);
         for (int i = 0; i < 6; i++) {
             Assert.assertThat(toNode.key(i).key, CoreMatchers.is(i));
         }
+    }
 
+    @Test
+    public void testAddAllChildren() {
+        final int amountOfChildren = 2;
+        final int amountOfKeys = 2;
+        final BtreeNode nodeFrom = this.nodeWithChildren(amountOfChildren, amountOfKeys);
+        final BtreeNode nodeTo = new BtreeNode(0, amountOfChildren);
+        nodeTo.addAllChildren(nodeFrom);
+        for (int i = 0; i < amountOfChildren; i++) {
+            final BtreeNode child = nodeFrom.child(i);
+            for (int j = 0; j < amountOfKeys; j++) {
+                Assert.assertThat(
+                        child.key(j),
+                        CoreMatchers.is(
+                                new NodeKey(j, "")
+                        )
+                );
+            }
+        }
     }
 
     /**
@@ -131,15 +150,38 @@ public final class BtreeNodeTest {
     }
 
     /**
-     * Generate node for test.
+     * Generate node for test with keys.
      *
+     * @param firstValue Value of the first key
+     * @param lastValue  Value of the last key
      * @return Node
      */
-    private BtreeNode createNode(final int firstValue, final int lastValue) {
+    private BtreeNode nodeWithKeys(final int firstValue, final int lastValue) {
         final BtreeNode node = new BtreeNode(6, 0);
         IntStream
                 .rangeClosed(firstValue, lastValue)
                 .forEach(value -> node.addKey(value, ""));
+        return node;
+    }
+
+    /**
+     * Generate node for test with children.
+     * Generated node doesn't have keys
+     * Generated children have keys but don't have children
+     *
+     * @param children     Amount of children in generated node
+     * @param keysPreChild Amount of keys in each child
+     * @return Node
+     */
+    private BtreeNode nodeWithChildren(final int children, final int keysPreChild) {
+        final BtreeNode node = new BtreeNode(0, children);
+        for (int i = 0; i < children; i++) {
+            final BtreeNode child = new BtreeNode(keysPreChild, 0);
+            for (int j = 0; j < keysPreChild; j++) {
+                child.addKey(j, "");
+            }
+            node.addChild(child);
+        }
         return node;
     }
 }
