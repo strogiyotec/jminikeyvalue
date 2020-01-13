@@ -336,8 +336,8 @@ public final class Btree implements Map<Integer, String> {
     private void split(final BtreeNode node) {
         final int keys = node.keys();
         final int middle = keys / 2;
-        final BtreeNode left = BtreeNode.subNode(node, 0, middle);
-        final BtreeNode right = BtreeNode.subNode(node, middle + 1, keys);
+        final BtreeNode left = new SplitBtn(node, 0, middle);
+        final BtreeNode right = new SplitBtn(node, middle + 1, keys);
         final NodeKey middleKey = node.key(middle);
         if (!node.hasParent()) {
             this.splitRoot(left, right, middleKey);

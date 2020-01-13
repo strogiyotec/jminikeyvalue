@@ -81,41 +81,6 @@ class BtreeNode {
         );
     }
 
-    //TODO move to dif class
-
-    /**
-     * Create new BtreeNode.
-     * Move all keys from fromIndex to toIndex to new node
-     * Move all children from fromIndex to toIndex inclusive to new node
-     * Can't use ctor. because {@link BtreeNode}
-     * already has ctor with given params
-     *
-     * @param parent    Reference to parent
-     * @param fromIndex Index from
-     * @param toIndex   Index to
-     * @return New node
-     */
-    static BtreeNode subNode(
-            final BtreeNode parent,
-            final int fromIndex,
-            final int toIndex
-    ) {
-        final BtreeNode node =
-                new BtreeNode(
-                        parent.keysSize.get(),
-                        parent.childrenSize.get()
-                );
-        for (int i = fromIndex; i < toIndex; i++) {
-            node.addKey(parent.key(i));
-        }
-        if (parent.hasChildren()) {
-            for (int i = fromIndex; i <= toIndex; i++) {
-                node.addChild(parent.child(i));
-            }
-        }
-        return node;
-    }
-
     /**
      * Add key and sort array of keys.
      *
