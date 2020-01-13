@@ -5,6 +5,7 @@ Java implementation of [lsm-tree](https://en.wikipedia.org/wiki/Log-structured_m
 This repository will contain three implementations of Trees (Binary,AVL,Red black) using [OOP principles](https://www.elegantobjects.org/#principles)
 
 ## TODO
+
  - ~~Implement Binary tree~~ (done)
  - ~~Implement AVL Tree~~(done)
  ~ Implement B-Tree
@@ -33,4 +34,5 @@ Some notes:
  - Root - Node without parent
  - Internal node - Any node with at least one child
  - Leaf node(External node) - Node without child
- 
+ - Predecessor - For an element X, its in-order predecessor is defined as the largest key smaller than X.
+ - Successor - For an element X, its in-order successor is defined as the smallest key larger than X.
