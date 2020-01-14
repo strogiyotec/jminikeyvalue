@@ -44,4 +44,18 @@ public final class BtreeTest {
         Assert.assertThat(btree.root.child(0).key(1).key, CoreMatchers.is(3));
         Assert.assertThat(btree.root.child(1).key(0).key, CoreMatchers.is(5));
     }
+
+    /**
+     * Test remove key from root.
+     */
+    @Test
+    public void testRemoveFromRoot() {
+        final Btree btree = new Btree(2);
+        IntStream.of(3, 1, 5).forEach(value -> btree.put(value, ""));
+        btree.remove(1);
+        Assert.assertThat(btree.root.keys(), CoreMatchers.is(2));
+        Assert.assertThat(btree.root.key(0).key, CoreMatchers.is(3));
+        Assert.assertThat(btree.root.key(1).key, CoreMatchers.is(5));
+
+    }
 }
