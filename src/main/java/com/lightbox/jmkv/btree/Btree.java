@@ -98,14 +98,13 @@ public final class Btree implements Map<Integer, String> {
     private String remove(final BtreeNode node, final Integer keyPosition) {
         final NodeKey removed = node.removeKey(keyPosition);
         if (!node.hasChildren()) {
-            if (node.hasParent() && node.keys() < minKeys()) {
+            if (node.hasParent() && node.keys() < this.minKeys()) {
                 this.combined(node);
             } else if (!node.hasParent() && !node.hasKeys()) {
                 this.root = null;
             }
         } else {
-            final BtreeNode lesser = node.child(keyPosition);
-            final BtreeNode greatest = lesser.greatestChild();
+            final BtreeNode greatest = node.child(keyPosition).greatestChild();
             final NodeKey replaced = greatest.removeKey(greatest.keys() - 1);
             node.addKey(replaced);
             if (greatest.hasParent() && greatest.keys() < this.minKeys()) {
@@ -125,12 +124,10 @@ public final class Btree implements Map<Integer, String> {
         final int left = index - 1;
         final int right = index + 1;
         BtreeNode rightNeighbour = null;
-        int rightNeighbourSize = -this.minChildren();
         if (right < parent.children()) {
             rightNeighbour = parent.child(right);
-            rightNeighbourSize = rightNeighbour.keys();
         }
-        if (rightNeighbour != null && rightNeighbourSize > this.minKeys()) {
+        if (rightNeighbour != null && rightNeighbour.keys() > this.minKeys()) {
             final NodeKey firstKey = rightNeighbour.firstKey();
             final BtPrevKeySearch search = new BtPrevKeySearch(parent, firstKey);
             final NodeKey parentKey = parent.removeKey(search.position());
@@ -142,16 +139,14 @@ public final class Btree implements Map<Integer, String> {
             }
         } else {
             BtreeNode leftNeighbour = null;
-            int leftNeighbourSize = -this.minChildren();
             if (left >= 0) {
                 leftNeighbour = parent.child(left);
-                leftNeighbourSize = leftNeighbour.keys();
             }
-            if (leftNeighbour != null && leftNeighbourSize >= this.minKeys()) {
+            if (leftNeighbour != null && leftNeighbour.keys() >= this.minKeys()) {
                 final NodeKey lastKey = leftNeighbour.lastKey();
                 final BtNextKeySearch search = new BtNextKeySearch(parent, lastKey);
                 final NodeKey parentKey = parent.removeKey(search.position());
-                final NodeKey neighbourKey = leftNeighbour.removeKey(leftNeighbourSize - 1);
+                final NodeKey neighbourKey = leftNeighbour.removeKey(leftNeighbour.keys() - 1);
                 node.addKey(parentKey);
                 parent.addKey(neighbourKey);
             } else if (rightNeighbour != null && parent.hasKeys()) {
@@ -292,7 +287,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Min amount of keys
      */
     private int minKeys() {
-        return this.branchingNumber;
+        return this.branchingNumber - 1;
     }
 
     /**
@@ -310,7 +305,7 @@ public final class Btree implements Map<Integer, String> {
      * @return Min amount of children
      */
     private int minChildren() {
-        return this.branchingNumber + 1;
+        return this.branchingNumber;
     }
 
     /**
