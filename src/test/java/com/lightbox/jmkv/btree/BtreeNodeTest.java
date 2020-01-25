@@ -18,7 +18,7 @@ public final class BtreeNodeTest {
      * Test that keys are stored in sorted order.
      */
     @Test
-    public void testSorted() {
+    public void testSortedKeys() {
         final BtreeNode node = new BtreeNode(6, 0);
         for (int i = 0; i < 6; i++) {
             if (i != 3) {
@@ -57,7 +57,6 @@ public final class BtreeNodeTest {
                                 )
                         )
                 );
-
     }
 
     /**
@@ -86,7 +85,7 @@ public final class BtreeNodeTest {
     @Test
     public void testRemoveLastKey() {
         final BtreeNode node = nodeWithKeys(1, 6);
-        node.removeKey(5);
+        node.removeLastKey();
         final AtomicInteger cnt = new AtomicInteger(0);
         Arrays.asList(1, 2, 3, 4, 5)
                 .forEach(value ->
@@ -138,6 +137,27 @@ public final class BtreeNodeTest {
                 );
             }
         }
+    }
+
+    /**
+     * Test index of child.
+     * Add search child in position 2 and then search itgits
+     */
+    @Test
+    public void testIndexOfChildren() {
+        final BtreeNode main = new BtreeNode(2, 4);
+        final BtreeNode searchNode = new BtreeNode(2, 4);
+        searchNode.addKey(new NodeKey(2, ""));
+        for (int i = 0; i < 4; i++) {
+            if (i == 2) {
+                main.addChild(searchNode);
+            } else {
+                final BtreeNode node = new BtreeNode(2, 4);
+                node.addKey(new NodeKey(i, ""));
+                main.addChild(node);
+            }
+        }
+        Assert.assertThat(main.indexOfNode(searchNode), CoreMatchers.is(2));
     }
 
     /**
