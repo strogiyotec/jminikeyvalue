@@ -171,7 +171,7 @@ class BtreeNode {
      * Get greatest from given node.
      * Search the last right child
      *
-     * @return Greatest child
+     * @return Greatest child or Current node if it doesn't have children
      */
     public final BtreeNode greatestChild() {
         BtreeNode node = this;
