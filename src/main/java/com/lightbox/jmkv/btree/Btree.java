@@ -28,6 +28,7 @@ public final class Btree implements Map<Integer, String> {
      * Reference to root.
      * Protected for testing
      */
+    @SuppressWarnings("VisibilityModifier")
     protected BtreeNode root;
 
     /**
@@ -87,6 +88,7 @@ public final class Btree implements Map<Integer, String> {
 
     @Override
     public String remove(final Object key) {
+        //key is node , value is position
         @SuppressWarnings("LineLength") final ImmutableEntry<BtreeNode, Integer> entry = this.search((Integer) key);
         if (entry != null) {
             return this.remove(entry.getKey(), entry.getValue());
@@ -95,7 +97,17 @@ public final class Btree implements Map<Integer, String> {
         }
     }
 
-    private String remove(final BtreeNode node, final Integer keyPosition) {
+    /**
+     * Delete key from node.
+     *
+     * @param node        Node that contains value to delete
+     * @param keyPosition Position of key to be deleted
+     * @return Value of deleted key
+     */
+    private String remove(
+            final BtreeNode node,
+            final Integer keyPosition
+    ) {
         final NodeKey removed = node.removeKey(keyPosition);
         if (!node.hasChildren()) {
             if (node.hasParent() && node.keys() < this.minKeys()) {
@@ -105,8 +117,7 @@ public final class Btree implements Map<Integer, String> {
             }
         } else {
             final BtreeNode greatest = node.child(keyPosition).greatestChild();
-            final NodeKey replaced = greatest.removeKey(greatest.keys() - 1);
-            node.addKey(replaced);
+            node.addKey(greatest.removeLastKey());
             if (greatest.hasParent() && greatest.keys() < this.minKeys()) {
                 this.combined(greatest);
             }
@@ -330,7 +341,7 @@ public final class Btree implements Map<Integer, String> {
      */
     private void split(final BtreeNode node) {
         final int keys = node.keys();
-        final int middle = keys / 2;
+        final int middle = (keys >> 1) - 1;
         final BtreeNode left = new SplitBtn(node, 0, middle);
         final BtreeNode right = new SplitBtn(node, middle + 1, keys);
         final NodeKey middleKey = node.key(middle);

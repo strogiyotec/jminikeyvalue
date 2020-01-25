@@ -39,10 +39,10 @@ public final class BtreeTest {
         final Btree btree = new Btree(2);
         IntStream.of(3, 1, 5, 4).forEach(value -> btree.put(value, ""));
         Assert.assertThat(btree.root.keys(), CoreMatchers.is(1));
-        Assert.assertThat(btree.root.key(0).key, CoreMatchers.is(4));
+        Assert.assertThat(btree.root.key(0).key, CoreMatchers.is(3));
         Assert.assertThat(btree.root.child(0).key(0).key, CoreMatchers.is(1));
-        Assert.assertThat(btree.root.child(0).key(1).key, CoreMatchers.is(3));
-        Assert.assertThat(btree.root.child(1).key(0).key, CoreMatchers.is(5));
+        Assert.assertThat(btree.root.child(1).key(0).key, CoreMatchers.is(4));
+        Assert.assertThat(btree.root.child(1).key(1).key, CoreMatchers.is(5));
     }
 
     /**
