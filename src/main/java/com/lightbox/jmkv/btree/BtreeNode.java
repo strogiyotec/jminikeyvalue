@@ -336,6 +336,17 @@ class BtreeNode {
     }
 
     /**
+     * Remove the last key from node.
+     *
+     * @return Removed key
+     */
+    public final NodeKey removeLastKey() {
+        final NodeKey removed = this.keys[this.keysSize.get() - 1];
+        this.keys[this.keysSize.decrementAndGet()] = null;
+        return removed;
+    }
+
+    /**
      * Search node among children.
      *
      * @param node Node to search
