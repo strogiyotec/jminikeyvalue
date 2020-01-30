@@ -7,7 +7,7 @@ package com.lightbox.jmkv.btree;
  * For example:
  * Keys: 2,4,7,9,11,15,17,21
  * Search key:12
- * Previous position will be 5 - position of 15
+ * Next position will be 5 - position of 15
  */
 public final class BtNextKeySearch extends BtreeSearch {
 
