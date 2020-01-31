@@ -65,9 +65,9 @@ public final class BtreeNodeTest {
     @Test
     public void testRemoveFirstKey() {
         final BtreeNode node = nodeWithKeys(1, 6);
-        node.removeKey(0);
+        node.removeFirstKey();
         final AtomicInteger cnt = new AtomicInteger(0);
-        Arrays.asList(2, 3, 4, 5, 6)
+        Arrays.asList(2, 3, 4, 5,6)
                 .forEach(value ->
                         Assert.assertThat(
                                 value,

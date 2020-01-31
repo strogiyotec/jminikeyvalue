@@ -347,6 +347,23 @@ class BtreeNode {
     }
 
     /**
+     * Remove the first key from node.
+     *
+     * @return Removed key
+     */
+    public final NodeKey removeFirstKey() {
+        final NodeKey removed = this.keys[0];
+        System.arraycopy(
+                this.keys,
+                1,
+                this.keys,
+                0,
+                this.keysSize.decrementAndGet()
+        );
+        return removed;
+    }
+
+    /**
      * Search node among children.
      *
      * @param node Node to search
