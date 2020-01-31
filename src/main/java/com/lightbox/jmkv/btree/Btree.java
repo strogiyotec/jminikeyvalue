@@ -142,7 +142,7 @@ public final class Btree implements Map<Integer, String> {
             final NodeKey firstKey = rightNeighbour.firstKey();
             final TheoreticalKeyPosition search = new TheoreticalKeyPosition(parent, firstKey);
             final NodeKey parentKey = parent.removeKey(search.position());
-            final NodeKey neighborKey = rightNeighbour.removeKey(0);
+            final NodeKey neighborKey = rightNeighbour.removeFirstKey();
             node.addKey(parentKey);
             parent.addKey(neighborKey);
             if (rightNeighbour.hasChildren()) {
