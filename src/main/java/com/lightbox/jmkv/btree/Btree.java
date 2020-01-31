@@ -140,7 +140,7 @@ public final class Btree implements Map<Integer, String> {
         }
         if (rightNeighbour != null && rightNeighbour.keys() > this.minKeys()) {
             final NodeKey firstKey = rightNeighbour.firstKey();
-            final BtPrevKeySearch search = new BtPrevKeySearch(parent, firstKey);
+            final TheoreticalKeyPosition search = new TheoreticalKeyPosition(parent, firstKey);
             final NodeKey parentKey = parent.removeKey(search.position());
             final NodeKey neighborKey = rightNeighbour.removeKey(0);
             node.addKey(parentKey);
@@ -157,12 +157,12 @@ public final class Btree implements Map<Integer, String> {
                 final NodeKey lastKey = leftNeighbour.lastKey();
                 final BtNextKeySearch search = new BtNextKeySearch(parent, lastKey);
                 final NodeKey parentKey = parent.removeKey(search.position());
-                final NodeKey neighbourKey = leftNeighbour.removeKey(leftNeighbour.keys() - 1);
+                final NodeKey neighbourKey = leftNeighbour.removeLastKey();
                 node.addKey(parentKey);
                 parent.addKey(neighbourKey);
             } else if (rightNeighbour != null && parent.hasKeys()) {
                 final NodeKey firstKey = rightNeighbour.firstKey();
-                final BtPrevKeySearch search = new BtPrevKeySearch(parent, firstKey);
+                final TheoreticalKeyPosition search = new TheoreticalKeyPosition(parent, firstKey);
                 final NodeKey parentKey = parent.removeKey(search.position());
                 parent.removeChild(rightNeighbour);
                 node.addKey(parentKey);
