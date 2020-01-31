@@ -18,8 +18,12 @@ public final class TheoreticalKeyPositionTest {
         final BtreeNode node = new BtreeNode(2, 0);
         node.addKey(3, "");
         node.addKey(6, "");
-        final TheoreticalKeyPosition search = new TheoreticalKeyPosition(node, 2);
-        Assert.assertThat(search.position(), CoreMatchers.is(0));
+        final TheoreticalKeyPosition search =
+                new TheoreticalKeyPosition(node, 2);
+        Assert.assertThat(
+                search.position(),
+                CoreMatchers.is(0)
+        );
     }
 
     /**
@@ -30,8 +34,12 @@ public final class TheoreticalKeyPositionTest {
         final BtreeNode node = new BtreeNode(2, 0);
         node.addKey(6, "");
         node.addKey(7, "");
-        final TheoreticalKeyPosition search = new TheoreticalKeyPosition(node, 9);
-        Assert.assertThat(search.position(), CoreMatchers.is(1));
+        final TheoreticalKeyPosition search =
+                new TheoreticalKeyPosition(node, 9);
+        Assert.assertThat(
+                search.position(),
+                CoreMatchers.is(1)
+        );
     }
 
     /**
@@ -45,8 +53,12 @@ public final class TheoreticalKeyPositionTest {
         node.addKey(6, "");
         node.addKey(8, "");
         node.addKey(10, "");
-        final TheoreticalKeyPosition search = new TheoreticalKeyPosition(node, 7);
-        Assert.assertThat(search.position(), CoreMatchers.is(2));
+        final TheoreticalKeyPosition search =
+                new TheoreticalKeyPosition(node, 7);
+        Assert.assertThat(
+                search.position(),
+                CoreMatchers.is(2)
+        );
     }
 
     /**
@@ -60,7 +72,11 @@ public final class TheoreticalKeyPositionTest {
         for (int i = 0; i < 5; i++) {
             node.addKey(i, "");
         }
-        final TheoreticalKeyPosition search = new TheoreticalKeyPosition(node, 3);
-        Assert.assertThat(search.position(), CoreMatchers.is(2));
+        final TheoreticalKeyPosition search =
+                new TheoreticalKeyPosition(node, 3);
+        Assert.assertThat(
+                search.position(),
+                CoreMatchers.is(2)
+        );
     }
 }
