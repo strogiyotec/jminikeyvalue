@@ -5,7 +5,9 @@ import com.sun.istack.internal.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Node of Btree.
@@ -353,6 +355,7 @@ class BtreeNode {
      */
     public final NodeKey removeFirstKey() {
         final NodeKey removed = this.keys[0];
+        this.keys[0] = null;
         System.arraycopy(
                 this.keys,
                 1,
@@ -429,5 +432,13 @@ class BtreeNode {
      */
     public final void removeParent() {
         this.parent = null;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.stream(this.keys)
+                .filter(Objects::nonNull)
+                .map(nodeKey -> nodeKey.key.toString())
+                .collect(Collectors.joining(","));
     }
 }

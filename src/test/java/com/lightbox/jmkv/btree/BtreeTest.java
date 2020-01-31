@@ -56,6 +56,16 @@ public final class BtreeTest {
         Assert.assertThat(btree.root.keys(), CoreMatchers.is(2));
         Assert.assertThat(btree.root.key(0).key, CoreMatchers.is(3));
         Assert.assertThat(btree.root.key(1).key, CoreMatchers.is(5));
+    }
 
+    @SuppressWarnings("LineLength")
+    @Test
+    public void testRemoveInternalNodeKeyWithOneRightChild() {
+        final Btree btree = new Btree(2);
+        for (int i = 1; i <= 10; i++) {
+            btree.put(i, "");
+        }
+        btree.remove(8);
+        System.out.println(btree);
     }
 }
