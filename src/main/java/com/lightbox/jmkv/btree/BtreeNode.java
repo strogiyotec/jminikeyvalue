@@ -355,14 +355,14 @@ class BtreeNode {
      */
     public final NodeKey removeFirstKey() {
         final NodeKey removed = this.keys[0];
-        this.keys[0] = null;
         System.arraycopy(
                 this.keys,
                 1,
                 this.keys,
                 0,
-                this.keysSize.decrementAndGet()
+                this.keysSize.get() - 1
         );
+        this.keys[this.keysSize.decrementAndGet()] = null;
         return removed;
     }
 
