@@ -58,14 +58,52 @@ public final class BtreeTest {
         Assert.assertThat(btree.root.key(1).key, CoreMatchers.is(5));
     }
 
+    /**
+     * Test remove in internal node.
+     * Internal node has three child
+     * Before:
+     *       6 8(to be deleted)
+     *    5   7   9,10
+     * After:
+     *       6 9
+     *    5   7  10
+     *
+     */
     @SuppressWarnings("LineLength")
     @Test
-    public void testRemoveInternalNodeKeyWithOneRightChild() {
+    public void testRemoveInternalNodeWithChildren() {
         final Btree btree = new Btree(2);
         for (int i = 1; i <= 10; i++) {
             btree.put(i, "");
         }
         btree.remove(8);
-        System.out.println(btree);
+        final BtreeNode root = btree.root;
+        Assert.assertThat(
+                root.firstKey().key,
+                CoreMatchers.is(4)
+        );
+        final BtreeNode rightChild = root.child(1);
+        Assert.assertThat(
+                rightChild.firstKey().key,
+                CoreMatchers.is(6)
+        );
+        Assert.assertThat(
+                rightChild.key(1).key,
+                CoreMatchers.is(9)
+        );
+        Assert.assertThat(
+                rightChild.child(0).firstKey().key,
+                CoreMatchers.is(5)
+        );
+        Assert.assertThat(
+                rightChild.child(1).firstKey().key,
+                CoreMatchers.is(7)
+        );
+        Assert.assertThat(
+                rightChild.child(2).firstKey().key,
+                CoreMatchers.is(10)
+        );
+
+
     }
 }
