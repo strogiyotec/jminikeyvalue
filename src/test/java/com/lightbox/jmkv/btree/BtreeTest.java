@@ -38,11 +38,12 @@ public final class BtreeTest {
     public void testSplit() {
         final Btree btree = new Btree(2);
         IntStream.of(3, 1, 5, 4).forEach(value -> btree.put(value, ""));
-        Assert.assertThat(btree.root.keys(), CoreMatchers.is(1));
-        Assert.assertThat(btree.root.key(0).key, CoreMatchers.is(3));
-        Assert.assertThat(btree.root.child(0).key(0).key, CoreMatchers.is(1));
-        Assert.assertThat(btree.root.child(1).key(0).key, CoreMatchers.is(4));
-        Assert.assertThat(btree.root.child(1).key(1).key, CoreMatchers.is(5));
+        final BtreeNode root = btree.root();
+        Assert.assertThat(root.keys(), CoreMatchers.is(1));
+        Assert.assertThat(root.key(0).key, CoreMatchers.is(3));
+        Assert.assertThat(root.child(0).key(0).key, CoreMatchers.is(1));
+        Assert.assertThat(root.child(1).key(0).key, CoreMatchers.is(4));
+        Assert.assertThat(root.child(1).key(1).key, CoreMatchers.is(5));
     }
 
     /**
@@ -53,9 +54,10 @@ public final class BtreeTest {
         final Btree btree = new Btree(2);
         IntStream.of(3, 1, 5).forEach(value -> btree.put(value, ""));
         btree.remove(1);
-        Assert.assertThat(btree.root.keys(), CoreMatchers.is(2));
-        Assert.assertThat(btree.root.key(0).key, CoreMatchers.is(3));
-        Assert.assertThat(btree.root.key(1).key, CoreMatchers.is(5));
+        final BtreeNode root = btree.root();
+        Assert.assertThat(root.keys(), CoreMatchers.is(2));
+        Assert.assertThat(root.key(0).key, CoreMatchers.is(3));
+        Assert.assertThat(root.key(1).key, CoreMatchers.is(5));
     }
 
     /**
@@ -77,7 +79,7 @@ public final class BtreeTest {
             btree.put(i, "");
         }
         btree.remove(8);
-        final BtreeNode root = btree.root;
+        final BtreeNode root = btree.root();
         Assert.assertThat(
                 root.firstKey().key,
                 CoreMatchers.is(4)

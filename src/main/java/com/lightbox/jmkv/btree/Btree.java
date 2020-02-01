@@ -28,8 +28,7 @@ public final class Btree implements Map<Integer, String> {
      * Reference to root.
      * Protected for testing
      */
-    @SuppressWarnings("VisibilityModifier")
-    protected BtreeNode root;
+    private BtreeNode root;
 
     /**
      * Ctor.
@@ -215,6 +214,16 @@ public final class Btree implements Map<Integer, String> {
     @Override
     public Set<Entry<Integer, String>> entrySet() {
         return null;
+    }
+
+    /**
+     * Get current root.
+     * For testing purposes
+     *
+     * @return Reference to root
+     */
+    protected final BtreeNode root() {
+        return this.root;
     }
 
     /**
