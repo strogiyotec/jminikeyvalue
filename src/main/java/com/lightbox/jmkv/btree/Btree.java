@@ -167,7 +167,7 @@ public final class Btree implements Map<Integer, String> {
                 node.addKey(parentKey);
                 node.addAllKeys(rightNeighbour);
                 node.addAllChildren(rightNeighbour);
-                if (!parent.hasParent() && parent.keys() < this.minKeys()) {
+                if (parent.hasParent() && parent.keys() < this.minKeys()) {
                     this.combined(parent);
                 } else if (!parent.hasKeys()) {
                     node.removeParent();
