@@ -62,14 +62,13 @@ public final class BtreeTest {
 
     /**
      * Test remove in internal node.
-     * Internal node has three child
+     * Internal node has three child and two keys
      * Before:
-     *       6 8(to be deleted)
-     *    5   7   9,10
+     * #####6 8(to be deleted)
+     * ###5   7   9,10
      * After:
-     *       6 9
-     *    5   7  10
-     *
+     * ####6 9
+     * #5   7  10
      */
     @SuppressWarnings("LineLength")
     @Test
@@ -80,6 +79,10 @@ public final class BtreeTest {
         }
         btree.remove(8);
         final BtreeNode root = btree.root();
+        Assert.assertThat(
+                btree.size(),
+                CoreMatchers.is(9)
+        );
         Assert.assertThat(
                 root.firstKey().key,
                 CoreMatchers.is(4)
@@ -105,7 +108,61 @@ public final class BtreeTest {
                 rightChild.child(2).firstKey().key,
                 CoreMatchers.is(10)
         );
+    }
 
-
+    /**
+     * Test remove in internal node.
+     * Internal node has two child and one key
+     * Before:
+     * #########4
+     * ######2(delete)   6,8
+     * ###1     3     5   7   9,10
+     * After:
+     * #######6
+     * ###4       8
+     * #1,3 5   7   9,10
+     */
+    @Test
+    public void testRemoveInternalNodeWithOneKey() {
+        final Btree btree = new Btree(2);
+        for (int i = 1; i <= 10; i++) {
+            btree.put(i, "");
+        }
+        btree.remove(2);
+        final BtreeNode root = btree.root();
+        Assert.assertThat(
+                btree.size(),
+                CoreMatchers.is(9)
+        );
+        Assert.assertThat(
+                root.firstKey().key,
+                CoreMatchers.is(6)
+        );
+        final BtreeNode rightChild = root.child(1);
+        Assert.assertThat(
+                rightChild.firstKey().key,
+                CoreMatchers.is(8)
+        );
+        final BtreeNode leftChild = root.child(0);
+        Assert.assertThat(
+                leftChild.children(),
+                CoreMatchers.is(2)
+        );
+        Assert.assertThat(
+                leftChild.firstKey().key,
+                CoreMatchers.is(4)
+        );
+        Assert.assertThat(
+                leftChild.child(0).firstKey().key,
+                CoreMatchers.is(1)
+        );
+        Assert.assertThat(
+                leftChild.child(0).key(1).key,
+                CoreMatchers.is(3)
+        );
+        Assert.assertThat(
+                leftChild.child(1).firstKey().key,
+                CoreMatchers.is(5)
+        );
     }
 }
