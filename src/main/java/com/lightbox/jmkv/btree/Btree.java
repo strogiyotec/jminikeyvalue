@@ -222,7 +222,7 @@ public final class Btree implements Map<Integer, String> {
      *
      * @return Reference to root
      */
-    protected final BtreeNode root() {
+    protected BtreeNode root() {
         return this.root;
     }
 
