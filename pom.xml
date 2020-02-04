@@ -7,7 +7,28 @@
     <groupId>jfastkeyvalue</groupId>
     <artifactId>jfastkeyvalue</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>jfastkeyvalue</name>
+    <description>True OOP key value storage</description>
+    <url>https://github.com/strogiyotec/jminikeyvalue</url>
 
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/strogiyotec/jminikeyvalue/issues</url>
+    </issueManagement>
+
+    <developers>
+        <developer>
+            <id>strogiyotec</id>
+            <name>Almas Abdrazak</name>
+            <email>almas337519@gmail.com</email>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>-8</timezone>
+        </developer>
+    </developers>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
