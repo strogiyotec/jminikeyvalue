@@ -72,7 +72,7 @@ public final class Btree implements Map<Integer, String> {
     @Override
     public String put(final Integer key, final String value) {
         if (this.root == null) {
-            this.root = new BtnWithKey(
+            this.root = new SingleKeyNode(
                     this.maxKeys(),
                     this.maxChildren(),
                     key,
@@ -398,7 +398,7 @@ public final class Btree implements Map<Integer, String> {
             final BtreeNode right,
             final NodeKey middleKey
     ) {
-        this.root = new BtnWithKey(
+        this.root = new SingleKeyNode(
                 this.maxKeys(),
                 this.maxChildren(),
                 middleKey
