@@ -96,7 +96,7 @@ final class BinaryTreeNode implements TreeNode {
 
     @Override
     public boolean isRoot() {
-        return root == null;
+        return this.root == null;
     }
 
     @Override

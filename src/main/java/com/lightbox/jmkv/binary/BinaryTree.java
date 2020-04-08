@@ -280,7 +280,7 @@ public final class BinaryTree implements Map<Integer, String> {
             } else {
                 BinaryTree.add(root.right, key, value);
             }
-        } else if (root.key >= key) {
+        } else {
             if (!root.hasLeft()) {
                 root.left = new BinaryTreeNode(root, key, value);
             } else {
@@ -343,10 +343,7 @@ public final class BinaryTree implements Map<Integer, String> {
         if (currentNode.key > key) {
             return BinaryTree.valueByKey(currentNode.left, key);
         }
-        if (currentNode.key <= key) {
-            return BinaryTree.valueByKey(currentNode.right, key);
-        }
-        return null;
+        return BinaryTree.valueByKey(currentNode.right, key);
     }
 
     /**
