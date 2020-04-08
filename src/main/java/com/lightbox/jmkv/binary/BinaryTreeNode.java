@@ -122,33 +122,19 @@ final class BinaryTreeNode implements TreeNode {
 
     @Override
     public boolean isLeft() {
-        final boolean isLeft;
-        if (this.root != null) {
-            isLeft = this.root.left == this;
-        } else {
-            isLeft = false;
-        }
-        return isLeft;
+        return this.root != null && this.root.left == this;
     }
 
     @Override
     public boolean isRight() {
-        final boolean isRight;
-        if (this.root != null) {
-            isRight = this.root.right == this;
-        } else {
-            isRight = false;
-        }
-        return isRight;
+        return this.root != null && this.root.right == this;
     }
 
-    /**
-     * Find lowest key in left node recursively.
-     *
-     * @param node Current node
-     * @return Min value of left node
-     */
-    static Integer minKey(final BinaryTreeNode node) {
-        return node.left == null ? node.key : BinaryTreeNode.minKey(node.left);
+    @Override
+    public Integer minKey() {
+        return this.left == null ?
+                this.key :
+                this.left.minKey();
     }
+
 }

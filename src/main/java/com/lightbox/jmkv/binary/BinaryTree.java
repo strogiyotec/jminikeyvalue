@@ -118,6 +118,7 @@ public final class BinaryTree implements Map<Integer, String> {
         } else if (current.key.equals(key)) {
             if (current.isRoot()) {
                 this.root = null;
+                //:TODO remove it
                 throw new IllegalStateException(
                         "Root of Tree was deleted. Map is not valid anymore"
                 );
@@ -131,7 +132,7 @@ public final class BinaryTree implements Map<Integer, String> {
                 } else {
                     //set lowest key to deleted node
                     // and delete original node with this lowest key
-                    current.key = BinaryTreeNode.minKey(current.right);
+                    current.key = current.right.minKey();
                     this.remove(current.right, current.key);
                     return current.value;
                 }
