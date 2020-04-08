@@ -53,4 +53,8 @@ public interface TreeNode {
      * @return True of node has only 1 child
      */
     boolean hasOneChild();
+
+    default Integer minKey() {
+        return null;
+    }
 }
