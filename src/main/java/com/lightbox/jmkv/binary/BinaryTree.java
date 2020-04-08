@@ -103,6 +103,48 @@ public final class BinaryTree implements Map<Integer, String> {
     }
 
     /**
+     * Remove node with given key.
+     *
+     * @param current Current node, root by default
+     * @param key     Key
+     * @return Value of deleted node or null if node
+     * with given key is not present
+     * @throws IllegalStateException if root was deleted
+     */
+    @SuppressWarnings("ReturnCount")
+    private String remove(final BinaryTreeNode current, final Integer key) {
+        if (current == null) {
+            return null;
+        } else if (current.key.equals(key)) {
+            if (current.isRoot()) {
+                this.root = null;
+                throw new IllegalStateException(
+                        "Root of Tree was deleted. Map is not valid anymore"
+                );
+            } else {
+                //node doesn't have children
+                if (!current.hasChild()) {
+                    return BinaryTree.deleteNodeWithoutChildren(current);
+                    //node has exactly one child
+                } else if (current.hasOneChild()) {
+                    return BinaryTree.deleteNodeWithOneChild(current);
+                } else {
+                    //set lowest key to deleted node
+                    // and delete original node with this lowest key
+                    current.key = BinaryTreeNode.minKey(current.right);
+                    this.remove(current.right, current.key);
+                    return current.value;
+                }
+            }
+        } else if (current.hasLeft() && current.key > key) {
+            return this.remove(current.left, key);
+        } else if (current.hasRight() && current.key < key) {
+            return this.remove(current.right, key);
+        }
+        return null;
+    }
+
+    /**
      * Collect entries of nodes starting from current.
      *
      * @param current Current node, root by default
@@ -170,47 +212,6 @@ public final class BinaryTree implements Map<Integer, String> {
         }
     }
 
-    /**
-     * Remove node with given key.
-     *
-     * @param current Current node, root by default
-     * @param key     Key
-     * @return Value of deleted node or null if node
-     * with given key is not present
-     * @throws IllegalStateException if root was deleted
-     */
-    @SuppressWarnings("ReturnCount")
-    private String remove(final BinaryTreeNode current, final Integer key) {
-        if (current == null) {
-            return null;
-        } else if (current.key.equals(key)) {
-            if (current.isRoot()) {
-                this.root = null;
-                throw new IllegalStateException(
-                        "Root of Tree was deleted. Map is not valid anymore"
-                );
-            } else {
-                //node doesn't have children
-                if (!current.hasChild()) {
-                    return BinaryTree.deleteNodeWithoutChildren(current);
-                    //node has exactly one child
-                } else if (current.hasOneChild()) {
-                    return BinaryTree.deleteNodeWithOneChild(current);
-                } else {
-                    //set lowest key to deleted node
-                    // and delete original node with this lowest key
-                    current.key = BinaryTreeNode.minKey(current.right);
-                    this.remove(current.right, current.key);
-                    return current.value;
-                }
-            }
-        } else if (current.hasLeft() && current.key > key) {
-            return this.remove(current.left, key);
-        } else if (current.hasRight() && current.key < key) {
-            return this.remove(current.right, key);
-        }
-        return null;
-    }
 
     /**
      * Delete reference to given root from the child.
