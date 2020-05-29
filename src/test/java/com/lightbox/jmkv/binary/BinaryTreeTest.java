@@ -1,6 +1,6 @@
-package com.lightbox.jmkv;
+package com.lightbox.jmkv.binary;
 
-import com.lightbox.jmkv.binary.BinaryTree;
+import com.lightbox.jmkv.ImmutableEntry;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -77,20 +77,11 @@ public final class BinaryTreeTest {
      */
     @Test
     public void testRemoveFromRightTree() {
-        final BinaryTree binaryTree = new BinaryTree(10, "");
+        final BinaryTree binaryTree = new BinaryTree(new BinaryTreeNode(10, ""));
         binaryTree.put(15, "To delete");
         binaryTree.put(20, "");
         Assert.assertThat(binaryTree.remove(15), CoreMatchers.is("To delete"));
         Assert.assertThat(binaryTree.size(), CoreMatchers.is(2));
-    }
-
-    /**
-     * Test fail during root deletion.
-     */
-    @Test(expected = IllegalStateException.class)
-    public void testRemoveRoot() {
-        final BinaryTree tree = BinaryTreeTest.getTree();
-        tree.remove(5);
     }
 
     /**
@@ -112,7 +103,7 @@ public final class BinaryTreeTest {
      */
     @Test
     public void testPut() {
-        final BinaryTree binaryTree = new BinaryTree(5, "almas");
+        final BinaryTree binaryTree = new BinaryTree(new BinaryTreeNode(5, "almas"));
         binaryTree.put(6, "almat");
         binaryTree.put(7, "abzal");
         binaryTree.put(4, "zhanara");
@@ -126,7 +117,7 @@ public final class BinaryTreeTest {
      */
     @Test
     public void testPutAll() {
-        final BinaryTree tree = new BinaryTree(22, "almas");
+        final BinaryTree tree = new BinaryTree(new BinaryTreeNode(22, "almas"));
         final Map<Integer, String> map = new HashMap<>(2, 1.0F);
         map.put(100, "almat");
         map.put(200, "abzal");
@@ -190,7 +181,8 @@ public final class BinaryTreeTest {
      * @return Binary tree
      */
     private static BinaryTree getTree() {
-        final BinaryTree binaryTree = new BinaryTree(5, "almas");
+        final BinaryTree binaryTree = new BinaryTree();
+        binaryTree.put(5, "almas");
         binaryTree.put(6, "hello");
         binaryTree.put(4, "wewe");
         binaryTree.put(2, "dsd");

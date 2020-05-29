@@ -11,32 +11,27 @@ final class BinaryTreeNode implements TreeNode {
     /**
      * Key of node.
      */
-    @SuppressWarnings("check:VisibilityModifier")
-    Integer key;
+    private Integer key;
 
     /**
      * Value of node.
      */
-    @SuppressWarnings("check:VisibilityModifier")
-    String value;
+    private String value;
 
     /**
      * Root of node.
      */
-    @SuppressWarnings("check:VisibilityModifier")
-    BinaryTreeNode root;
+    private TreeNode root;
 
     /**
      * Left child of node.
      */
-    @SuppressWarnings("check:VisibilityModifier")
-    BinaryTreeNode left;
+    private TreeNode left;
 
     /**
      * Right child of node.
      */
-    @SuppressWarnings("check:VisibilityModifier")
-    BinaryTreeNode right;
+    private TreeNode right;
 
     /**
      * Ctor for node with root and without children.
@@ -46,7 +41,7 @@ final class BinaryTreeNode implements TreeNode {
      * @param value Value
      */
     BinaryTreeNode(
-            final BinaryTreeNode root,
+            final TreeNode root,
             final Integer key,
             final String value
     ) {
@@ -99,35 +94,45 @@ final class BinaryTreeNode implements TreeNode {
         return this.root == null;
     }
 
-    @Override
-    public boolean hasChild() {
-        return this.left != null || this.right != null;
-    }
 
     @Override
-    public boolean hasLeft() {
-        return this.left != null;
-    }
-
-    @Override
-    public boolean hasRight() {
-        return this.right != null;
-    }
-
-    @Override
-    public boolean hasOneChild() {
-        return (this.left != null && this.right == null)
-                || (this.left == null && this.right != null);
+    public Integer key() {
+        return this.key;
     }
 
     @Override
     public boolean isLeft() {
-        return this.root != null && this.root.left == this;
+        return this.root != null && this.root.left() == this;
     }
 
     @Override
     public boolean isRight() {
-        return this.root != null && this.root.right == this;
+        return this.root != null && this.root.right() == this;
+    }
+
+    @Override
+    public int children() {
+        if (this.left == null && this.right == null) {
+            return 0;
+        } else if (this.left != null && this.right != null) {
+            return 2;
+        }
+        return 1;
+    }
+
+    @Override
+    public TreeNode left() {
+        return this.left;
+    }
+
+    @Override
+    public TreeNode right() {
+        return this.right;
+    }
+
+    @Override
+    public TreeNode root() {
+        return this.root;
     }
 
     @Override
@@ -135,6 +140,36 @@ final class BinaryTreeNode implements TreeNode {
         return this.left == null ?
                 this.key :
                 this.left.minKey();
+    }
+
+    @Override
+    public String value() {
+        return this.value;
+    }
+
+    @Override
+    public void setKey(final Integer key) {
+        this.key = key;
+    }
+
+    @Override
+    public void setValue(final String value) {
+        this.value = value;
+    }
+
+    @Override
+    public void setLeft(final TreeNode node) {
+        this.left = node;
+    }
+
+    @Override
+    public void setRight(final TreeNode node) {
+        this.right = node;
+    }
+
+    @Override
+    public void setRoot(final TreeNode node) {
+        this.root = node;
     }
 
 }

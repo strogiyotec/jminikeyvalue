@@ -1,14 +1,12 @@
 package com.lightbox.jmkv.binary;
 
 import com.lightbox.jmkv.ImmutableEntry;
+import com.lightbox.jmkv.TreeNode;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Binary Tree.
- * Root have to be present
- * If clean method was called then this tree is not valid anymore
  */
 public final class BinaryTree implements Map<Integer, String> {
 
@@ -21,62 +19,94 @@ public final class BinaryTree implements Map<Integer, String> {
     /**
      * Root element.
      */
-    private BinaryTreeNode root;
+    private TreeNode root;
+
+    /**
+     * Size.
+     */
+    private int size;
 
     /**
      * Ctor.
-     *
-     * @param key   Key
-     * @param value Value
      */
-    public BinaryTree(final Integer key, final String value) {
-        this.root = new BinaryTreeNode(key, value);
+    public BinaryTree() {
+        this.size = 0;
+    }
+
+
+    public BinaryTree(final TreeNode root) {
+        this.root = root;
+        this.size = 1;
     }
 
     @Override
     public int size() {
-        //atomic integer in order to store size
-        return BinaryTree.calculateSize(this.root, new AtomicInteger(0));
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return this.root == null;
+        return this.size == 0;
     }
 
     @Override
     public boolean containsKey(final Object key) {
+        if (this.size == 0) {
+            return false;
+        }
         return BinaryTree.valueByKey(this.root, (Integer) key) != null;
     }
 
     @Override
     public boolean containsValue(final Object value) {
+        if (this.size == 0) {
+            return false;
+        }
         return BinaryTree.containsValue(this.root, (String) value);
     }
 
     @Override
     public String get(final Object key) {
+        if (this.size == 0) {
+            return null;
+        }
         return BinaryTree.valueByKey(this.root, (Integer) key);
     }
 
     @Override
     public String put(final Integer key, final String value) {
-        BinaryTree.add(this.root, key, value);
+        if (this.size == 0) {
+            this.root = new BinaryTreeNode(key, value);
+        } else {
+            BinaryTree.add(this.root, key, value);
+        }
+        this.size++;
         return value;
     }
 
     @Override
     public String remove(final Object key) {
-        return this.remove(this.root, (Integer) key);
+        if (this.size == 0) {
+            return null;
+        }
+        final String removed = this.remove(this.root, (Integer) key);
+        if (removed != null) {
+            this.size--;
+        }
+        return removed;
     }
 
     @Override
     public void putAll(final Map<? extends Integer, ? extends String> map) {
+        if (this.size == 0) {
+            return;
+        }
         map.forEach(this::put);
     }
 
     @Override
     public void clear() {
+        this.size = 0;
         this.root = null;
     }
 
@@ -97,6 +127,9 @@ public final class BinaryTree implements Map<Integer, String> {
     @Override
     @SuppressWarnings("LineLength")
     public Set<Entry<Integer, String>> entrySet() {
+        if (this.size == 0) {
+            return Collections.emptySet();
+        }
         final Set<Entry<Integer, String>> entries = new HashSet<>(DEFAULT_TREE_SIZE);
         BinaryTree.collectEntries(this.root, entries);
         return entries;
@@ -112,37 +145,32 @@ public final class BinaryTree implements Map<Integer, String> {
      * @throws IllegalStateException if root was deleted
      */
     @SuppressWarnings("ReturnCount")
-    private String remove(final BinaryTreeNode current, final Integer key) {
+    private String remove(final TreeNode current, final Integer key) {
         if (current == null) {
             return null;
-        } else if (current.key.equals(key)) {
+        } else if (current.key().equals(key)) {
             if (current.isRoot()) {
                 this.root = null;
-                //:TODO remove it
-                throw new IllegalStateException(
-                        "Root of Tree was deleted. Map is not valid anymore"
-                );
             } else {
                 //node doesn't have children
-                if (!current.hasChild()) {
+                final int children = current.children();
+                if (children == 0) {
                     return BinaryTree.deleteNodeWithoutChildren(current);
                     //node has exactly one child
-                } else if (current.hasOneChild()) {
+                } else if (children == 1) {
                     return BinaryTree.deleteNodeWithOneChild(current);
                 } else {
                     //set lowest key to deleted node
                     // and delete original node with this lowest key
-                    current.key = current.right.minKey();
-                    this.remove(current.right, current.key);
-                    return current.value;
+                    current.setKey(current.right().minKey());
+                    this.remove(current.right(), current.key());
+                    return current.value();
                 }
             }
-        } else if (current.hasLeft() && current.key > key) {
-            return this.remove(current.left, key);
-        } else if (current.hasRight() && current.key < key) {
-            return this.remove(current.right, key);
+        } else if (current.key() > key) {
+            return this.remove(current.left(), key);
         }
-        return null;
+        return this.remove(current.right(), key);
     }
 
     /**
@@ -152,19 +180,15 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param entries Set where entries are stored
      */
     private static void collectEntries(
-            final BinaryTreeNode current,
+            final TreeNode current,
             final Set<Entry<Integer, String>> entries
     ) {
         if (current == null) {
             return;
         }
-        entries.add(new ImmutableEntry<>(current.key, current.value));
-        if (current.hasLeft()) {
-            BinaryTree.collectEntries(current.left, entries);
-        }
-        if (current.hasRight()) {
-            BinaryTree.collectEntries(current.right, entries);
-        }
+        entries.add(new ImmutableEntry<>(current.key(), current.value()));
+        BinaryTree.collectEntries(current.left(), entries);
+        BinaryTree.collectEntries(current.right(), entries);
     }
 
     /**
@@ -175,19 +199,15 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param values  List to store values
      */
     private static void collectValues(
-            final BinaryTreeNode current,
+            final TreeNode current,
             final List<String> values
     ) {
         if (current == null) {
             return;
         }
-        values.add(current.value);
-        if (current.hasLeft()) {
-            BinaryTree.collectValues(current.left, values);
-        }
-        if (current.hasRight()) {
-            BinaryTree.collectValues(current.right, values);
-        }
+        values.add(current.value());
+        BinaryTree.collectValues(current.left(), values);
+        BinaryTree.collectValues(current.right(), values);
     }
 
     /**
@@ -198,19 +218,15 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param keySet  Set to store keys
      */
     private static void collectKeys(
-            final BinaryTreeNode current,
+            final TreeNode current,
             final Set<Integer> keySet
     ) {
         if (current == null) {
             return;
         }
-        keySet.add(current.key);
-        if (current.hasLeft()) {
-            BinaryTree.collectKeys(current.left, keySet);
-        }
-        if (current.hasRight()) {
-            BinaryTree.collectKeys(current.right, keySet);
-        }
+        keySet.add(current.key());
+        BinaryTree.collectKeys(current.left(), keySet);
+        BinaryTree.collectKeys(current.right(), keySet);
     }
 
 
@@ -220,26 +236,27 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param node Node to be deleted
      * @return Value of current root
      */
-    private static String deleteNodeWithOneChild(final BinaryTreeNode node) {
-        final String value = node.value;
+    private static String deleteNodeWithOneChild(final TreeNode node) {
+        final String value = node.value();
         if (node.isLeft()) {
-            if (node.hasLeft()) {
-                node.left.root = node.root;
-                node.root.left = node.left;
+            if (node.left() != null) {
+                node.left().setRoot(node.right());
+                node.root().setLeft(node.left());
             }
-            if (node.hasRight()) {
-                node.right.root = node.root;
-                node.root.left = node.right;
+            if (node.right() != null) {
+                node.right().setRoot(node.root());
+                node.root().setLeft(node.right());
             }
         }
         if (node.isRight()) {
-            if (node.hasLeft()) {
-                node.left.root = node.root;
-                node.root.right = node.left;
+            if (node.left() != null) {
+                node.left().setRoot(node.root());
+                node.root().setRight(node.left());
+
             }
-            if (node.hasRight()) {
-                node.right.root = node.root;
-                node.root.right = node.right;
+            if (node.right() != null) {
+                node.right().setRoot(node.root());
+                node.root().setRight(node.right());
             }
         }
         return value;
@@ -252,14 +269,14 @@ public final class BinaryTree implements Map<Integer, String> {
      * @return Value of deleted node
      */
     private static String deleteNodeWithoutChildren(
-            final BinaryTreeNode current
+            final TreeNode current
     ) {
-        final BinaryTreeNode parent = current.root;
-        final String value = current.value;
-        if (parent.left == current) {
-            parent.left = null;
-        } else if (parent.right == current) {
-            parent.right = null;
+        final TreeNode root = current.root();
+        final String value = current.value();
+        if (root.left() == current) {
+            root.setLeft(null);
+        } else if (root.right() == current) {
+            root.setRight(null);
         }
         return value;
     }
@@ -272,55 +289,22 @@ public final class BinaryTree implements Map<Integer, String> {
      * @param value Value
      */
     private static void add(
-            final BinaryTreeNode root,
+            final TreeNode root,
             final Integer key,
             final String value
     ) {
-        if (root.key < key) {
-            if (!root.hasRight()) {
-                root.right = new BinaryTreeNode(root, key, value);
+        if (root.key() < key) {
+            if (root.right() == null) {
+                root.setRight(new BinaryTreeNode(root, key, value));
             } else {
-                BinaryTree.add(root.right, key, value);
+                BinaryTree.add(root.right(), key, value);
             }
         } else {
-            if (!root.hasLeft()) {
-                root.left = new BinaryTreeNode(root, key, value);
+            if (root.left() == null) {
+                root.setLeft(new BinaryTreeNode(root, key, value));
             } else {
-                BinaryTree.add(root.left, key, value);
+                BinaryTree.add(root.left(), key, value);
             }
-        }
-    }
-
-    /**
-     * Calculate total size of binary tree.
-     *
-     * @param current Current node
-     * @param size    Current size , 0 by default
-     * @return Total size of Binary Tree
-     */
-    private static int calculateSize(
-            final BinaryTreeNode current,
-            final AtomicInteger size
-    ) {
-        if (current == null) {
-            return size.get();
-        } else {
-            if (current.isRoot()) {
-                size.incrementAndGet();
-            }
-            if (!current.hasChild()) {
-                return 1;
-            }
-            if (current.hasLeft()) {
-                size.incrementAndGet();
-            }
-            if (current.hasRight()) {
-                size.incrementAndGet();
-            }
-            BinaryTree.calculateSize(current.left, size);
-            BinaryTree.calculateSize(current.right, size);
-
-            return size.get();
         }
     }
 
@@ -333,19 +317,19 @@ public final class BinaryTree implements Map<Integer, String> {
      */
     @SuppressWarnings("ReturnCount")
     private static String valueByKey(
-            final BinaryTreeNode currentNode,
+            final TreeNode currentNode,
             final Integer key
     ) {
         if (currentNode == null) {
             return null;
         }
-        if (currentNode.key.equals(key)) {
-            return currentNode.value;
+        if (currentNode.key().equals(key)) {
+            return currentNode.value();
         }
-        if (currentNode.key > key) {
-            return BinaryTree.valueByKey(currentNode.left, key);
+        if (currentNode.key() > key) {
+            return BinaryTree.valueByKey(currentNode.left(), key);
         }
-        return BinaryTree.valueByKey(currentNode.right, key);
+        return BinaryTree.valueByKey(currentNode.right(), key);
     }
 
     /**
@@ -357,16 +341,16 @@ public final class BinaryTree implements Map<Integer, String> {
      */
     @SuppressWarnings("ReturnCount")
     private static boolean containsValue(
-            final BinaryTreeNode currentNode,
+            final TreeNode currentNode,
             final String value
     ) {
         if (currentNode == null) {
             return false;
         }
-        if (currentNode.value.equals(value)) {
+        if (currentNode.value().equals(value)) {
             return true;
         }
-        return BinaryTree.containsValue(currentNode.left, value)
-                || BinaryTree.containsValue(currentNode.right, value);
+        return BinaryTree.containsValue(currentNode.left(), value)
+                || BinaryTree.containsValue(currentNode.right(), value);
     }
 }
