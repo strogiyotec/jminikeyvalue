@@ -1,15 +1,8 @@
 package com.lightbox.jmkv.binary;
 
-import com.lightbox.jmkv.ImmutableEntry;
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Test {@link BinaryTree} class.
@@ -23,7 +16,7 @@ public final class BinaryTreeTest {
     @Test
     public void testSize() {
         final BinaryTree tree = BinaryTreeTest.getTree();
-        Assert.assertThat(tree.size(), CoreMatchers.is(5));
+        Assert.assertThat(tree.size(), CoreMatchers.is(8));
     }
 
     /**
@@ -32,31 +25,20 @@ public final class BinaryTreeTest {
     @Test
     public void testContains() {
         final BinaryTree tree = BinaryTreeTest.getTree();
-        Assert.assertTrue(tree.containsKey(6));
-        Assert.assertTrue(tree.containsKey(5));
-        Assert.assertTrue(tree.containsKey(4));
-        Assert.assertTrue(tree.containsKey(2));
-        Assert.assertTrue(tree.containsKey(1));
-        Assert.assertFalse(tree.containsKey(32));
+        Assert.assertTrue(tree.exists(5));
+        //In the left
+        Assert.assertTrue(tree.exists(4));
+        Assert.assertTrue(tree.exists(2));
+        Assert.assertTrue(tree.exists(1));
+        Assert.assertTrue(tree.exists(3));
+        //In the right
+        Assert.assertTrue(tree.exists(10));
+        Assert.assertTrue(tree.exists(7));
+        Assert.assertTrue(tree.exists(11));
     }
 
     /**
-     * Tests contains value method of Binary Tree.
-     */
-    @Test
-    public void testContainsValue() {
-        final BinaryTree tree = BinaryTreeTest.getTree();
-        Assert.assertTrue(tree.containsValue("almas"));
-        Assert.assertTrue(tree.containsValue("hello"));
-        Assert.assertTrue(tree.containsValue("wewe"));
-        Assert.assertTrue(tree.containsValue("dsd"));
-        Assert.assertTrue(tree.containsValue("alloha"));
-        Assert.assertFalse(tree.containsValue("hello my friend"));
-
-    }
-
-    /**
-     * Test remove of left node of Binary Tree.
+     * Test delete of left node of Binary Tree.
      */
     @Test
     public void testRemoveKeyFromLeftTree() {
@@ -66,21 +48,20 @@ public final class BinaryTreeTest {
         tree.put(11, "eleven");
         tree.put(14, "fourteen");
         tree.put(9, "nine");
-        Assert.assertThat(tree.size(), CoreMatchers.is(10));
-        Assert.assertThat(tree.remove(2), CoreMatchers.is("dsd"));
-        Assert.assertThat(tree.remove(10), CoreMatchers.is("ten"));
+        Assert.assertThat(tree.delete(2), CoreMatchers.is("dsd"));
+        Assert.assertThat(tree.delete(10), CoreMatchers.is("ten"));
         Assert.assertThat(tree.size(), CoreMatchers.is(8));
     }
 
     /**
-     * Test remove of right node of Binary Tree.
+     * Test delete of right node of Binary Tree.
      */
     @Test
     public void testRemoveFromRightTree() {
-        final BinaryTree binaryTree = new BinaryTree(new BinaryTreeNode(10, ""));
+        final BinaryTree binaryTree = new BinaryTree();
         binaryTree.put(15, "To delete");
         binaryTree.put(20, "");
-        Assert.assertThat(binaryTree.remove(15), CoreMatchers.is("To delete"));
+        Assert.assertThat(binaryTree.delete(15), CoreMatchers.is("To delete"));
         Assert.assertThat(binaryTree.size(), CoreMatchers.is(2));
     }
 
@@ -103,7 +84,7 @@ public final class BinaryTreeTest {
      */
     @Test
     public void testPut() {
-        final BinaryTree binaryTree = new BinaryTree(new BinaryTreeNode(5, "almas"));
+        final BinaryTree binaryTree = new BinaryTree();
         binaryTree.put(6, "almat");
         binaryTree.put(7, "abzal");
         binaryTree.put(4, "zhanara");
@@ -113,80 +94,19 @@ public final class BinaryTreeTest {
     }
 
     /**
-     * Test pul all method of binary tree.
-     */
-    @Test
-    public void testPutAll() {
-        final BinaryTree tree = new BinaryTree(new BinaryTreeNode(22, "almas"));
-        final Map<Integer, String> map = new HashMap<>(2, 1.0F);
-        map.put(100, "almat");
-        map.put(200, "abzal");
-        tree.putAll(map);
-        Assert.assertThat(tree.size(), CoreMatchers.is(3));
-        Assert.assertThat(tree.get(22), CoreMatchers.is("almas"));
-        Assert.assertThat(tree.get(100), CoreMatchers.is("almat"));
-        Assert.assertThat(tree.get(200), CoreMatchers.is("abzal"));
-    }
-
-    /**
-     * Test key set method of binary tree.
-     */
-    @Test
-    public void testCollectKeys() {
-        final BinaryTree tree = BinaryTreeTest.getTree();
-        final Set<Integer> keySet = tree.keySet();
-        final Set<Integer> preCalculatedKeys = new HashSet<>(5);
-        preCalculatedKeys.add(5);
-        preCalculatedKeys.add(6);
-        preCalculatedKeys.add(4);
-        preCalculatedKeys.add(2);
-        preCalculatedKeys.add(1);
-        Assert.assertEquals(keySet, preCalculatedKeys);
-    }
-
-    /**
-     * Test values methof of binary tree.
-     */
-    @Test
-    public void testCollectValues() {
-        final BinaryTree tree = BinaryTreeTest.getTree();
-        Assert.assertThat(
-                tree.values(),
-                Matchers.contains("almas", "wewe", "dsd", "alloha", "hello")
-        );
-    }
-
-    /**
-     * Test entry set method of binary tree.
-     */
-    @Test
-    public void testEntries() {
-        final BinaryTree tree = BinaryTreeTest.getTree();
-        final Set<Map.Entry<Integer, String>> entries = tree.entrySet();
-        Assert.assertTrue(entries.contains(new ImmutableEntry<>(5, "almas")));
-        Assert.assertTrue(entries.contains(new ImmutableEntry<>(6, "hello")));
-        Assert.assertTrue(entries.contains(new ImmutableEntry<>(4, "wewe")));
-        Assert.assertTrue(entries.contains(new ImmutableEntry<>(2, "dsd")));
-        Assert.assertTrue(entries.contains(new ImmutableEntry<>(1, "alloha")));
-        Assert.assertFalse(
-                entries.contains(
-                        new ImmutableEntry<>(10, "I'M NOT PRESENT")
-                )
-        );
-    }
-
-    /**
      * Create binary tree for test purposes.
      *
      * @return Binary tree
      */
     private static BinaryTree getTree() {
         final BinaryTree binaryTree = new BinaryTree();
-        binaryTree.put(5, "almas");
-        binaryTree.put(6, "hello");
-        binaryTree.put(4, "wewe");
-        binaryTree.put(2, "dsd");
-        binaryTree.put(1, "alloha");
+        binaryTree.put(5, "root");
+        binaryTree.put(4, "4");
+        binaryTree.put(2, "2");
+        binaryTree.put(3, "3");
+        binaryTree.put(1, "1");
+        binaryTree.put(10, "10");
+        binaryTree.put(7, "7");
         return binaryTree;
     }
 }

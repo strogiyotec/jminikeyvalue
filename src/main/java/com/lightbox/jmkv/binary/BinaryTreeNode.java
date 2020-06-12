@@ -1,27 +1,17 @@
 package com.lightbox.jmkv.binary;
 
+import com.lightbox.jmkv.PlainTreeNode;
 import com.lightbox.jmkv.TreeNode;
 
 /**
- * Binary Tree representation.
- * Hidden from the world because only Binary Tree is supposed to use it
+ * Binary Tree Node representation.
  */
-final class BinaryTreeNode implements TreeNode {
-
-    /**
-     * Key of node.
-     */
-    private Integer key;
-
-    /**
-     * Value of node.
-     */
-    private String value;
+public class BinaryTreeNode extends PlainTreeNode {
 
     /**
      * Root of node.
      */
-    private TreeNode root;
+    private TreeNode parent;
 
     /**
      * Left child of node.
@@ -34,20 +24,19 @@ final class BinaryTreeNode implements TreeNode {
     private TreeNode right;
 
     /**
-     * Ctor for node with root and without children.
+     * Ctor for node with parent and without children.
      *
-     * @param root  Root
-     * @param key   Key
-     * @param value Value
+     * @param parent Root
+     * @param key    Key
+     * @param value  Value
      */
-    BinaryTreeNode(
-            final TreeNode root,
+    public BinaryTreeNode(
+            final TreeNode parent,
             final Integer key,
             final String value
     ) {
-        this.root = root;
-        this.key = key;
-        this.value = value;
+        super(key, value);
+        this.parent = parent;
         this.left = null;
         this.right = null;
     }
@@ -55,69 +44,68 @@ final class BinaryTreeNode implements TreeNode {
     /**
      * Ctor.
      *
-     * @param key   Key
-     * @param value Value
-     * @param root  Root
-     * @param left  Left
-     * @param right Right
+     * @param key    Key
+     * @param value  Value
+     * @param parent Root
+     * @param left   Left
+     * @param right  Right
      */
-    BinaryTreeNode(
+    public BinaryTreeNode(
             final Integer key,
             final String value,
-            final BinaryTreeNode root,
-            final BinaryTreeNode left,
-            final BinaryTreeNode right
+            final TreeNode parent,
+            final TreeNode left,
+            final TreeNode right
     ) {
-        this.key = key;
-        this.value = value;
-        this.root = root;
+        super(key, value);
+        this.parent = parent;
         this.left = left;
         this.right = right;
     }
 
     /**
-     * Ctor for Root without reference to root.
+     * Ctor for Root without reference to parent.
      *
      * @param key   Key
      * @param value Value
      */
-    BinaryTreeNode(final Integer key, final String value) {
-        this.key = key;
-        this.value = value;
-        this.root = null;
+    public BinaryTreeNode(final Integer key, final String value) {
+        super(key, value);
+        this.parent = null;
         this.left = null;
         this.right = null;
     }
 
     @Override
-    public boolean isRoot() {
-        return this.root == null;
-    }
-
-
-    @Override
-    public Integer key() {
-        return this.key;
+    public void setLeft(final Integer key, final String value) {
+        this.setLeft(new BinaryTreeNode(key, value));
     }
 
     @Override
-    public boolean isLeft() {
-        return this.root != null && this.root.left() == this;
+    public void setRight(final Integer key, final String value) {
+        this.setRight(new BinaryTreeNode(key, value));
     }
 
     @Override
-    public boolean isRight() {
-        return this.root != null && this.root.right() == this;
-    }
-
-    @Override
-    public int children() {
-        if (this.left == null && this.right == null) {
-            return 0;
-        } else if (this.left != null && this.right != null) {
-            return 2;
+    public void setLeft(final TreeNode left) {
+        this.left = left;
+        if (this.left != null) {
+            this.left.setParent(this);
         }
-        return 1;
+    }
+
+    @Override
+    public void setRight(final TreeNode right) {
+        this.right = right;
+        if (this.right != null) {
+            this.right.setParent(this);
+        }
+    }
+
+
+    @Override
+    public void setParent(final TreeNode parent) {
+        this.parent = parent;
     }
 
     @Override
@@ -131,45 +119,23 @@ final class BinaryTreeNode implements TreeNode {
     }
 
     @Override
-    public TreeNode root() {
-        return this.root;
+    public TreeNode parent() {
+        return this.parent;
     }
 
-    @Override
-    public Integer minKey() {
-        return this.left == null ?
-                this.key :
-                this.left.minKey();
-    }
-
-    @Override
-    public String value() {
-        return this.value;
-    }
-
-    @Override
-    public void setKey(final Integer key) {
-        this.key = key;
-    }
-
-    @Override
-    public void setValue(final String value) {
-        this.value = value;
-    }
-
-    @Override
-    public void setLeft(final TreeNode node) {
+    public void setLeft(final BinaryTreeNode node) {
         this.left = node;
+        if (this.left != null) {
+            this.left.setParent(this);
+        }
     }
 
-    @Override
-    public void setRight(final TreeNode node) {
+    public void setRight(final BinaryTreeNode node) {
         this.right = node;
+        this.right.setParent(this);
     }
 
-    @Override
-    public void setRoot(final TreeNode node) {
-        this.root = node;
+    public void setParent(final BinaryTreeNode node) {
+        this.parent = node;
     }
-
 }

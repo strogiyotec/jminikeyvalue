@@ -47,7 +47,7 @@ public final class BtreeTest {
     }
 
     /**
-     * Test remove key from root.
+     * Test remove key from parent.
      */
     @Test
     public void testRemoveFromRoot() {

@@ -1,3 +1,4 @@
+/*
 package com.lightbox.jmkv.btree;
 
 import com.lightbox.jmkv.ImmutableEntry;
@@ -7,34 +8,44 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+*/
 /**
  * B-tree implementation.
- */
+ *//*
+
 public final class Btree implements Map<Integer, String> {
 
-    /**
+    */
+/**
      * Number to determine amount of max keys and max children.
-     * 1) Number of children [B,2B-1) (false for root node)
+     * 1) Number of children [B,2B-1) (false for parent node)
      * 2) Number of keys [B-1,2B)
-     */
+     *//*
+
     private final int branchingNumber;
 
-    /**
+    */
+/**
      * Current size of tree.
-     */
+     *//*
+
     private final AtomicInteger size = new AtomicInteger(0);
 
-    /**
-     * Reference to root.
+    */
+/**
+     * Reference to parent.
      * Protected for testing
-     */
+     *//*
+
     private BtreeNode root;
 
-    /**
+    */
+/**
      * Ctor.
      *
      * @param branchingFactor Order
-     */
+     *//*
+
     public Btree(final int branchingFactor) {
         this.branchingNumber = branchingFactor;
     }
@@ -96,13 +107,15 @@ public final class Btree implements Map<Integer, String> {
         }
     }
 
-    /**
+    */
+/**
      * Delete key from node.
      *
      * @param node        Node that contains value to delete
      * @param keyPosition Position of key to be deleted
      * @return Value of deleted key
-     */
+     *//*
+
     private String remove(
             final BtreeNode node,
             final Integer keyPosition
@@ -216,24 +229,28 @@ public final class Btree implements Map<Integer, String> {
         return null;
     }
 
-    /**
-     * Get current root.
+    */
+/**
+     * Get current parent.
      * For testing purposes
      *
-     * @return Reference to root
-     */
+     * @return Reference to parent
+     *//*
+
     protected BtreeNode root() {
         return this.root;
     }
 
-    /**
+    */
+/**
      * Search given key in the Btree.
      *
      * @param key Key to search
      * @return Entry where Key is node with given key
      * and Value is position of given key
      * Null if key doesn't exist
-     */
+     *//*
+
     private ImmutableEntry<BtreeNode, Integer> search(final Integer key) {
         BtreeNode node = this.root;
         while (node != null) {
@@ -263,11 +280,13 @@ public final class Btree implements Map<Integer, String> {
         return null;
     }
 
-    /**
+    */
+/**
      * Insert new key to Btree.
      *
      * @param key Key to insert
-     */
+     *//*
+
     private void put(final NodeKey key) {
         BtreeNode node = this.root;
         while (node != null) {
@@ -301,53 +320,63 @@ public final class Btree implements Map<Integer, String> {
         }
     }
 
-    /**
+    */
+/**
      * Min amount of keys.
      *
      * @return Min amount of keys
-     */
+     *//*
+
     private int minKeys() {
         return this.branchingNumber - 1;
     }
 
-    /**
+    */
+/**
      * Max amount of keys.
      *
      * @return Max amount of keys
-     */
+     *//*
+
     private int maxKeys() {
         return (this.branchingNumber * 2) - 1;
     }
 
-    /**
+    */
+/**
      * Min amount of children.
      *
      * @return Min amount of children
-     */
+     *//*
+
     private int minChildren() {
         return this.branchingNumber;
     }
 
-    /**
+    */
+/**
      * Max amount of children.
      *
      * @return Max amount of children
-     */
+     *//*
+
     private int maxChildren() {
         return this.maxKeys() + 1;
     }
 
-    /**
+    */
+/**
      * Split tree recursively.
      * Create two new nodes : left and right
      * Add first half of keys from original node to left
      * Add first half of children from original node to left
      * Add second half of keys from original node to right
      * Add second half of children from original node to right
-     * Create new root if current one is root without parent
+     * Create new parent if current one is parent without parent
      *
      * @param node Node to split
-     */
+     *//*
+
     private void split(final BtreeNode node) {
         final int keys = node.keys();
         final int middle = (keys >> 1) - 1;
@@ -368,13 +397,15 @@ public final class Btree implements Map<Integer, String> {
         }
     }
 
-    /**
+    */
+/**
      * Check if key is between the first and the lst child.
      *
      * @param node           Node with keys
      * @param searchPosition Search result
      * @return True if need to search key in next child
-     */
+     *//*
+
     private boolean betweenFirstAndLast(
             final BtreeNode node,
             final int searchPosition
@@ -385,14 +416,16 @@ public final class Btree implements Map<Integer, String> {
         return searchPosition <= last && searchPosition < node.children();
     }
 
-    /**
-     * Create new root.
-     * This method is called only if current node is root
+    */
+/**
+     * Create new parent.
+     * This method is called only if current node is parent
      *
      * @param left      Left node
      * @param right     Right node
      * @param middleKey Middle key entry
-     */
+     *//*
+
     private void splitRoot(
             final BtreeNode left,
             final BtreeNode right,
@@ -407,14 +440,16 @@ public final class Btree implements Map<Integer, String> {
         this.root.addChild(right);
     }
 
-    /**
+    */
+/**
      * Check if key between prev and next.
      *
      * @param key     Current key
      * @param prev    Previous node
      * @param current Current node
      * @return True of key is bigger that prev and less or eq to current
-     */
+     *//*
+
     private static boolean keyBetweenEntries(
             final Integer key,
             final NodeKey prev,
@@ -424,3 +459,4 @@ public final class Btree implements Map<Integer, String> {
                 && key.compareTo(current.key) <= 0;
     }
 }
+*/

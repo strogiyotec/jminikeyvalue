@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Node of Btree.
  * Constraints:
  * t - minDegree
- * 1) Every non root node must have at least t-1 keys
+ * 1) Every non parent node must have at least t-1 keys
  * 2) Every node must have at most 2t-1 keys
  * 3) Every internal node(at least one child) must have at least t children
  * 4) External node - node without children
@@ -57,7 +57,7 @@ class BtreeNode {
      *
      * @param children Amount of children
      * @param keys     Amount of keys
-     * @param parent   Ref to root
+     * @param parent   Ref to parent
      */
     BtreeNode(
             final BtreeNode parent,

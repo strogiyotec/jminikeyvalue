@@ -1,11 +1,13 @@
 package com.lightbox.jmkv.avl;
 
+import com.lightbox.jmkv.PlainTreeNode;
 import com.lightbox.jmkv.TreeNode;
+import com.lightbox.jmkv.binary.BinaryTreeNode;
 
 /**
  * Tree node fo AVL Tree.
  */
-final class AvlNode implements TreeNode {
+final class AvlNode extends PlainTreeNode {
 
     /**
      * Height of newly created node.
@@ -13,40 +15,24 @@ final class AvlNode implements TreeNode {
     private static final int EMPTY_HEIGHT = -1;
 
     /**
-     * Key.
-     */
-    @SuppressWarnings("check:VisibilityModifier")
-    Integer key;
-
-    /**
-     * Value.
-     */
-    @SuppressWarnings("check:VisibilityModifier")
-    String value;
-
-    /**
-     * Reference to root.
-     */
-    @SuppressWarnings("check:VisibilityModifier")
-    AvlNode root;
-
-    /**
-     * Reference to left.
-     */
-    @SuppressWarnings("check:VisibilityModifier")
-    AvlNode left;
-
-    /**
-     * Reference to right.
-     */
-    @SuppressWarnings("check:VisibilityModifier")
-    AvlNode right;
-
-    /**
      * Height.
      */
-    @SuppressWarnings("check:VisibilityModifier")
     private int height;
+
+    /**
+     * Root of node.
+     */
+    private AvlNode root;
+
+    /**
+     * Left child of node.
+     */
+    private AvlNode left;
+
+    /**
+     * Right child of node.
+     */
+    private AvlNode right;
 
     /**
      * Ctor.
@@ -60,12 +46,11 @@ final class AvlNode implements TreeNode {
             final String value,
             final int height
     ) {
+        super(key, value);
+        this.height = height;
         this.root = root;
         this.left = left;
         this.right = right;
-        this.key = key;
-        this.value = value;
-        this.height = height;
     }
 
     /**
@@ -77,16 +62,12 @@ final class AvlNode implements TreeNode {
             final String value,
             final int height
     ) {
-        this.key = key;
-        this.value = value;
+        super(key, value);
         this.height = height;
-        this.left = null;
-        this.right = null;
-        this.root = null;
     }
 
     /**
-     * Ctor for node with root and without children.
+     * Ctor for node with parent and without children.
      */
     @SuppressWarnings("JavadocMethod")
     AvlNode(
@@ -95,48 +76,9 @@ final class AvlNode implements TreeNode {
             final int height,
             final AvlNode root
     ) {
-        this.key = key;
-        this.value = value;
-        this.height = height;
+        super(key, value);
         this.root = root;
-        this.left = null;
-        this.right = null;
-    }
-
-    @Override
-    public boolean isRoot() {
-        return this.root == null;
-    }
-
-    @Override
-    public boolean hasLeft() {
-        return this.left != null;
-    }
-
-    @Override
-    public boolean hasRight() {
-        return this.right != null;
-    }
-
-    @Override
-    public boolean isLeft() {
-        return this.root != null && this.root.key > this.key;
-    }
-
-    @Override
-    public boolean isRight() {
-        return this.root != null && this.root.key < this.key;
-    }
-
-    @Override
-    public boolean hasChild() {
-        return this.hasRight() || this.hasLeft();
-    }
-
-    @Override
-    public boolean hasOneChild() {
-        return (this.hasLeft() && !this.hasRight())
-                || (this.hasRight() && !this.hasLeft());
+        this.height = height;
     }
 
     /**
@@ -145,7 +87,7 @@ final class AvlNode implements TreeNode {
      */
     void refreshHeight() {
         this.height = 1 + Math.max(
-                AvlNode.height(this.left),
+                AvlNode.height(this.left()),
                 AvlNode.height(this.right)
         );
     }
@@ -169,7 +111,7 @@ final class AvlNode implements TreeNode {
      */
     public static Integer minKey(final AvlNode node) {
         if (node.left == null) {
-            return node.key;
+            return node.key();
         } else {
             return AvlNode.minKey(node.left);
         }
@@ -186,6 +128,62 @@ final class AvlNode implements TreeNode {
         if (node == null) {
             return AvlNode.EMPTY_HEIGHT;
         }
-        return node.height;
+        return node.height();
+    }
+
+    public int height() {
+        return 0;
+    }
+
+    @Override
+    public void setLeft(final Integer key, final String value) {
+
+    }
+
+    @Override
+    public void setLeft(final TreeNode treeNode) {
+
+    }
+
+    @Override
+    public void setRight(final TreeNode right) {
+
+    }
+
+    @Override
+    public void setParent(final TreeNode parent) {
+
+    }
+
+    @Override
+    public void setRight(final Integer key, final String value) {
+
+    }
+
+    @Override
+    public AvlNode left() {
+        return this.left;
+    }
+
+    @Override
+    public AvlNode right() {
+        return this.right;
+    }
+
+    @Override
+    public AvlNode parent() {
+        return this.root;
+    }
+
+    public void setLeft(final AvlNode node) {
+        this.left = node;
+    }
+
+    public void setRight(final AvlNode node) {
+
+    }
+
+    public void setRoot(final AvlNode node) {
+
     }
 }

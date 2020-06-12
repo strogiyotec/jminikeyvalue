@@ -1,3 +1,4 @@
+/*
 package com.lightbox.jmkv;
 
 import com.lightbox.jmkv.avl.AvlTree;
@@ -9,15 +10,19 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+*/
 /**
  * Test {@link com.lightbox.jmkv.avl.AvlTree} class.
- */
+ *//*
+
 @SuppressWarnings("MagicNumber")
 public final class AvlTreeTest {
 
-    /**
+    */
+/**
      * Test remove node without children.
-     */
+     *//*
+
     @Test
     public void testRemoveWithRightRotation() {
         final AvlTree tree = new AvlTree(10, "");
@@ -30,10 +35,12 @@ public final class AvlTreeTest {
         Assert.assertThat(tree.keySet(), Matchers.contains(9, 8, 10));
     }
 
-    /**
+    */
+/**
      * Test remove node without children.
      * Last example from https://www.javatpoint.com/deletion-in-avl-tree
-     */
+     *//*
+
     @Test
     public void testRemoveWithRightRotationDeep() {
         final AvlTree tree = new AvlTree(50, "");
@@ -51,9 +58,11 @@ public final class AvlTreeTest {
         );
     }
 
-    /**
+    */
+/**
      * Test remove node without children.
-     */
+     *//*
+
     @Test
     public void testRemoveWithLeftRightRotation() {
         final AvlTree tree = new AvlTree(50, "");
@@ -65,7 +74,8 @@ public final class AvlTreeTest {
         Assert.assertThat(tree.keySet(), Matchers.contains(45, 40, 50));
     }
 
-    /**
+    */
+/**
      * Test left rotation after insert.
      * Was:
      *      2
@@ -77,7 +87,8 @@ public final class AvlTreeTest {
      *   2     5
      * 1   3     6
      *             7
-     */
+     *//*
+
     @Test
     public void testPutWithLeftRotation() {
         final AvlTree tree = new AvlTree(2, "");
@@ -89,10 +100,12 @@ public final class AvlTreeTest {
         Assert.assertThat(tree.keySet(), Matchers.contains(4, 2, 1, 3, 5, 6));
     }
 
-    /**
+    */
+/**
      * Test remove node without children.
      * http://www.cs.toronto.edu/~krueger/cscB63h/lectures/tut03.txt
-     */
+     *//*
+
     @Test
     public void testRemoveWithOneChildAndRightLeftRotation() {
         final AvlTree tree = new AvlTree(9, "");
@@ -116,9 +129,11 @@ public final class AvlTreeTest {
         );
     }
 
-    /**
+    */
+/**
      * Test contains value method of avl tree.
-     */
+     *//*
+
     @Test
     public void testContainsValue() {
         final AvlTree tree = AvlTreeTest.getTree();
@@ -129,19 +144,23 @@ public final class AvlTreeTest {
         Assert.assertFalse(tree.containsValue("No value"));
     }
 
-    /**
+    */
+/**
      * Test put method.
      * Assert that Tree was rebalanced and now has given order
-     */
+     *//*
+
     @Test
     public void testPut() {
         final AvlTree tree = AvlTreeTest.getTree();
         Assert.assertThat(tree.keySet(), Matchers.contains(12, 10, 5, 15));
     }
 
-    /**
+    */
+/**
      * Test size method of Avl tree.
-     */
+     *//*
+
     @Test
     public void testSize() {
         final AvlTree tree = AvlTreeTest.getTree();
@@ -150,10 +169,12 @@ public final class AvlTreeTest {
         Assert.assertThat(tree.size(), CoreMatchers.is(5));
     }
 
-    /**
+    */
+/**
      * Test values method of Avl tree.
      * Check that values are in the same position as their balanced keys
-     */
+     *//*
+
     @Test
     public void testValueSet() {
         final AvlTree tree = AvlTreeTest.getTree();
@@ -163,10 +184,12 @@ public final class AvlTreeTest {
         );
     }
 
-    /**
+    */
+/**
      * Test entry set method of Avl tree.
      * Check that entry set has balanced order
-     */
+     *//*
+
     @Test
     public void testEntrySet() {
         final AvlTree tree = AvlTreeTest.getTree();
@@ -181,9 +204,11 @@ public final class AvlTreeTest {
         );
     }
 
-    /**
+    */
+/**
      * Test get method of Avl tree.
-     */
+     *//*
+
     @Test
     public void testGet() {
         final AvlTree tree = AvlTreeTest.getTree();
@@ -194,9 +219,11 @@ public final class AvlTreeTest {
         Assert.assertNull(tree.get(322));
     }
 
-    /**
+    */
+/**
      * Test contains method of Avl tree.
-     */
+     *//*
+
     @Test
     public void testContains() {
         final AvlTree tree = AvlTreeTest.getTree();
@@ -207,11 +234,13 @@ public final class AvlTreeTest {
         Assert.assertFalse(tree.containsKey(322));
     }
 
-    /**
+    */
+/**
      * Test put all method of Avl tree.
      * Check that when put all was called then
      * Avl tree was rebalanced.
-     */
+     *//*
+
     @Test
     public void testPutAll() {
         final AvlTree tree = new AvlTree(10, "test");
@@ -222,11 +251,13 @@ public final class AvlTreeTest {
         Assert.assertThat(tree.keySet(), Matchers.contains(12, 10, 15));
     }
 
-    /**
+    */
+/**
      * Get avl tree for testing.
      *
      * @return Avl tree instance
-     */
+     *//*
+
     private static AvlTree getTree() {
         final AvlTree tree = new AvlTree(15, "almas");
         tree.put(10, "abzal");
@@ -235,3 +266,4 @@ public final class AvlTreeTest {
         return tree;
     }
 }
+*/

@@ -6,12 +6,19 @@ package com.lightbox.jmkv;
 public interface Cache {
 
     /**
+     * Clear cache.
+     *
+     * @return True if successfully
+     */
+    boolean clear();
+
+    /**
      * Get value by key.
      *
      * @param key Key
      * @return Value
      */
-    byte[] get(byte[] key);
+    String get(Integer key);
 
     /**
      * Put key value pair.
@@ -20,7 +27,7 @@ public interface Cache {
      * @param value Value
      * @return Value
      */
-    byte[] put(byte[] key, byte[] value);
+    String put(Integer key, String value);
 
     /**
      * Delete value by key.
@@ -28,7 +35,7 @@ public interface Cache {
      * @param key Key
      * @return Value
      */
-    byte[] delete(byte[] key);
+    String delete(Integer key);
 
     /**
      * Check that value with given key is present.
@@ -36,5 +43,12 @@ public interface Cache {
      * @param key Key
      * @return True if value is present
      */
-    boolean exists(byte[] key);
+    boolean exists(Integer key);
+
+    /**
+     * Cache size.
+     *
+     * @return Size
+     */
+    int size();
 }

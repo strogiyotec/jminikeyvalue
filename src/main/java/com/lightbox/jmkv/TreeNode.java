@@ -6,48 +6,25 @@ package com.lightbox.jmkv;
 public interface TreeNode {
 
     /**
-     * Check that node is root.
+     * Check that node is parent.
      *
-     * @return True if node doesn't have root
+     * @return True if node doesn't have parent
      */
     boolean isRoot();
 
     /**
-     * Node is left child of root.
+     * Node is left child of parent.
      *
      * @return True if this node is left
      */
     boolean isLeft();
 
     /**
-     * Node is right child of root.
+     * Node is right child of parent.
      *
      * @return True if this node is right
      */
     boolean isRight();
-
-    int children();
-
-    /**
-     * Left child.
-     *
-     * @return Left child
-     */
-    TreeNode left();
-
-    /**
-     * Right child
-     *
-     * @return Right child
-     */
-    TreeNode right();
-
-    /**
-     * Root.
-     *
-     * @return Root
-     */
-    TreeNode root();
 
     /**
      * Node key.
@@ -84,24 +61,19 @@ public interface TreeNode {
      */
     void setValue(String value);
 
-    /**
-     * Set left child.
-     *
-     * @param node New left
-     */
-    void setLeft(TreeNode node);
+    void setLeft(Integer key, String value);
 
-    /**
-     * Set right child.
-     *
-     * @param node New right
-     */
-    void setRight(TreeNode node);
+    void setRight(Integer key, String value);
 
-    /**
-     * Set new root.
-     *
-     * @param node New root
-     */
-    void setRoot(TreeNode node);
+    void setLeft(TreeNode left);
+
+    void setRight(TreeNode right);
+
+    void setParent(TreeNode parent);
+
+    TreeNode left();
+
+    TreeNode right();
+
+    TreeNode parent();
 }
