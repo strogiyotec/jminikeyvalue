@@ -20,10 +20,10 @@ public final class BinaryTreeTest {
     }
 
     /**
-     * Test contains method of Binary Tree.
+     * Test exists method of Binary Tree.
      */
     @Test
-    public void testContains() {
+    public void testExists() {
         final BinaryTree tree = BinaryTreeTest.getTree();
         Assert.assertTrue(tree.exists(5));
         //In the left
@@ -38,19 +38,12 @@ public final class BinaryTreeTest {
     }
 
     /**
-     * Test delete of left node of Binary Tree.
+     * Test delete node without children.
      */
     @Test
     public void testRemoveKeyFromLeftTree() {
         final BinaryTree tree = BinaryTreeTest.getTree();
-        tree.put(10, "ten");
-        tree.put(15, "fifteen");
-        tree.put(11, "eleven");
-        tree.put(14, "fourteen");
-        tree.put(9, "nine");
-        Assert.assertThat(tree.delete(2), CoreMatchers.is("dsd"));
-        Assert.assertThat(tree.delete(10), CoreMatchers.is("ten"));
-        Assert.assertThat(tree.size(), CoreMatchers.is(8));
+
     }
 
     /**

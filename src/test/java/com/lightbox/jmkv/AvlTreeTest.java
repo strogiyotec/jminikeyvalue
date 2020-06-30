@@ -225,7 +225,7 @@ public final class AvlTreeTest {
      *//*
 
     @Test
-    public void testContains() {
+    public void testExists() {
         final AvlTree tree = AvlTreeTest.getTree();
         Assert.assertTrue(tree.containsKey(15));
         Assert.assertTrue(tree.containsKey(10));

@@ -1,3 +1,4 @@
+/*
 package com.lightbox.jmkv.btree;
 
 import org.hamcrest.CoreMatchers;
@@ -6,15 +7,19 @@ import org.junit.Test;
 
 import java.util.stream.IntStream;
 
+*/
 /**
  * Test {@link com.lightbox.jmkv.btree.Btree} class.
- */
+ *//*
+
 @SuppressWarnings("MagicNumber")
 public final class BtreeTest {
 
-    /**
+    */
+/**
      * Test put method of {@link Btree}.
-     */
+     *//*
+
     @Test
     public void testPutAndGet() {
         final Btree btree = new Btree(2);
@@ -31,9 +36,11 @@ public final class BtreeTest {
         Assert.assertNull(btree.get(0));
     }
 
-    /**
+    */
+/**
      * Test that node was split after overflow.
-     */
+     *//*
+
     @Test
     public void testSplit() {
         final Btree btree = new Btree(2);
@@ -46,9 +53,11 @@ public final class BtreeTest {
         Assert.assertThat(root.child(1).key(1).key, CoreMatchers.is(5));
     }
 
-    /**
+    */
+/**
      * Test remove key from parent.
-     */
+     *//*
+
     @Test
     public void testRemoveFromRoot() {
         final Btree btree = new Btree(2);
@@ -60,7 +69,8 @@ public final class BtreeTest {
         Assert.assertThat(root.key(1).key, CoreMatchers.is(5));
     }
 
-    /**
+    */
+/**
      * Test remove in internal node.
      * Internal node has three child and two keys
      * Before:
@@ -69,7 +79,8 @@ public final class BtreeTest {
      * After:
      * ####6 9
      * #5   7  10
-     */
+     *//*
+
     @SuppressWarnings("LineLength")
     @Test
     public void testRemoveInternalNodeWithChildren() {
@@ -110,7 +121,8 @@ public final class BtreeTest {
         );
     }
 
-    /**
+    */
+/**
      * Test remove in internal node.
      * Internal node has two child and one key
      * Before:
@@ -121,7 +133,8 @@ public final class BtreeTest {
      * #######6
      * ###4       8
      * #1,3 5   7   9,10
-     */
+     *//*
+
     @Test
     public void testRemoveInternalNodeWithOneKey() {
         final Btree btree = new Btree(2);
@@ -166,3 +179,4 @@ public final class BtreeTest {
         );
     }
 }
+*/
